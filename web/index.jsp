@@ -25,15 +25,16 @@
         <title>Home</title>
     </head>
     <body>
-        <h1>Controlador de Eventos com MVC</h1>
+        
 <%
     if (session.getAttribute("user") == null && session.getAttribute("aluno") == null)
     {
 %>
+        <h1>Controlador de Eventos com MVC</h1>
         <p>Bem-vindo(a), faça login abaixo para acessar as opções:</p>
         <br>
         
-        <form action="index" method="post">
+        <form action="controller/index?action=login" method="post">
 
             <label>Acesso: </label>
             <select name="option">
@@ -59,7 +60,13 @@ else if(al != null)
 %>
 
         <p>Olá, <%out.println(al.getNome() != null ? al.getNome() : "");%>
-        <p> <a href="logout">Sair</a></p>
+        <p> <a href="index?action=logout">Sair</a></p>
+        <p>
+            Funções do Aluno:
+        </p>
+        <ul>
+            <li>Manutenção</li>
+        </ul>
 <%
 }
 %>

@@ -1,3 +1,5 @@
+package controller;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -45,40 +47,55 @@ public class index extends HttpServlet {
             
             HttpSession session =  request.getSession();                                                
             
-            login = request.getParameter("login");
+            String action;
             
-            if(login != null && login.length() > 0)
+            if(request.getParameter("action") != null)
             {
-                password = request.getParameter("password");
+                action = request.getParameter("action");        
                 
-                if(password != null && password.length() > 0)
+                if(action.equals("login"))
                 {
-                    option = request.getParameter("option");
-                    
-                    switch(option)
+                    login = request.getParameter("login");
+
+                    if(login != null && login.length() > 0)
                     {
-                        case "0": 
-                            al = ald.login(login, password);
-                            
-                            if(al != null)
-                                session.setAttribute("aluno", al);
-                            break;
-                            
-                        case "1":                            
-                            us = usd.login(login, password);
-                            
-                            if(us != null)
-                                session.setAttribute("user", us);                            
-                            break;
+                        password = request.getParameter("password");
+
+                        if(password != null && password.length() > 0)
+                        {
+                            option = request.getParameter("option");
+
+                            switch(option)
+                            {
+                                case "0": 
+                                    al = ald.login(login, password);
+
+                                    if(al != null)
+                                        session.setAttribute("aluno", al);
+                                    break;
+
+                                case "1":                            
+                                    us = usd.login(login, password);
+
+                                    if(us != null)
+                                        session.setAttribute("user", us);                            
+                                    break;
+                            }
+                            //response.sendRedirect("/eventos/index.jsp");
+                        }
+                        else
+                            System.out.println("Insira senha!");
                     }
-                    //response.sendRedirect("/eventos/index.jsp");
+                    else
+                        System.out.println("Insira login");
                 }
                 else
-                    System.out.println("Insira senha!");
+                if(action.equals("logout"))
+                {
+                    session.removeAttribute("user");
+                    session.removeAttribute("aluno");
+                }
             }
-            else
-                System.out.println("Insira login");
-            
             response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
         }
     }

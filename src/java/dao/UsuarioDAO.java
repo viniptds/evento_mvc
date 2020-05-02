@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import model.Usuario;
 import persist.Conexao;
 
@@ -48,5 +49,107 @@ public class UsuarioDAO {
         return null;
     }
     
+    public Usuario get(int cod)
+    {
+        String sql = "select * from usuario where usu_codigo = #1";
+        
+        sql = sql.replace("#1", ""+cod);        
+        
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {
+                    if (rs.next()) 
+                    {
+                        return new Usuario(rs.getInt("usu_codigo"), rs.getString("usu_nome"), 
+                                rs.getString("usu_login"), rs.getString("usu_senha"));
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+                
+        return null;
+    }
+    
+    
+    public ArrayList list()
+    {
+        ArrayList<Usuario> lus = new ArrayList();
+        
+        String sql = "select * from usuario"; // ... offset 1
+         
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {
+                    while (rs.next()) 
+                    {
+                        lus.add(new Usuario(rs.getInt("usu_codigo"), rs.getString("usu_nome"), 
+                                rs.getString("usu_login"), rs.getString("usu_senha")));
+                    }
+                    return lus;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return null;    
+    }
+    
+    public boolean insert(Usuario u)
+    {
+        String sql = "insert into usuario (usu_nome, usu_login, usu_senha) values ('#1', '#2', '#3')";
+        sql = sql.replace("#1", u.getNome());
+        sql = sql.replace("#2", u.getLogin());
+        sql = sql.replace("#3", u.getSenha());
+        
+        try (Connection conn = Conexao.connect())
+        {
+            try (Statement st = conn.createStatement())
+            {
+                return st.execute(sql);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return false;    
+        
+    }
+    
+    public boolean remove(Usuario u)
+    {
+        String sql = "delete from usuario where usu_codigo = #1";
+        
+        sql = sql.replace("#1", ""+u.getCodigo());
+        
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {                
+                return st.execute(sql);                
+            }  
+        }      
+        catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        return false;
+    }
     
 }

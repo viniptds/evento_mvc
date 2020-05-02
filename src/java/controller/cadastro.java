@@ -1,3 +1,5 @@
+package controller;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,8 +19,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author viniciuspadovan
  */
-@WebServlet(urlPatterns = {"/logout"})
-public class logout extends HttpServlet {
+@WebServlet(urlPatterns = {"/cadastro"})
+public class cadastro extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,12 +38,21 @@ public class logout extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             
             HttpSession session = request.getSession();
+                
+            if(session.getAttribute("user") == null && session.getAttribute("aluno") == null)
+            {
+                response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
+            }
             
-            session.removeAttribute("user");
-            session.removeAttribute("aluno");
+            else if(session.getAttribute("user") == null) 
+            {
+                response.sendRedirect(this.getServletContext().getContextPath()+"/listagem.jsp");
+            }
             
-            response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
-            
+            else
+            {                
+                response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
+            }
         }
     }
 
