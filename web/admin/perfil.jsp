@@ -23,7 +23,9 @@
         if(request.getParameter("path") != null)
         {
             session.removeAttribute("altered_user");
-            response.sendRedirect("index.jsp");
+            nome = login = senha = "";
+            cod = 0;
+            response.sendRedirect("index.jsp");            
         }
         
         if(session.getAttribute("altered_user") != null)
@@ -32,9 +34,25 @@
             nome = u.getNome();
             login = u.getLogin();
             cod = u.getCodigo();             
+            
+            if(request.getParameter("delete") != null)
+            {
+                if(request.getParameter("delete").equals("true"))
+                {
+                    if(!u.getLogin().equals("admin"))
+                    {
+                        usd.remove(u);
+                        System.out.println("Removido!");                    
+                    }
+
+                    if(u.getLogin().equals(((Usuario)session.getAttribute("user")).getLogin()))
+                        session.removeAttribute("user");    
+                }
+                response.sendRedirect("index");
+            }
         }
-                
-        if(request.getParameter("bNew") != null)
+               
+        if(request.getParameter("bChange") != null)
         {
             if(request.getParameter("nome") != null)
             {
@@ -54,12 +72,15 @@
                             if(session.getAttribute("altered_user") != null)
                             {                                
                                 usd.update(u);
+                                session.removeAttribute("altered_user");
+                                System.out.println("Alterado!");
                             }
                             else
                             {
-                                usd.insert(u);
-                                System.out.println("Inserido");
+                                usd.insert(u);                                
                             }
+                            cod = 0;
+                            nome = login = senha = "";
                             response.sendRedirect("listagem.jsp");                            
                         }
                     }
@@ -86,20 +107,19 @@
             <br>
             
             <label>Login: </label>
-            <input type="text" name="login" required="required" value="<% out.print(login); %>">
+            <input type="text" name="login" <% if(session.getAttribute("altered_user") != null) out.print("readonly='readonly'");%> required="required" value="<% out.print(login); %>">
             <br>
             
             <label>Senha: </label>
             <input type="password" name="senha" required="required">
             <br>
             
-            <input type="submit" name="bNew" value="Enviar">
+            <input type="submit" name="bChange" value="Enviar">
         </form>
 <%
-    if(cod > 0)
+    if(session.getAttribute("altered_user") != null)
     {            
 %>
-
 
         <a href="perfil.jsp?cod=<%out.print(u.getCodigo());%>&delete=true">Deletar</a>
 

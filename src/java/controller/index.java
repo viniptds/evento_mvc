@@ -49,6 +49,9 @@ public class index extends HttpServlet {
             
             String action;
             
+            //garantindo limpeza do atributo
+            session.removeAttribute("altered_user");
+            
             if(request.getParameter("action") != null)
             {
                 action = request.getParameter("action");        

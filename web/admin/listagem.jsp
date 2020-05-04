@@ -12,6 +12,7 @@
 %>
 
 <%
+    
     if(session.getAttribute("user") == null)
         response.sendRedirect("index.jsp");
     
@@ -20,6 +21,7 @@
         try 
         {
             cod = Integer.parseInt(request.getParameter("cod"));
+            
             if(cod > 0)
             {
                 u = usd.get(cod);
@@ -40,11 +42,11 @@
     
     if(request.getParameter("bSearch") == null)
     {
-        luser = usd.list();     
+        luser = usd.list();
     }
     else
     {
-        luser = luser; //usd.search(request.getParameter("search"));
+        luser = usd.search(search, "usu_login");
     }
 %>
 
@@ -58,7 +60,7 @@
     <body>
         <a href="index.jsp">Menu</a>
         <p>Listagem de Usuários</p>
-        <form method="GET" action="cadastro">
+        <form method="GET" action="listagem.jsp">
             
             <label>Buscar: </label>
             <input type="text" name="search" value="<%out.print(search != null && search.length() > 0 ? search : "");%>">
@@ -70,32 +72,39 @@
         
 <%
     if(luser != null)
-    {            
+    {        
+        if(luser.size()>0)
+        {
 %>        
-        
+        <br>
         <table border="3">
             <tr>
                 <td>Nome</td>
                 <td>Login</td>                
             </tr>
 <% 
-        for(Usuario u : luser)
-        {
+            for(Usuario u : luser)
+            {
 %>
 
             <tr>
                 <td><a href="listagem.jsp?cod=<%out.print(u.getCodigo()); %>"> <% out.print(u.getNome()); %></a></td>
 
-                <td><% out.print(u.getLogin()); %></td>
-                
+                <td><% out.print(u.getLogin()); %></td>                
             </tr>
+            
 <%
-        }
+            }
 %>
         </table>
 <%
+        }   
+        else
+        {
+%>
+        <p> Não há usuário(s) para essa busca. </p>
+<%      }
     }
 %>
-        
     </body>
 </html>
