@@ -23,5 +23,5 @@
 hs_err_pid*
 /build/
 packages
-nbproject
+nbproject/private
 .DS_Store
