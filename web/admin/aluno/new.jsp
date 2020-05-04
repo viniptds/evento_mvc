@@ -4,6 +4,7 @@
     Author     : viniciuspadovan
 --%>
 
+<%@page import="java.lang.System.out"%>
 <%@page import="dao.AlunoDAO"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="model.Aluno"%>

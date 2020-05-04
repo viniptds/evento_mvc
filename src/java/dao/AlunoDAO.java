@@ -9,8 +9,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Aluno;
+import model.Cidade;
 import persist.Conexao;
+import persist.DAOException;
 
 /**
  *
@@ -76,6 +80,23 @@ public class AlunoDAO {
             System.out.println(ex.getMessage());
         } catch (NullPointerException ex) {
             System.out.println(ex);            
+        }
+    }
+    
+    public void update(Aluno registro)
+            throws DAOException {
+        String sql = "update aluno set alu_nome = '" + registro.getNome() + "', alu_email = '" + registro.getEmail()+"', alu_senha = '" + registro.getSenha()+"', alu_endereco = '" + registro.getEndereco()+"', alu_Complemento = '" + registro.getComplemento()+"" 
+                + "', alu_cep = '" + registro.getCep()+"', alu_cpf = '" + registro.getCpf()+"'where alu_codigo = " + registro.getCodigo();
+        try (Connection conn = Conexao.connect()) {
+            try (Statement st = conn.createStatement()) {
+                st.execute(sql);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Erro alterando registro.");
+        } catch (NullPointerException ex) {
+            Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Falha abrindo banco de dados.");
         }
     }
 
