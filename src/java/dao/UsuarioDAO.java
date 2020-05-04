@@ -75,15 +75,51 @@ public class UsuarioDAO {
         }
                 
         return null;
-    }
-    
+    }   
     
     public ArrayList list()
     {
         ArrayList<Usuario> lus = new ArrayList();
         
-        String sql = "select * from usuario"; // ... offset 1
+        String sql = "select * from usuario order by usu_nome"; // ... offset 1
          
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {
+                    while (rs.next()) 
+                    {
+                        lus.add(new Usuario(rs.getInt("usu_codigo"), rs.getString("usu_nome"), 
+                                rs.getString("usu_login"), rs.getString("usu_senha")));
+                    }
+                    return lus;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return null;    
+    }
+    
+    public ArrayList search(String termo, String field)
+    {
+        ArrayList<Usuario> lus = new ArrayList();
+        
+        String sql = "select * from usuario";
+        if(termo.length() > 0)
+        { 
+            sql += " where #1 like '%#2%'"; // ... offset 1
+                
+            sql = sql.replace("#1", ""+field); 
+            sql = sql.replace("#2", ""+termo);                
+        }
+        sql += " order by usu_nome";
+        
         try (Connection conn = Conexao.connect()) 
         {
             try (Statement st = conn.createStatement()) 
@@ -131,32 +167,7 @@ public class UsuarioDAO {
         return false;    
         
     }
-    
-    public boolean exists(String login)
-    {
-        String sql = "select * from usuario where usu_login = '"+login+"'";
         
-        try (Connection conn = Conexao.connect()) 
-        {
-            try (Statement st = conn.createStatement()) 
-            {
-                try (ResultSet rs = st.executeQuery(sql)) 
-                {
-                    if (rs.next()) 
-                    {
-                        return true;
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Erro no SQL.");
-        } catch (NullPointerException ex) {            
-            System.out.println("Falha abrindo banco de dados.");
-        }
-        
-        
-        return false;
-    }
     
     public boolean insert(Usuario u)
     {
@@ -173,7 +184,7 @@ public class UsuarioDAO {
             }
         }
         catch (SQLException ex) {
-            System.out.println("Erro no SQL."+ex.getMessage());
+            System.out.println("Erro no SQL. "+ex.getMessage());
         } catch (NullPointerException ex) {            
             System.out.println("Falha abrindo banco de dados.");
         }
