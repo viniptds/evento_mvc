@@ -29,7 +29,7 @@
     {
         response.sendRedirect("index");
     }
-    else
+   /* else
     {
         us = (Usuario)session.getAttribute("user");
         listcid = new ArrayList();
@@ -45,7 +45,7 @@
         cpf=al.getCpf();
         data=al.getDatanasc();
         cid=al.getCidade();
-    }
+    }*/
     if(request.getParameter("bSend") != null)
         {
             if(request.getParameter("nome") != null)
@@ -103,8 +103,7 @@
                                                 {
                                                     ald.insert(al);
                                                     System.out.println("Inserido com sucesso");
-                                                }
-                                                    //response.sendRedirect("listagem.jsp");                            
+                                                }                         
                                             }
                                         }
                                     }
