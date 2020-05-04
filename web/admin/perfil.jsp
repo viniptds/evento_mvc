@@ -8,61 +8,32 @@
 <%!
     Usuario u;
     UsuarioDAO usd = new UsuarioDAO();
-    int cod;
-    String nome, login, senha;
+    int cod = 0;
+    String nome = "", login = "", senha = "";
 %>
 
 
 <%
-    nome = login = "";
-    
     if(session.getAttribute("user") == null)
     {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("index");
     }
     else
     {
-        if(request.getParameter("cod") != null)
+        if(request.getParameter("path") != null)
         {
-            try 
-            {
-                cod = Integer.parseInt(request.getParameter("cod"));
-                
-                if(request.getParameter("delete") != null)
-                {
-                    if(((Usuario)session.getAttribute("user")).getCodigo() == cod)
-                        response.sendRedirect("perfil.jsp");    
-                    else
-                        usd.remove(u);
-                }
-
-                if(request.getParameter("update") != null)
-                {
-
-                }
-            
-
-                u = usd.get(cod);
-                
-                if(u == null)
-                {
-                    response.sendRedirect("listagem.jsp");
-                }
-                else
-                {
-                    nome = u.getNome();
-                    login = u.getLogin();
-                }
-                
-                
-                
-            }
-            catch(NumberFormatException ex)
-            {
-                System.out.println("Impossível converter");
-                response.sendRedirect("perfil.jsp");
-            }
+            session.removeAttribute("altered_user");
+            response.sendRedirect("index.jsp");
         }
+        
+        if(session.getAttribute("altered_user") != null)
+        {
+            u = (Usuario)session.getAttribute("altered_user");
+            nome = u.getNome();
+            login = u.getLogin();
+            cod = u.getCodigo();             
+        }
+                
         if(request.getParameter("bNew") != null)
         {
             if(request.getParameter("nome") != null)
@@ -71,7 +42,7 @@
                 
                 if(request.getParameter("login") != null)
                 {
-                    login = request.getParameter("logni");
+                    login = request.getParameter("login");
                     
                     if(request.getParameter("senha") != null)
                     {
@@ -79,15 +50,23 @@
                         
                         if(nome.length() > 0 && login.length() > 0 && senha.length() > 0)
                         {
-                            u = new Usuario(0, nome, login, senha);
-                            usd.insert(u);
-                            
+                            u = new Usuario(cod, nome, login, senha);
+                            if(session.getAttribute("altered_user") != null)
+                            {                                
+                                usd.update(u);
+                            }
+                            else
+                            {
+                                usd.insert(u);
+                                System.out.println("Inserido");
+                            }
                             response.sendRedirect("listagem.jsp");                            
                         }
                     }
                 }
             }
         }
+        
         
     }
 
@@ -100,21 +79,24 @@
         <title>Perfil</title>
     </head>
     <body>        
-        <a href="perfil.jsp">Menu</a>
-        <form action="cadastro" method="post">            
+        <a href="perfil.jsp?path=index">Menu</a>
+        <form action="perfil.jsp" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>
+            
             <label>Login: </label>
             <input type="text" name="login" required="required" value="<% out.print(login); %>">
             <br>
+            
             <label>Senha: </label>
-            <input type="text" name="senha" required="required">
+            <input type="password" name="senha" required="required">
             <br>
+            
             <input type="submit" name="bNew" value="Enviar">
         </form>
 <%
-    if(u != null)
+    if(cod > 0)
     {            
 %>
 

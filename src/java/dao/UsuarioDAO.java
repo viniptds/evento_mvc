@@ -107,6 +107,57 @@ public class UsuarioDAO {
         return null;    
     }
     
+    public boolean update(Usuario u)
+    {
+        String sql = "update usuario set usu_nome = '#1', usu_login = '#2', usu_senha = '#3' where usu_codigo = #4";
+        sql = sql.replace("#1", u.getNome());
+        sql = sql.replace("#2", u.getLogin());
+        sql = sql.replace("#3", u.getSenha());
+        sql = sql.replace("#4", ""+u.getCodigo());
+        
+        try (Connection conn = Conexao.connect())
+        {
+            try (Statement st = conn.createStatement())
+            {
+                return st.execute(sql);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return false;    
+        
+    }
+    
+    public boolean exists(String login)
+    {
+        String sql = "select * from usuario where usu_login = '"+login+"'";
+        
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {
+                    if (rs.next()) 
+                    {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        
+        return false;
+    }
+    
     public boolean insert(Usuario u)
     {
         String sql = "insert into usuario (usu_nome, usu_login, usu_senha) values ('#1', '#2', '#3')";
@@ -122,7 +173,7 @@ public class UsuarioDAO {
             }
         }
         catch (SQLException ex) {
-            System.out.println("Erro no SQL.");
+            System.out.println("Erro no SQL."+ex.getMessage());
         } catch (NullPointerException ex) {            
             System.out.println("Falha abrindo banco de dados.");
         }

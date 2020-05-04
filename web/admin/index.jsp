@@ -8,7 +8,7 @@
 <%
     //session.invalidate();
     if(session.getAttribute("user") == null)
-        response.sendRedirect("controller/index");
+        response.sendRedirect("index");
     else
     {
         us = (Usuario)session.getAttribute("user");

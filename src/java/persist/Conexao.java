@@ -13,7 +13,7 @@ public class Conexao {
 
     private static final String URL = "jdbc:postgresql://127.0.0.1:5432/lp3_proj_evento";
     private static final String USUARIO = "postgres";
-    private static final String SENHA = "040318";
+    private static final String SENHA = "root";
 
     public static Connection connect() {
         try {

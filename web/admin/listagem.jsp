@@ -5,20 +5,42 @@
 
 <%!
     ArrayList<Usuario> luser;
+    Usuario u;
     UsuarioDAO usd = new UsuarioDAO();
     String search;
+    int cod;
 %>
 
 <%
     if(session.getAttribute("user") == null)
         response.sendRedirect("index.jsp");
     
+    if(request.getParameter("cod") != null)
+    {
+        try 
+        {
+            cod = Integer.parseInt(request.getParameter("cod"));
+            if(cod > 0)
+            {
+                u = usd.get(cod);
+                session.setAttribute("altered_user", u);
+                response.sendRedirect("perfil.jsp");
+            }
+            else
+                response.sendRedirect("listagem.jsp");
+        }
+        catch(NumberFormatException ex)
+        {
+            response.sendRedirect("listagem.jsp");
+        }
+        
+    }    
+    
     search = request.getParameter("search");
     
     if(request.getParameter("bSearch") == null)
     {
-        luser = usd.list();
-        System.out.println("Conectou no remoto");
+        luser = usd.list();     
     }
     else
     {
@@ -62,7 +84,7 @@
 %>
 
             <tr>
-                <td><a href="perfil.jsp?cod=<%out.print(u.getCodigo()); %>"> <% out.print(u.getNome()); %></a></td>
+                <td><a href="listagem.jsp?cod=<%out.print(u.getCodigo()); %>"> <% out.print(u.getNome()); %></a></td>
 
                 <td><% out.print(u.getLogin()); %></td>
                 
