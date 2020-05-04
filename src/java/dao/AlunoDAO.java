@@ -85,8 +85,8 @@ public class AlunoDAO {
     
     public void update(Aluno registro)
             throws DAOException {
-        String sql = "update aluno set alu_nome = '" + registro.getNome() + "', alu_email = '" + registro.getEmail()+"', alu_senha = '" + registro.getSenha()+"', alu_endereco = '" + registro.getEndereco()+"', alu_Complemento = '" + registro.getComplemento()+"" 
-                + "', alu_cep = '" + registro.getCep()+"', alu_cpf = '" + registro.getCpf()+"'where alu_codigo = " + registro.getCodigo();
+        String sql = "update aluno set alu_nome = '" + registro.getNome() + "', alu_email = '" + registro.getEmail()+"', alu_senha = '" + registro.getSenha()+"', alu_endereco = '" + registro.getEndereco()+"', alu_complemento = '" + registro.getComplemento()+"" 
+                + "', alu_cep = '" + registro.getCep()+"', alu_cpf = '" + registro.getCpf()+"', alu_numero = '" + registro.getNum()+"', cid_codigo = '" + registro.getCidade().getCodigo()+"', alu_data_nasc = '" + registro.getDatanasc()+"'where alu_codigo = " + registro.getCodigo();
         try (Connection conn = Conexao.connect()) {
             try (Statement st = conn.createStatement()) {
                 st.execute(sql);
