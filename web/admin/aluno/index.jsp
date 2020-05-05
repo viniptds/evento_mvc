@@ -24,13 +24,13 @@
         <title>Controle de Alunos</title>
     </head>
     <body>
-        <a href="index">Menu</a>
+        <a href="AdminController">Menu</a>
         <h1>Gerenciamento dos Alunos</h1>
         <p>Logado como: <%out.print(us.getLogin());%></p>
         
         <ul>
             <li>
-                <a href="new.jsp">Cadastrar Aluno</a>
+                <a href="AdmAlunoController?path=new.jsp">Cadastrar Aluno</a>
             </li>
         </ul>
     </body>

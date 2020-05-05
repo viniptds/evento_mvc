@@ -16,17 +16,9 @@
 <%
     if(session.getAttribute("user") == null)
     {
-        response.sendRedirect("index");
+        response.sendRedirect("AdminController");
     }
-    else
-    {
-        if(request.getParameter("path") != null)
-        {
-            session.removeAttribute("altered_user");
-            nome = login = senha = "";
-            cod = 0;
-            response.sendRedirect("index.jsp");            
-        }
+    
         
         if(session.getAttribute("altered_user") != null)
         {
@@ -34,62 +26,7 @@
             nome = u.getNome();
             login = u.getLogin();
             cod = u.getCodigo();             
-            
-            if(request.getParameter("delete") != null)
-            {
-                if(request.getParameter("delete").equals("true"))
-                {
-                    if(!u.getLogin().equals("admin"))
-                    {
-                        usd.remove(u);
-                        System.out.println("Removido!");                    
-                    }
-
-                    if(u.getLogin().equals(((Usuario)session.getAttribute("user")).getLogin()))
-                        session.removeAttribute("user");    
-                }
-                response.sendRedirect("index");
-            }
-        }
-               
-        if(request.getParameter("bChange") != null)
-        {
-            if(request.getParameter("nome") != null)
-            {
-                nome = request.getParameter("nome");
-                
-                if(request.getParameter("login") != null)
-                {
-                    login = request.getParameter("login");
-                    
-                    if(request.getParameter("senha") != null)
-                    {
-                        senha = request.getParameter("senha");
-                        
-                        if(nome.length() > 0 && login.length() > 0 && senha.length() > 0)
-                        {
-                            u = new Usuario(cod, nome, login, senha);
-                            if(session.getAttribute("altered_user") != null)
-                            {                                
-                                usd.update(u);
-                                session.removeAttribute("altered_user");
-                                System.out.println("Alterado!");
-                            }
-                            else
-                            {
-                                usd.insert(u);                                
-                            }
-                            cod = 0;
-                            nome = login = senha = "";
-                            response.sendRedirect("listagem.jsp");                            
-                        }
-                    }
-                }
-            }
-        }
-        
-        
-    }
+        }                   
 
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -100,8 +37,9 @@
         <title>Perfil</title>
     </head>
     <body>        
-        <a href="perfil.jsp?path=index">Menu</a>
-        <form action="perfil.jsp" method="post">            
+        <a href="ApplicationController">Menu</a>
+        
+        <form action="AdminController" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>

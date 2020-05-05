@@ -14,40 +14,14 @@
 <%
     
     if(session.getAttribute("user") == null)
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("AdminController");
     
-    if(request.getParameter("cod") != null)
+    if(session.getAttribute("listaUser") != null)
     {
-        try 
-        {
-            cod = Integer.parseInt(request.getParameter("cod"));
-            
-            if(cod > 0)
-            {
-                u = usd.get(cod);
-                session.setAttribute("altered_user", u);
-                response.sendRedirect("perfil.jsp");
-            }
-            else
-                response.sendRedirect("listagem.jsp");
-        }
-        catch(NumberFormatException ex)
-        {
-            response.sendRedirect("listagem.jsp");
-        }
-        
+        luser = (ArrayList<Usuario>)session.getAttribute("listaUser");                
     }    
     
-    search = request.getParameter("search");
     
-    if(request.getParameter("bSearch") == null)
-    {
-        luser = usd.list();
-    }
-    else
-    {
-        luser = usd.search(search, "usu_login");
-    }
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -58,16 +32,16 @@
         <title>Listagem de Usuários</title>
     </head>
     <body>
-        <a href="index.jsp">Menu</a>
+        <a href="ApplicationController">Menu</a>
         <p>Listagem de Usuários</p>
-        <form method="GET" action="listagem.jsp">
+        <form method="GET" action="AdminController?list=true">
             
             <label>Buscar: </label>
             <input type="text" name="search" value="<%out.print(search != null && search.length() > 0 ? search : "");%>">
             
             <input type="submit" name="bSearch" value="Buscar">            
         </form>
-            <a href="perfil.jsp">Novo Usuário</a>
+            <a href="AdminController?new">Novo Usuário</a>
             
         
 <%
@@ -88,7 +62,7 @@
 %>
 
             <tr>
-                <td><a href="listagem.jsp?cod=<%out.print(u.getCodigo()); %>"> <% out.print(u.getNome()); %></a></td>
+                <td><a href="AdminController?coduser=<%out.print(u.getCodigo()); %>"> <% out.print(u.getNome()); %></a></td>
 
                 <td><% out.print(u.getLogin()); %></td>                
             </tr>

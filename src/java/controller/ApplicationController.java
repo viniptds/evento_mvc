@@ -22,7 +22,7 @@ import model.Usuario;
  *
  * @author viniciuspadovan
  */
-public class index extends HttpServlet {
+public class ApplicationController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,6 +52,8 @@ public class index extends HttpServlet {
             //garantindo limpeza do atributo
             session.removeAttribute("altered_user");
             
+            
+            
             if(request.getParameter("action") != null)
             {
                 action = request.getParameter("action");        
@@ -75,13 +77,15 @@ public class index extends HttpServlet {
 
                                     if(al != null)
                                         session.setAttribute("aluno", al);
+                                    response.sendRedirect("AlunoController");
                                     break;
 
                                 case "1":                            
                                     us = usd.login(login, password);
 
                                     if(us != null)
-                                        session.setAttribute("user", us);                            
+                                        session.setAttribute("user", us);     
+                                        
                                     break;
                             }
                             //response.sendRedirect("/eventos/index.jsp");
@@ -99,7 +103,14 @@ public class index extends HttpServlet {
                     session.removeAttribute("aluno");
                 }
             }
-            response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
+            else
+                response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
+            
+            if(session.getAttribute("user") != null)
+                response.sendRedirect("admin");
+            
+            if(session.getAttribute("aluno") != null)
+                response.sendRedirect("aluno");
         }
     }
 

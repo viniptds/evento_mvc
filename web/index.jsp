@@ -1,40 +1,29 @@
-<%@page import="model.Aluno"%>
+<%-- 
+    Document   : index
+    Created on : 04/05/2020, 22:33:46
+    Author     : viniciuspadovan
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%!
-    Aluno al;
-    //User us;
-%>
-
-<%    
-    if (session.getAttribute("user") != null)
+<%
+    if (session.getAttribute("user") != null || session.getAttribute("aluno") != null)
     {        
-        response.sendRedirect("admin");        
-    }
-    if(session.getAttribute("aluno") != null)
-    {
-        al = (Aluno)session.getAttribute("aluno");
-    }
-
+        response.sendRedirect("ApplicationController");        
+    }    
 %>
 
-<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home</title>
+        <title>MVC Eventos</title>
     </head>
-    <body>
-        
-<%
-    if (session.getAttribute("user") == null && session.getAttribute("aluno") == null)
-    {
-%>
+    <body>        
         <h1>Controlador de Eventos com MVC</h1>
         <p>Bem-vindo(a), faça login abaixo para acessar as opções:</p>
         <br>
         
-        <form action="controller/index?action=login" method="post">
+        <form action="ApplicationController?action=login" method="post">
 
             <label>Acesso: </label>
             <select name="option">
@@ -53,22 +42,5 @@
 
             <input type="submit" name="bSubmit">        
         </form>
-<%
-}
-else if(al != null)
-{
-%>
-
-        <p>Olá, <%out.println(al.getNome() != null ? al.getNome() : "");%>
-        <p> <a href="index?action=logout">Sair</a></p>
-        <p>
-            Funções do Aluno:
-        </p>
-        <ul>
-            <li>Manutenção</li>
-        </ul>
-<%
-}
-%>
     </body>
 </html>

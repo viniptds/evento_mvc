@@ -8,7 +8,7 @@
 <%
     //session.invalidate();
     if(session.getAttribute("user") == null)
-        response.sendRedirect("index");
+        response.sendRedirect("ApplicationController");
     else
     {
         us = (Usuario)session.getAttribute("user");
@@ -28,19 +28,19 @@
         <p>Operações:</p>
         <ul>
             <li>
-                <a href="./perfil.jsp">Novo Usuário</a>
+                <a href="/AdminController?path=perfil.jsp">Novo Usuário</a>
             </li>
             
             <li>
-                <a href="./listagem.jsp">Listar Usuários</a>
+                <a href="../AdminController?path=listagem.jsp">Listar Usuários</a>
             </li>                        
             <br>
             <li>
-                <a href="aluno">Gerenciar Alunos</a>
+                <a href="./AdminController?path=aluno">Gerenciar Alunos</a>
             </li>
         </ul>                
         
         
-        <p> <a href="index?action=logout">Sair</a></p>
+        <p> <a href="ApplicationController?action=logout">Sair</a></p>
     </body>
 </html>
