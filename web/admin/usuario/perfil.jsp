@@ -27,6 +27,10 @@
             login = u.getLogin();
             cod = u.getCodigo();             
         }                   
+        else
+        {
+            nome = login = senha = "";
+        }
 
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -37,9 +41,9 @@
         <title>Perfil</title>
     </head>
     <body>        
-        <a href="ApplicationController">Menu</a>
+        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
         
-        <form action="AdminController" method="post">            
+        <form action="<%out.print(application.getContextPath());%>/AdminController?path=usuario/listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>
@@ -59,7 +63,7 @@
     {            
 %>
 
-        <a href="perfil.jsp?cod=<%out.print(u.getCodigo());%>&delete=true">Deletar</a>
+        <a href="<%out.print(application.getContextPath());%>/AdminController?path=usuario/listagem.jsp&cod=<%out.print(u.getCodigo());%>&delete=true&list=true">Deletar</a>
 
 <%
     }

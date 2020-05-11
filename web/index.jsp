@@ -1,15 +1,10 @@
-<%-- 
-    Document   : index
-    Created on : 04/05/2020, 22:33:46
-    Author     : viniciuspadovan
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
     if (session.getAttribute("user") != null || session.getAttribute("aluno") != null)
-    {        
-        response.sendRedirect("ApplicationController");        
+    {
+        response.sendRedirect("ApplicationController");
     }    
 %>
 
@@ -26,14 +21,14 @@
         <form action="ApplicationController?action=login" method="post">
 
             <label>Acesso: </label>
-            <select name="option">
+            <select name="option" >
                 <option value="0">Aluno</option>
                 <option value="1">Usuário</option>
             </select>
             <br>
             
             <label>Login: </label>
-            <input type="text" name="login" required="required" placeholder="Usuário e/ou Email">
+            <input type="text" name="login" autofocus="true" required="required" placeholder="Usuário e/ou Email">
             <br>
 
             <label>Password: </label>

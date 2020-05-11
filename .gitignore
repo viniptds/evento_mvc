@@ -25,3 +25,4 @@ hs_err_pid*
 packages
 nbproject/private
 .DS_Store
+/dist/

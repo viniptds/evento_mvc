@@ -7,7 +7,7 @@
     ArrayList<Usuario> luser;
     Usuario u;
     UsuarioDAO usd = new UsuarioDAO();
-    String search;
+    String search = "";
     int cod;
 %>
 
@@ -32,16 +32,16 @@
         <title>Listagem de Usuários</title>
     </head>
     <body>
-        <a href="ApplicationController">Menu</a>
+        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
         <p>Listagem de Usuários</p>
-        <form method="GET" action="AdminController?list=true">
+        <form method="GET" action="<%out.print(application.getContextPath());%>/AdminController?list=true&path=listagem.jsp">
             
             <label>Buscar: </label>
             <input type="text" name="search" value="<%out.print(search != null && search.length() > 0 ? search : "");%>">
             
             <input type="submit" name="bSearch" value="Buscar">            
         </form>
-            <a href="AdminController?new">Novo Usuário</a>
+            <a href="<%out.print(application.getContextPath());%>/AdminController?path=usuario/perfil.jsp">Novo Usuário</a>
             
         
 <%
@@ -62,7 +62,12 @@
 %>
 
             <tr>
-                <td><a href="AdminController?coduser=<%out.print(u.getCodigo()); %>"> <% out.print(u.getNome()); %></a></td>
+                <td>
+                    <a href="<%out.print(application.getContextPath());%>/AdminController
+                    ?path=usuario/perfil.jsp&coduser=<%out.print(u.getCodigo()); %>"> 
+                        <% out.print(u.getNome()); %>
+                    </a>
+                </td>
 
                 <td><% out.print(u.getLogin()); %></td>                
             </tr>

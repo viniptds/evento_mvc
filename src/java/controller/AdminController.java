@@ -9,7 +9,6 @@ import dao.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,6 @@ import model.Usuario;
  *
  * @author viniciuspadovan
  */
-@WebServlet(name = "AdminController", urlPatterns = {"/AdminController"})
 public class AdminController extends HttpServlet {
 
     /**
@@ -51,21 +49,7 @@ public class AdminController extends HttpServlet {
                 response.sendRedirect("ApplicationController");
             }
             else
-            {
-                
-                if(request.getParameter("list") != null)
-                {                                        
-                    if(request.getParameter("search") == null)
-                    {
-                        session.setAttribute("listaUser", usd.list());
-                    }
-                    else
-                    {
-                        search = request.getParameter("search");
-                        session.setAttribute("listaUser", usd.search(search, "usu_login"));
-                    }
-                }
-                    
+            {                                                    
                 if(request.getParameter("coduser") != null)
                 {
                     try 
@@ -75,15 +59,14 @@ public class AdminController extends HttpServlet {
                         if(cod > 0)
                         {
                             u = usd.get(cod);
-                            session.setAttribute("altered_user", u);
-                            response.sendRedirect("");
+                            session.setAttribute("altered_user", u);                            
                         }
                         else
                             response.sendRedirect("listagem.jsp");
                     }
                     catch(NumberFormatException ex)
                     {
-                        response.sendRedirect("listagem.jsp");
+                        System.out.println("Erro ao converter valor!");
                     }
                 }
                 
@@ -116,8 +99,7 @@ public class AdminController extends HttpServlet {
                                         System.out.println("Inserido!");
                                     }
                                     cod = 0;
-                                    nome = login = senha = "";
-                                    response.sendRedirect("listagem.jsp");                            
+                                    nome = login = senha = "";                                                           
                                 }
                             }
                         }
@@ -126,8 +108,9 @@ public class AdminController extends HttpServlet {
                 
                 if(request.getParameter("delete") != null)
                 {
-                    if(request.getParameter("delete").equals("true"))
-                    {
+                    u = (Usuario)session.getAttribute("altered_user");
+                    if(request.getParameter("delete").equals("true") && u != null)
+                    {                                                
                         if(!u.getLogin().equals("admin"))
                         {
                             usd.remove(u);
@@ -137,16 +120,30 @@ public class AdminController extends HttpServlet {
                         if(u.getLogin().equals(((Usuario)session.getAttribute("user")).getLogin()))
                             session.removeAttribute("user");    
                     }
-                    
-                    response.sendRedirect("ApplicationController");
+                    session.removeAttribute("altered_user");
+                    //response.sendRedirect("ApplicationController");
                 }
                 
+                if(request.getParameter("list") != null)
+                {                                        
+                    if(request.getParameter("search") == null)
+                    {
+                        session.setAttribute("listaUser", usd.list());
+                    }
+                    else
+                    {
+                        search = request.getParameter("search");
+                        session.setAttribute("listaUser", usd.search(search, "usu_login"));
+                    }                    
+                }                
+                
                 if(request.getParameter("path") != null)
-                {
+                {                    
                     path = request.getParameter("path");
-                    response.sendRedirect(path);
-                }
-                                      
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/"+path);
+                }                
+                else
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/index.jsp");                    
             }            
         }
     }

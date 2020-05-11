@@ -8,7 +8,6 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author viniciuspadovan
  */
-@WebServlet(name = "AlunoController", urlPatterns = {"/AlunoController"})
 public class AlunoController extends HttpServlet {
 
     /**
@@ -38,7 +36,7 @@ public class AlunoController extends HttpServlet {
             String path;           
             HttpSession session = request.getSession();
             
-            if(session.getAttribute("user") == null)
+            if(session.getAttribute("aluno") == null)
             { 
                 response.sendRedirect("ApplicationController");
             }
@@ -49,8 +47,8 @@ public class AlunoController extends HttpServlet {
                     path = request.getParameter("path");
                     response.sendRedirect(path);
                 }
-                
-                response.sendRedirect("index.jsp");            
+                else
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/aluno/index.jsp");            
             }
         }
     }

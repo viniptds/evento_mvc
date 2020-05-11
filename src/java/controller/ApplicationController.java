@@ -52,14 +52,14 @@ public class ApplicationController extends HttpServlet {
             //garantindo limpeza do atributo
             session.removeAttribute("altered_user");
             
-            
+            //RequestDispatcher rd;
             
             if(request.getParameter("action") != null)
             {
                 action = request.getParameter("action");        
                 
                 if(action.equals("login"))
-                {
+                {                    
                     login = request.getParameter("login");
 
                     if(login != null && login.length() > 0)
@@ -76,19 +76,20 @@ public class ApplicationController extends HttpServlet {
                                     al = ald.login(login, password);
 
                                     if(al != null)
-                                        session.setAttribute("aluno", al);
-                                    response.sendRedirect("AlunoController");
+                                    {
+                                        session.setAttribute("aluno", al);                                        
+                                    }
                                     break;
 
                                 case "1":                            
                                     us = usd.login(login, password);
 
                                     if(us != null)
-                                        session.setAttribute("user", us);     
-                                        
+                                    {
+                                        session.setAttribute("user", us);                                             
+                                    }   
                                     break;
-                            }
-                            //response.sendRedirect("/eventos/index.jsp");
+                            }                                                       
                         }
                         else
                             System.out.println("Insira senha!");
@@ -102,15 +103,22 @@ public class ApplicationController extends HttpServlet {
                     session.removeAttribute("user");
                     session.removeAttribute("aluno");
                 }
+            }                        
+            if(session.getAttribute("user") != null)
+            {
+//                rd = request.getRequestDispatcher("AdminController");
+//                rd.forward(request, response);
+                response.sendRedirect("admin");
             }
             else
-                response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
-            
-            if(session.getAttribute("user") != null)
-                response.sendRedirect("admin");
-            
             if(session.getAttribute("aluno") != null)
-                response.sendRedirect("aluno");
+            {                
+//                rd = request.getRequestDispatcher("AlunoController");
+//                rd.forward(request, response);
+                response.sendRedirect("aluno");                
+            }
+            else               
+                response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
         }
     }
 

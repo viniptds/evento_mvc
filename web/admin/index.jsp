@@ -28,15 +28,22 @@
         <p>Operações:</p>
         <ul>
             <li>
-                <a href="/AdminController?path=perfil.jsp">Novo Usuário</a>
+                <a href="../AdminController?path=usuario">Gerenciar Usuários</a>
             </li>
+            <br>
             
             <li>
-                <a href="../AdminController?path=listagem.jsp">Listar Usuários</a>
-            </li>                        
+                <a href="../AdminController?path=evento">Gerenciar Eventos</a>
+            </li>
             <br>
+            
             <li>
-                <a href="./AdminController?path=aluno">Gerenciar Alunos</a>
+                <a href="../AdminController?path=instrutor">Gerenciar Instrutor</a>
+            </li>                               
+            <br>
+            
+            <li>
+                <a href="../AdminController?path=aluno">Gerenciar Alunos</a>
             </li>
         </ul>                
         
