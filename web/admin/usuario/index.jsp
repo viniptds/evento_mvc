@@ -1,27 +1,20 @@
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%
     
     if(session.getAttribute("user") == null)
         response.sendRedirect("ApplicationController");
 %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Menu - Usuário</title>
-    </head>
-    <body>
+
+        <template:get name="_header_template" />
         <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
-        <h1>Menu Usuário</h1>
+        <h1>Menu Usu�rio</h1>
         <ul>
             <li>
-                <a href="<%out.print(application.getContextPath());%>/UsuarioController?path=perfil.jsp">Novo Usuário</a>
+                <a href="<%out.print(application.getContextPath());%>/UsuarioController?path=perfil.jsp">Novo Usu�rio</a>
             </li>
             
             <li>
-                <a href="<%out.print(application.getContextPath());%>/UsuarioController?path=listagem.jsp&list=true">Listar Usuário(s)</a>
+                <a href="<%out.print(application.getContextPath());%>/UsuarioController?path=listagem.jsp&list=true">Listar Usu�rio(s)</a>
             </li>  
         </ul>
     </body>

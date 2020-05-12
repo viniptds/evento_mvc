@@ -1,6 +1,5 @@
 
 <%@page import="model.Usuario"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
     Usuario us;
 %>
@@ -15,20 +14,15 @@
     }
 %>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin - Home</title>
-    </head>
-    <body>
+
+        <template:get name="_header_template" />
         <h1>Controle Administrativo</h1>
         
         <p>Logado como: <i><% out.print(us.getLogin()); %> </i> </p>
-        <p>OperaÃ§Ãµes:</p>
+        <p>Operações:</p>
         <ul>
             <li>
-                <a href="../UsuarioController">Gerenciar UsuÃ¡rios</a>
+                <a href="../UsuarioController">Gerenciar Usuários</a>
             </li>
             <br>
             

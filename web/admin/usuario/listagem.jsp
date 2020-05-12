@@ -23,14 +23,8 @@
     
 %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Listagem de Usuários</title>
-    </head>
-    <body>
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
+        <template:get name="_header_template" />
         <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>
         
         <h1>Listagem de Usuários</h1>
