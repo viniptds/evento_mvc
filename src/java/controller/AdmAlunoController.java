@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import model.Aluno;
 import model.Cidade;
 import persist.DAOException;
+import util.ConfigPagina;
 import util.Erros;
 import util.Util;
 
@@ -44,7 +46,9 @@ public class AdmAlunoController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {            
             
-            String path;            
+            String path;      
+            String title [] = {"Controle de Alunos", "Perfil Aluno"};
+            
             HttpSession session = request.getSession();
             Erros meusErros = new Erros();
             
@@ -223,11 +227,18 @@ public class AdmAlunoController extends HttpServlet {
                 if(request.getParameter("path") != null)
                 {
                     path = request.getParameter("path");
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/"+path);
+                    
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/"+path);
                 }
                 else
                 {
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/index.jsp");
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/index.jsp");
                 }                        
             
                 

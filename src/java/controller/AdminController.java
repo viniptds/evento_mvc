@@ -7,11 +7,13 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.ConfigPagina;
 
 /**
  *
@@ -45,10 +47,15 @@ public class AdminController extends HttpServlet {
                 if(request.getParameter("path") != null)
                 {                    
                     path = request.getParameter("path");
+                                        
                     response.sendRedirect(this.getServletContext().getContextPath()+"/admin/"+path);
-                }                
+                }
                 else
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/index.jsp");                    
+                {
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/index.jsp", "Controle Administrativo"));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                }                    
             }
         }
     }

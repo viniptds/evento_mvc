@@ -1,8 +1,4 @@
-<%-- 
-    Document   : perfil.jsp
-    Created on : 01/05/2020, 08:19:39
-    Author     : viniciuspadovan
---%>
+
 <%@page import="dao.UsuarioDAO"%>
 <%@page import="model.Usuario"%>
 <%!
@@ -33,18 +29,12 @@
 
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Perfil</title>
-    </head>
-    <body>        
+
         <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>
         
         <form action="<%out.print(application.getContextPath());%>/UsuarioController?path=listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
-            <input type="text" name="nome" autofocus="true" required="required" value="<% out.print(nome); %>">
+            <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>
             
             <label>Login: </label>

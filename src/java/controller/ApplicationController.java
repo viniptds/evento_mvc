@@ -10,18 +10,22 @@ import dao.AlunoDAO;
 import dao.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Aluno;
 import model.Usuario;
+import util.ConfigPagina;
 
 /**
  *
  * @author viniciuspadovan
  */
+@WebServlet(name = "ApplicationController", urlPatterns = {"/"})
 public class ApplicationController extends HttpServlet {
 
     /**
@@ -52,8 +56,10 @@ public class ApplicationController extends HttpServlet {
             //garantindo limpeza do atributo
             session.removeAttribute("altered_user");
             
-            //RequestDispatcher rd;
+            RequestDispatcher rd;
             
+            
+            //session.invalidate();
             if(request.getParameter("action") != null)
             {
                 action = request.getParameter("action");        
@@ -103,22 +109,21 @@ public class ApplicationController extends HttpServlet {
                     session.removeAttribute("user");
                     session.removeAttribute("aluno");
                 }
-            }                        
+            }               
+            
             if(session.getAttribute("user") != null)
             {
-//                rd = request.getRequestDispatcher("AdminController");
-//                rd.forward(request, response);
-                response.sendRedirect("admin");
+                response.sendRedirect(this.getServletContext().getContextPath()+"/AdminController");
             }
             else
             if(session.getAttribute("aluno") != null)
             {
-//                rd = request.getRequestDispatcher("AlunoController");
-//                rd.forward(request, response);
-                response.sendRedirect("aluno");                
+                response.sendRedirect(this.getServletContext().getContextPath()+"/AlunoController");                
             }
-            else               
+            else
+            {
                 response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
+            }
         }
     }
 

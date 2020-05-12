@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class ConfigPagina implements Serializable {
 
     private String includeURL;
-    private String titulo;
+    private String titulo;    
 
     public ConfigPagina() {
         this(null, null);

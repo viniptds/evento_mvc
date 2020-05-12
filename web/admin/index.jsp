@@ -14,34 +14,25 @@
     }
 %>
 
-
-        <template:get name="_header_template" />
-        <h1>Controle Administrativo</h1>
-        
-        <p>Logado como: <i><% out.print(us.getLogin()); %> </i> </p>
         <p>Operações:</p>
         <ul>
             <li>
-                <a href="../UsuarioController">Gerenciar Usuários</a>
+                <a href="UsuarioController">Gerenciar Usuários</a>
             </li>
             <br>
             
             <li>
-                <a href="../AdminController?path=evento">Gerenciar Eventos</a>
+                <a href="EventoController">Gerenciar Eventos</a>
             </li>
             <br>
             
             <li>
-                <a href="../AdminController?path=instrutor">Gerenciar Instrutor</a>
+                <a href="InstrutorController">Gerenciar Instrutor</a>
             </li>                               
             <br>
             
             <li>
-                <a href="../AdmAlunoController">Gerenciar Alunos</a>
+                <a href="AdmAlunoController">Gerenciar Alunos</a>
             </li>
-        </ul>                
+        </ul>                 
         
-        
-        <p> <a href="ApplicationController?action=logout">Sair</a></p>
-    </body>
-</html>

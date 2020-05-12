@@ -8,12 +8,14 @@ package controller;
 import dao.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Usuario;
+import util.ConfigPagina;
 
 /**
  *
@@ -40,6 +42,7 @@ public class UsuarioController extends HttpServlet {
             
             Usuario u = null;
             String path;    
+            String title [] = {"Menu Usuário", "Listagem de Usuário", "Perfil"};
             
             String search, nome = "", senha = "", login = "";
             int cod = 0;
@@ -142,10 +145,19 @@ public class UsuarioController extends HttpServlet {
                 if(request.getParameter("path") != null)
                 {
                     path = request.getParameter("path");
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
+                    
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/"+path, title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
                 }                
                 else
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");                    
+                {
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/index.jsp", title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  
+                }
             }
         }
     }

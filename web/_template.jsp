@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="erros" class="util.Erros" scope="request"/>
 <jsp:useBean id="configuracao" class="util.ConfigPagina" scope="request"/>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,11 +12,11 @@
         <title>${configuracao.titulo}</title>
     </head>
     <body>
+        
         <div class="p-2">
-            <h1>${configuracao.titulo}</h1>
-            <div class="menu">
-                <jsp:include page="index.jsp" />
-            </div>
+            
+            <jsp:include page="_header_template.jsp" />   
+        
             <c:if test="${erros.possuiMensagem}">
                 <div class="bg-warning p-1 border border-danger">
                     <p class="h3 text-center">Erros</p>
@@ -29,8 +30,8 @@
 
             <jsp:include page="${configuracao.includeURL}"/>
 
-<!--        </div>
+        </div>
         <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
     </body>
-</html>-->
+</html>

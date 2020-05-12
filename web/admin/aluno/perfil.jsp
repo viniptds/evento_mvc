@@ -46,17 +46,9 @@
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Perfil Aluno</title>
-    </head>
-    <body>
+
         <div class="p-2">
-            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController">Menu</a>
-            
-            <h1>Cadastro de novo Aluno</h1>
+            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController">Menu</a>           
             
             <c:if test="${erros.possuiMensagem}">
                 <div class="bg-warning p-1 border border-danger">
@@ -170,7 +162,3 @@
 <%
 }
 %>
-<!--        <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>-->
-    </body>
-</html>

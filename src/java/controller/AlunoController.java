@@ -7,11 +7,13 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.ConfigPagina;
 
 /**
  *
@@ -33,8 +35,11 @@ public class AlunoController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String path;           
+            String path; 
+            String title [] = {"Página Inicial", "Perfil"};  
+            
             HttpSession session = request.getSession();
+            
             
             if(session.getAttribute("aluno") == null)
             { 
@@ -45,10 +50,19 @@ public class AlunoController extends HttpServlet {
                 if(request.getParameter("path") != null)
                 {
                     path = request.getParameter("path");
-                    response.sendRedirect(path);
+                    
+                    //response.sendRedirect(path);                    
+                    request.setAttribute("configuracao", new ConfigPagina("/aluno/"+path, title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
                 }
                 else
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/aluno/index.jsp");            
+                {
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/aluno/index.jsp");            
+                    request.setAttribute("configuracao", new ConfigPagina("/aluno/index.jsp", title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                }
             }
         }
     }

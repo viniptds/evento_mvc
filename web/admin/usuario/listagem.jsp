@@ -22,12 +22,8 @@
     }    
     
 %>
-
-    <%@page contentType="text/html" pageEncoding="UTF-8"%>
-        <template:get name="_header_template" />
-        <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>
-        
-        <h1>Listagem de Usu√°rios</h1>
+            
+        <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>                
         
         <form method="post" action="<%out.print(application.getContextPath());%>/UsuarioController?path=listagem.jsp&list=true">
             
@@ -36,7 +32,7 @@
             
             <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/UsuarioController?path=perfil.jsp">Novo Usu√°rio</a>
+            <a href="<%out.print(application.getContextPath());%>/UsuarioController?path=perfil.jsp">Novo Usu·rio</a>
             
         
 <%
@@ -78,9 +74,7 @@
         else
         {
 %>
-        <p> N√£o h√° usu√°rio(s) para essa busca. </p>
+        <p> N„o h· usu·rio(s) para essa busca. </p>
 <%      }
     }
-%>
-    </body>
-</html>
+%> 
