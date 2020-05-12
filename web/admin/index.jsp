@@ -28,7 +28,7 @@
         <p>Operações:</p>
         <ul>
             <li>
-                <a href="../AdminController?path=usuario">Gerenciar Usuários</a>
+                <a href="../UsuarioController">Gerenciar Usuários</a>
             </li>
             <br>
             
@@ -43,7 +43,7 @@
             <br>
             
             <li>
-                <a href="../AdminController?path=aluno">Gerenciar Alunos</a>
+                <a href="../AdmAlunoController">Gerenciar Alunos</a>
             </li>
         </ul>                
         

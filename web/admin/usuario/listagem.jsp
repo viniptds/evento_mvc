@@ -1,12 +1,10 @@
 
-<%@page import="dao.UsuarioDAO"%>
 <%@page import="model.Usuario"%>
 <%@page import="java.util.ArrayList"%>
 
 <%!
     ArrayList<Usuario> luser;
-    Usuario u;
-    UsuarioDAO usd = new UsuarioDAO();
+    Usuario u;    
     String search = "";
     int cod;
 %>
@@ -14,13 +12,14 @@
 <%
     
     if(session.getAttribute("user") == null)
-        response.sendRedirect("AdminController");
+    {        
+        response.sendRedirect("ApplicationController");        
+    }
     
     if(session.getAttribute("listaUser") != null)
     {
-        luser = (ArrayList<Usuario>)session.getAttribute("listaUser");                
+        luser = (ArrayList<Usuario>)session.getAttribute("listaUser");
     }    
-    
     
 %>
 
@@ -32,16 +31,18 @@
         <title>Listagem de Usuários</title>
     </head>
     <body>
-        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
-        <p>Listagem de Usuários</p>
-        <form method="GET" action="<%out.print(application.getContextPath());%>/AdminController?list=true&path=listagem.jsp">
+        <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>
+        
+        <h1>Listagem de Usuários</h1>
+        
+        <form method="post" action="<%out.print(application.getContextPath());%>/UsuarioController?path=listagem.jsp&list=true">
             
             <label>Buscar: </label>
-            <input type="text" name="search" value="<%out.print(search != null && search.length() > 0 ? search : "");%>">
+            <input type="text" name="search" value="<%out.print(search.length() > 0 ? search : "");%>">
             
-            <input type="submit" name="bSearch" value="Buscar">            
+            <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/AdminController?path=usuario/perfil.jsp">Novo Usuário</a>
+            <a href="<%out.print(application.getContextPath());%>/UsuarioController?path=perfil.jsp">Novo Usuário</a>
             
         
 <%
@@ -56,6 +57,7 @@
                 <td>Nome</td>
                 <td>Login</td>                
             </tr>
+            
 <% 
             for(Usuario u : luser)
             {
@@ -63,8 +65,9 @@
 
             <tr>
                 <td>
-                    <a href="<%out.print(application.getContextPath());%>/AdminController
-                    ?path=usuario/perfil.jsp&coduser=<%out.print(u.getCodigo()); %>"> 
+                    <a href="<%out.print(application.getContextPath());
+                       %>/UsuarioController?path=perfil.jsp&coduser=<%
+                        out.print(u.getCodigo()); %>"> 
                         <% out.print(u.getNome()); %>
                     </a>
                 </td>

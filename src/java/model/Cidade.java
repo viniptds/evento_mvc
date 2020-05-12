@@ -5,11 +5,13 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author viniciuspadovan
  */
-public class Cidade {
+public class Cidade implements Serializable {
     int codigo;
     String nome;
     UF uf;

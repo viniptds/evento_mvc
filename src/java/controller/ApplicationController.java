@@ -112,7 +112,7 @@ public class ApplicationController extends HttpServlet {
             }
             else
             if(session.getAttribute("aluno") != null)
-            {                
+            {
 //                rd = request.getRequestDispatcher("AlunoController");
 //                rd.forward(request, response);
                 response.sendRedirect("aluno");                

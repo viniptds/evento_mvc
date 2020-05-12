@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cidade;
@@ -48,13 +47,18 @@ public class CidadeDAO
         return null;
     }
 
-    public List<Cidade> listar(String nome) {
+    public ArrayList<Cidade> listar(String nome, String field) {
         String sql = "select * from cidade";
-        if (Util.isNotEmpty(nome)) {
-            sql += " where cid_nome like '" + nome + "%'";
+        if (Util.isNotEmpty(nome) && Util.isNotEmpty(field)) {
+            if(field.equals("uf_codigo"))
+            {
+                sql += " where "+field+" = " + nome;
+            }
+            else
+                sql += " where "+field+" like '" + nome + "%'";
         }
         sql += " order by cid_nome";
-        List<Cidade> resp = new ArrayList<>();
+        ArrayList<Cidade> resp = new ArrayList<>();
         try (Connection conn = Conexao.connect()) {
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql)) {

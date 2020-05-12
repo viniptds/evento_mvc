@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.UF;
@@ -46,5 +45,30 @@ public class UFDAO
         }
         return null;
     }
+    public ArrayList<UF> listar(String nome)
+    {
+        String sql = "select * from uf";
+        if (Util.isNotEmpty(nome)) {
+            sql += " where uf_nome like '" + nome + "%'";
+        }
+        sql += " order by uf_nome";
+        ArrayList<UF> resp = new ArrayList<>();
+        try (Connection conn = Conexao.connect()) {
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql)) {
+                    while (rs.next()) {
+                        resp.add(gerar(rs));
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+            Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Falha abrindo banco de dados.");
+        }
+        return resp;
+    }
+    
     
 }

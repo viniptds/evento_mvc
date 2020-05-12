@@ -11,13 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author viniciuspadovan
  */
-public class AdminController extends HttpServlet {
+public class InstrutorController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,24 +31,16 @@ public class AdminController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            HttpSession session = request.getSession();
-            String path;
-            
-            if(session.getAttribute("user") == null)
-            {
-                response.sendRedirect("ApplicationController");
-            }
-            else
-            {
-                if(request.getParameter("path") != null)
-                {                    
-                    path = request.getParameter("path");
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/"+path);
-                }                
-                else
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/index.jsp");                    
-            }
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet InstrutorController</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet InstrutorController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

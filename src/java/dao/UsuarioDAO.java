@@ -43,9 +43,7 @@ public class UsuarioDAO {
             System.out.println("Erro no SQL.");
         } catch (NullPointerException ex) {            
             System.out.println("Falha abrindo banco de dados.");
-        }
-        
-        
+        }                
         return null;
     }
     
@@ -189,8 +187,7 @@ public class UsuarioDAO {
             System.out.println("Falha abrindo banco de dados.");
         }
         
-        return false;    
-        
+        return false;            
     }
     
     public boolean remove(Usuario u)

@@ -11,13 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author viniciuspadovan
  */
-public class AdminController extends HttpServlet {
+public class EventoController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,23 +32,7 @@ public class AdminController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HttpSession session = request.getSession();
-            String path;
             
-            if(session.getAttribute("user") == null)
-            {
-                response.sendRedirect("ApplicationController");
-            }
-            else
-            {
-                if(request.getParameter("path") != null)
-                {                    
-                    path = request.getParameter("path");
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/"+path);
-                }                
-                else
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/index.jsp");                    
-            }
         }
     }
 

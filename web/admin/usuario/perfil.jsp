@@ -17,20 +17,19 @@
     if(session.getAttribute("user") == null)
     {
         response.sendRedirect("AdminController");
-    }
-    
+    }    
         
-        if(session.getAttribute("altered_user") != null)
-        {
-            u = (Usuario)session.getAttribute("altered_user");
-            nome = u.getNome();
-            login = u.getLogin();
-            cod = u.getCodigo();             
-        }                   
-        else
-        {
-            nome = login = senha = "";
-        }
+    if(session.getAttribute("altered_user") != null)
+    {
+        u = (Usuario)session.getAttribute("altered_user");
+        nome = u.getNome();
+        login = u.getLogin();
+        cod = u.getCodigo();
+    }                   
+    else
+    {
+        nome = login = senha = "";
+    }
 
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -41,11 +40,11 @@
         <title>Perfil</title>
     </head>
     <body>        
-        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
+        <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>
         
-        <form action="<%out.print(application.getContextPath());%>/AdminController?path=usuario/listagem.jsp&list=true" method="post">            
+        <form action="<%out.print(application.getContextPath());%>/UsuarioController?path=listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
-            <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
+            <input type="text" name="nome" autofocus="true" required="required" value="<% out.print(nome); %>">
             <br>
             
             <label>Login: </label>
@@ -63,7 +62,9 @@
     {            
 %>
 
-        <a href="<%out.print(application.getContextPath());%>/AdminController?path=usuario/listagem.jsp&cod=<%out.print(u.getCodigo());%>&delete=true&list=true">Deletar</a>
+        <a href="<%out.print(application.getContextPath());
+           %>/UsuarioController?path=listagem.jsp&cod=<%
+               out.print(u.getCodigo());%>&delete=true&list=true">Deletar</a>
 
 <%
     }

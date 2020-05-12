@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Aluno;
@@ -83,6 +84,23 @@ public class AlunoDAO {
         }
     }
     
+    public void remove(Aluno al)
+    {
+        String sql = "delete from aluno where alu_cod = #1";
+        
+        sql = sql.replace("#1", ""+al.getCodigo());
+        
+        try (Connection conn = Conexao.connect()) {
+            try (Statement st = conn.createStatement()) {
+                st.execute(sql);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (NullPointerException ex) {
+            System.out.println(ex);            
+        }
+    }
+    
     public void update(Aluno registro)
             throws DAOException {
         String sql = "update aluno set alu_nome = '" + registro.getNome() + "', alu_email = '" + registro.getEmail()+"', alu_senha = '" + registro.getSenha()+"', alu_endereco = '" + registro.getEndereco()+"', alu_complemento = '" + registro.getComplemento()+"" 
@@ -100,5 +118,30 @@ public class AlunoDAO {
         }
     }
 
-    
+    private Aluno gerar(ResultSet rs) throws SQLException {
+        CidadeDAO cidDAO = new CidadeDAO();
+        return new Aluno(rs.getInt("alu_codigo"), rs.getInt("alu_numero"), rs.getString("alu_nome"), 
+                rs.getString("alu_email"), rs.getString("alu_senha"), rs.getString("alu_endereco"), 
+                rs.getString("alu_complemento"), rs.getString("alu_cep"), rs.getString("alu_cpf"), 
+                LocalDate.parse(rs.getDate("alu_data_nasc").toString()), cidDAO.busca(rs.getInt("cid_codigo")));
+    }
+
+    public Aluno busca(int codigo) {
+        String sql = "select * from aluno where alu_codigo = " + codigo;
+        try (Connection conn = Conexao.connect()) {
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql)) {
+                    if (rs.next()) {
+                        return gerar(rs);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+            Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Falha abrindo banco de dados.");
+        }
+        return null;
+    }
 }

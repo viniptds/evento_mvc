@@ -5,11 +5,13 @@
  */
 package controller;
 
+import dao.AlunoDAO;
+import dao.CidadeDAO;
+import dao.UFDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,14 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Aluno;
+import model.Cidade;
 import persist.DAOException;
+import util.Erros;
 import util.Util;
 
 /**
  *
  * @author viniciuspadovan
  */
-@WebServlet(name = "AdmAlunoController", urlPatterns = {"/AdmAlunoController"})
 public class AdmAlunoController extends HttpServlet {
 
     /**
@@ -39,122 +42,199 @@ public class AdmAlunoController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {            
             
-            
-            String path;
-            
+            String path;            
             HttpSession session = request.getSession();
+            Erros meusErros = new Erros();
             
+            CidadeDAO cd = new CidadeDAO();
+            UFDAO ufd = new UFDAO();
+            AlunoDAO dao = new AlunoDAO();
+            Aluno al = new Aluno();
+            
+            int cod = 0, num;
+            String nome, email, senha, cpf, endereco, complemento = "", cep;
+            LocalDate data;
+            
+            //verifica permissao
             if(session.getAttribute("user") == null)
                 response.sendRedirect("ApplicationController");
             else
             {
+                //coleta codigo para alteracao
+                if(request.getParameter("codaluno") != null)
+                {
+                    try 
+                    {
+                        cod = Integer.parseInt(request.getParameter("codaluno"));
+
+                        if(cod > 0)
+                        {
+                            al = dao.busca(cod);
+                            session.setAttribute("altered_aluno", al);
+                        }                        
+                    }
+                    catch(NumberFormatException ex)
+                    {
+                        System.out.println("Erro ao converter valor!");
+                    }
+                }
+                
+                //manipula aluno
+                if(request.getParameter("bSend") != null)
+                {
+                    nome = request.getParameter("nome");
+                    if (Util.isEmpty(nome) || nome.length() > 20)
+                    {
+                        meusErros.addMensagem("Nome não informado corretamente.");
+                    }
+                    
+                    email = request.getParameter("email");
+                    if (Util.isEmpty(email) || email.length() < 0) 
+                    {
+                        meusErros.addMensagem("Email não informado corretamente.");
+                    }
+                    
+                    cpf = request.getParameter("cpf");
+                    if (Util.isEmpty(cpf) || cpf.length() < 10 ) 
+                    {
+                        meusErros.addMensagem("CPF inválido");
+                    }
+                    
+                    data = null;
+                    if (request.getParameter("datanasc") != null) 
+                    {
+                        String dataN[];
+
+                        int dia, mes, ano;
+                        dataN = request.getParameter("datanasc").split("/");
+                                  try
+                                  {
+                                    dia = Integer.parseInt(dataN[0]);
+                                    mes = Integer.parseInt(dataN[1]);
+                                    ano = Integer.parseInt(dataN[2]);
+
+                                    data = LocalDate.of(ano, mes, dia);
+                                  }
+                                  catch(NumberFormatException e)
+                                  {
+                                    meusErros.addMensagem("Data Inválida");
+                                  }
+                    }
+                    else
+                        meusErros.addMensagem("Data Inválida");
+
+                    endereco = request.getParameter("endereco");
+                    if (Util.isEmpty(endereco) || endereco.length() < 10 ) 
+                    {
+                        meusErros.addMensagem("Endereco inválido");
+                    }
+                    
+                    num = 0;
+                    if (request.getParameter("numero") != null) {
+                        String numaux;
+                        numaux = request.getParameter("numero");
+                        num=Integer.parseInt(numaux);
+                    }
+                    else
+                        meusErros.addMensagem("Numero inválido");
+                    
+                    
+                    if (request.getParameter("complemento") != null) 
+                    {
+                        complemento = request.getParameter("complemento");                        
+                    }
+                    
+                    cep = request.getParameter("cep");
+                    if (Util.isEmpty(cep) || cep.length() < 5 ) {
+                        meusErros.addMensagem("CEP inválido");
+                    }
+                    senha = request.getParameter("senha");
+                    if (Util.isEmpty(senha) || senha.length() < 5 ) {
+                        meusErros.addMensagem("Senha inválido");
+                    }
+
+                    int cidstr = Integer.parseInt(request.getParameter("cidade"));
+                    if (Util.isEmpty(cep) || cep.length() < 5 ) {
+                        meusErros.addMensagem("CEP inválido");
+                    }
+                    
+                    Cidade cid = cd.busca(cidstr);
+                    if(cid == null)
+                        meusErros.addMensagem("Cidade inválida");
+                                        
+                    
+                    if (meusErros.isEmpty()) 
+                    {                    
+                        if(session.getAttribute("altered_aluno") == null)
+                        {                                                                        
+                            al = new Aluno(cod, num, nome, email, senha, endereco, complemento, cep, cpf, data, cid);
+                            dao.insert(al);  
+                            System.out.println("Inserido!");
+                        }
+                        else
+                        {                            
+                            al.setCep(cep);                                                        
+                            al.setCidade(cid);
+                            al.setComplemento(complemento);
+                            al.setCpf(cpf);
+                            al.setDatanasc(data);
+                            al.setEmail(email);
+                            al.setEndereco(endereco);
+                            al.setNome(nome);
+                            al.setNum(num);
+                            al.setSenha(senha);                            
+                            
+                            dao.update(al);
+                            session.removeAttribute("altered_aluno");
+                            System.out.println("Alterado!");
+                        }                                                                   
+                    }                                         
+                }                    
+                 
+                
+                if(request.getParameter("delete") != null)
+                {
+                    al = (Aluno)session.getAttribute("altered_aluno");
+                    if(request.getParameter("delete").equals("true") && al != null)
+                    {                                                                        
+                            dao.remove(al);
+                            System.out.println("Removido!");                                                                        
+                    }
+                    
+                    session.removeAttribute("altered_aluno");
+                    //response.sendRedirect("ApplicationController");
+                }
+                
+                if(request.getParameter("list") != null)
+                {                                        
+//                    if(request.getParameter("search") == null)
+//                    {
+//                        session.setAttribute("listaAluno", dao.list());
+//                    }
+//                    else
+//                    {
+//                        String search = request.getParameter("search");
+//                        session.setAttribute("listaAluno", dao.search(search, "alu_email"));
+//                    }                    
+                }                                                       
+                
                 if(request.getParameter("path") != null)
                 {
                     path = request.getParameter("path");
-                    response.sendRedirect(path);
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/"+path);
                 }
-            }
+                else
+                {
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/index.jsp");
+                }                        
             
-//            
-//        boolean inserindo = request.getParameter("bSend") != null;
-//
-//        if (inserindo) {
-//            int cod = 0;
-//            try {
-//                cod = Integer.parseInt(request.getParameter("codigo"));
-//            } catch (NumberFormatException ex) {
-//                meusErros.addMensagem("Código não informado corretamente");
-//            }
-//            String nome = request.getParameter("nome");
-//            if (Util.isEmpty(nome) || nome.length() > 20) {
-//                meusErros.addMensagem("Nome não informado corretamente.");
-//            }
-//            String email = request.getParameter("email");
-//            if (Util.isEmpty(email) || email.length() <=0 ) {
-//                meusErros.addMensagem("Email não informado corretamente.");
-//            }
-//            String cpf = request.getParameter("cpf");
-//            if (Util.isEmpty(cpf) || cpf.length() < 10 ) {
-//                meusErros.addMensagem("CPF inválido");
-//            }
-//            LocalDate data = null;
-//            if (request.getParameter("datanasc") != null) {
-//                String dataN[];
-//                
-//                int dia, mes, ano;
-//                dataN = request.getParameter("datanasc").split("/");
-//                          try
-//                          {
-//                            dia = Integer.parseInt(dataN[0]);
-//                            mes = Integer.parseInt(dataN[1]);
-//                            ano = Integer.parseInt(dataN[2]);
-//
-//                            data = LocalDate.of(ano, mes, dia);
-//                          }
-//                          catch(NumberFormatException e)
-//                          {
-//                            meusErros.addMensagem("Data Inválida");
-//                          }
-//            }
-//            else
-//                meusErros.addMensagem("Data Inválida");
-//            
-//            String endereco = request.getParameter("endereco");
-//            if (Util.isEmpty(endereco) || endereco.length() < 10 ) {
-//                meusErros.addMensagem("Endereco inválido");
-//            }
-//            int num = 0;
-//            if (request.getParameter("numero") != null) {
-//                String numaux;
-//                numaux = request.getParameter("numero");
-//                num=Integer.parseInt(numaux);
-//            }
-//            else
-//                meusErros.addMensagem("Numero inválido");
-//            String complemento = request.getParameter("comp1");
-//            if (Util.isEmpty(complemento) || complemento.length() < 0 ) {
-//                meusErros.addMensagem("Complemento inválido");
-//            }
-//            String cep = request.getParameter("cep");
-//            if (Util.isEmpty(cep) || cep.length() < 5 ) {
-//                meusErros.addMensagem("CEP inválido");
-//            }
-//            String senha = request.getParameter("senha");
-//            if (Util.isEmpty(senha) || senha.length() < 5 ) {
-//                meusErros.addMensagem("Senha inválido");
-//            }
-//            if (meusErros.isEmpty()) {
-//                try {
-//                    if (inserindo) {
-//                        Aluno al = new Aluno(cod, num, nome, email, senha, endereco, complemento, cep, cpf, data, cid);
-//                        dao.insert(al);
-//                    } else {
-//                        Aluno temp = dao.busca(cod);
-//                        if (temp == null) {
-//                            meusErros.addMensagem("Registro não encontrado.");
-//                        } else {
-//                            temp.setNome(nome);
-//                            temp.setNum(num);
-//                            temp.setCep(cep);
-//                            temp.setCidade(cid);
-//                            temp.setComplemento(complemento);
-//                            temp.setCpf(cpf);
-//                            temp.setDatanasc(data);
-//                            temp.setEmail(email);
-//                            temp.setEndereco(endereco);
-//                            temp.setSenha(senha);
-//                            dao.update(temp);
-//                        }
-//                    }
-//                } catch (DAOException ex) {
-//                    meusErros.addMensagem(ex.getLocalizedMessage());
-//                }
-//            }
-//        }
-//
-//        List<Aluno> listaDeCadastrados;
+                
+                    
+                    
+
+//        ArrayList<Aluno> listaDeCadastrados;
 //        try {
 //            listaDeCadastrados = dao.listar(null);
 //        } catch (DAOException ex) {
@@ -164,9 +244,12 @@ public class AdmAlunoController extends HttpServlet {
 //
 //        request.setAttribute("erros", meusErros);
 //        request.setAttribute("cadastrados", listaDeCadastrados);
-//
+
 //        RequestDispatcher rd = request.getRequestDispatcher("new.jsp");
 //        rd.forward(request, response);
+            }
+            
+            
         }
     }
 

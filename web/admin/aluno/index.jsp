@@ -8,11 +8,10 @@
 
 <%
     if(session.getAttribute("user") == null)
-        response.sendRedirect("index");
+        response.sendRedirect("ApplicationController");
     else
     {
-        us = (Usuario)session.getAttribute("user");
-        
+        us = (Usuario)session.getAttribute("user");        
     }
 %>
 
@@ -24,13 +23,17 @@
         <title>Controle de Alunos</title>
     </head>
     <body>
-        <a href="../../AdminController">Menu</a>
+        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
+        
         <h1>Gerenciamento dos Alunos</h1>
         <p>Logado como: <%out.print(us.getLogin());%></p>
         
         <ul>
             <li>
-                <a href="AdmAlunoController?path=new.jsp">Cadastrar Aluno</a>
+                <a href="<%out.print(application.getContextPath());%>/AdmAlunoController?path=perfil.jsp">Cadastrar Aluno</a>
+            </li>
+            <li>
+                <a href="">Listar Aluno(s)</a>
             </li>
         </ul>
     </body>
