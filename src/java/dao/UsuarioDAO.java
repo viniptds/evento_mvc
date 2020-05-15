@@ -128,8 +128,7 @@ public class UsuarioDAO {
                     {
                         lus.add(new Usuario(rs.getInt("usu_codigo"), rs.getString("usu_nome"), 
                                 rs.getString("usu_login"), rs.getString("usu_senha")));
-                    }
-                    return lus;
+                    }                    
                 }
             }
         } catch (SQLException ex) {
@@ -138,7 +137,7 @@ public class UsuarioDAO {
             System.out.println("Falha abrindo banco de dados.");
         }
         
-        return null;    
+        return lus;    
     }
     
     public boolean update(Usuario u)

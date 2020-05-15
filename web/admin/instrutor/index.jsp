@@ -1,12 +1,18 @@
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Menu Instrutor</h1>
-    </body>
-</html>
+<%
+    
+    if(session.getAttribute("user") == null)
+        response.sendRedirect("ApplicationController");
+%>
+
+        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
+        
+        <ul>
+            <li>
+                <a href="<%out.print(application.getContextPath());%>/InstrutorController?path=perfil.jsp">Novo Instrutor</a>
+            </li>
+            
+            <li>
+                <a href="<%out.print(application.getContextPath());%>/InstrutorController?path=listagem.jsp&list=true">Listar Instrutor(es)</a>
+            </li>  
+        </ul>
