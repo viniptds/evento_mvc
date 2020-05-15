@@ -5,12 +5,18 @@
  */
 package controller;
 
+import dao.EventoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Evento;
+import util.ConfigPagina;
 
 /**
  *
@@ -28,11 +34,161 @@ public class EventoController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException 
+    {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) 
+        {
             
+            HttpSession session = request.getSession();
             
+            EventoDAO insd = new EventoDAO();            
+            Evento evt = null;
+            
+            String path, data[];    
+            String title [] = {"Menu Evento", "Listagem de Eventos", "Evento"};
+            
+            String search, nome = "";
+            LocalDate inicio, fim;
+            int cod = 0, dia, mes, ano;
+                                    
+            session.removeAttribute("listaEvento");
+            
+            if(session.getAttribute("user") == null)
+            {
+                response.sendRedirect("ApplicationController");
+            }
+            else
+            {
+                if(request.getParameter("coduser") != null)
+                {
+                    try 
+                    {
+                        cod = Integer.parseInt(request.getParameter("coduser"));
+
+                        if(cod > 0)
+                        {
+                            evt = insd.busca(cod);
+                            session.setAttribute("altered_evento", evt);                            
+                        }
+                        else
+                            response.sendRedirect("listagem.jsp");
+                    }
+                    catch(NumberFormatException ex)
+                    {
+                        System.out.println("Erro ao converter valor!");
+                    }
+                }
+                
+                if(request.getParameter("bChange") != null)
+                {
+                    if(request.getParameter("nome") != null)
+                    {
+                        nome = request.getParameter("nome");
+
+                        if(request.getParameter("inicio") != null)
+                        {
+                            
+                            data = request.getParameter("inicio").split("/");
+                            
+                            try
+                            {
+                                dia = Integer.parseInt(data[0]);
+                                mes = Integer.parseInt(data[1]);
+                                ano = Integer.parseInt(data[2]);
+
+                                inicio = LocalDate.of(ano, mes, dia);
+                                
+                                if(request.getParameter("fim") != null)
+                                {
+                                    data = request.getParameter("fim").split("/");
+                                    
+                                    try
+                                    {
+                                        dia = Integer.parseInt(data[0]);
+                                        mes = Integer.parseInt(data[1]);
+                                        ano = Integer.parseInt(data[2]);
+
+                                        fim = LocalDate.of(ano, mes, dia);
+                                        
+                                        if(nome.length() > 0 && inicio!=null && fim!=null)
+                                        {
+                                            evt = new Evento(cod, nome, inicio, fim);
+                                            if(session.getAttribute("altered_evento") != null)
+                                            {                                
+                                                insd.update(evt);
+                                                session.removeAttribute("altered_evento");
+                                                System.out.println("Alterado!");
+                                            }
+                                            else
+                                            {
+                                                insd.insert(evt);          
+                                                System.out.println("Inserido!");
+                                            }
+                                            cod = 0;
+                                            nome = "";
+                                            inicio=null;
+                                            fim=null;
+                                            request.removeAttribute("bChange");
+                                        }
+                                    }
+                                    catch(NumberFormatException e)
+                                    {
+                                        out.print("<script> alert('Data Fim Inválida') </script>");
+                                    }
+                                }
+                            }
+                            catch(NumberFormatException e)
+                            {
+                                out.print("<script> alert('Data Inicio Inválida') </script>");
+                            }
+                        }
+                    }
+                }            
+                
+                if(request.getParameter("delete") != null)
+                {
+                    evt = (Evento)session.getAttribute("altered_evento");
+                    if(request.getParameter("delete").equals("true") && evt != null)
+                    {                                                                        
+                            insd.remove(evt);
+                            System.out.println("Removido!");                    
+                        
+                    }
+                    session.removeAttribute("altered_evento");
+                    //response.sendRedirect("ApplicationController");
+                }
+                
+                if(request.getParameter("list") != null)
+                {
+                    if(request.getParameter("search") == null)
+                    {
+                        session.setAttribute("listaEvento", insd.listar());
+                    }
+                    else
+                    {
+                        search = request.getParameter("search");
+                        session.setAttribute("listaEvento", insd.search(search, "eve_nome"));
+                    }
+                }
+                
+                if(request.getParameter("path") != null)
+                {
+                    path = request.getParameter("path");
+                    
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/"+path, title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
+                }                
+                else
+                {
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/index.jsp", title[0]));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  
+                }
+            }
         }
     }
 

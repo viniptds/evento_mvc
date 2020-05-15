@@ -10,9 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Evento;
+import model.Instrutor;
 import persist.Conexao;
 import persist.DAOException;
 
@@ -97,6 +99,63 @@ public class EventoDAO
             throw new DAOException("Falha abrindo banco de dados.");
         }
         return null;
+    }
+    
+    public ArrayList<Evento> listar()
+    {
+        ArrayList<Evento> evt = new ArrayList<>();
+        String sql = "select * from evento";
+        try (Connection conn = Conexao.connect()) {
+            try (Statement st = conn.createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql)) {
+                    while (rs.next()) {
+                         evt.add(gerar(rs));
+                    }
+                    
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+            Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Falha abrindo banco de dados.");
+        }
+        return evt;
+    }
+
+    public ArrayList search(String termo, String field)
+    {
+        ArrayList<Evento> lus = new ArrayList();
+        
+        String sql = "select * from evento";
+        if(termo.length() > 0)
+        { 
+            sql += " where #1 like '%#2%'"; // ... offset 1
+                
+            sql = sql.replace("#1", ""+field); 
+            sql = sql.replace("#2", ""+termo);                
+        }
+        sql += " order by eve_nome";
+        
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {
+                    while (rs.next()) 
+                    {
+                        lus.add(gerar(rs));
+                    }                    
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL.");
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return lus;    
     }
     
 }
