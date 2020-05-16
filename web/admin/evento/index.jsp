@@ -1,28 +1,17 @@
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%
     
     if(session.getAttribute("user") == null)
         response.sendRedirect("ApplicationController");
 %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Menu - Evento</title>
-    </head>
-    <body>
-        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
-        <h1>Menu Usu√°rio</h1>
+
+        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>        
         <ul>
             <li>
-                <a href="<%out.print(application.getContextPath());%>/EventoController?path=perfil.jsp">Novo Usu√°rio</a>
+                <a href="<%out.print(application.getContextPath());%>/EventoController?path=perfil.jsp">Novo Usu·rio</a>
             </li>
             
             <li>
-                <a href="<%out.print(application.getContextPath());%>/EventoController?path=listagem.jsp&list=true">Listar Usu√°rio(s)</a>
+                <a href="<%out.print(application.getContextPath());%>/EventoController?path=listagem.jsp&list=true">Listar Usu·rio(s)</a>
             </li>  
         </ul>
-    </body>
-</html>

@@ -13,7 +13,7 @@
 <%
     if(session.getAttribute("user") == null)
     {
-        response.sendRedirect("AdminController");
+        response.sendRedirect("ApplicationController");
     }    
         
     if(session.getAttribute("altered_evento") != null)
