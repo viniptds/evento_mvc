@@ -11,7 +11,7 @@
 <%
     if(session.getAttribute("user") == null)
     {
-        response.sendRedirect("AdminController");
+        response.sendRedirect("ApplicationController");
     }    
         
     if(session.getAttribute("altered_inst") != null)
@@ -49,7 +49,14 @@
         <a href="<%out.print(application.getContextPath());
            %>/InstrutorController?path=listagem.jsp&cod=<%
                out.print(in.getCodigo());%>&delete=true&list=true">Deletar</a>
-
+        <br>
+        <br>
+        
+        <a href="">Vincular a uma palestra</a>
+        <br>
+        
+        <a href="">Visualizar palestras</a>
+        
 <%
     }
 %>

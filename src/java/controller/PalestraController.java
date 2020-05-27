@@ -20,7 +20,7 @@ import util.ConfigPagina;
  *
  * @author viniciuspadovan
  */
-public class AdminController extends HttpServlet {
+public class PalestraController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,27 +36,34 @@ public class AdminController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            String path; 
+            String title [] = {"Página Inicial", "Perfil"};  
+            
             HttpSession session = request.getSession();
-            String path;
+            
             
             if(session.getAttribute("user") == null)
-            {
+            { 
                 response.sendRedirect("ApplicationController");
             }
             else
-            {
+            {            
                 if(request.getParameter("path") != null)
-                {                    
+                {
                     path = request.getParameter("path");
-                                        
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/"+path);
+                    
+                    //response.sendRedirect(path);                    
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/palestra/"+path, title[0], (Usuario)session.getAttribute("user")));
+                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
+                    rd.forward(request, response);
                 }
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/index.jsp", "Controle Administrativo", (Usuario)session.getAttribute("user")));
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/aluno/index.jsp");            
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/palestra/index.jsp", title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
-                }                    
+                }
             }
         }
     }

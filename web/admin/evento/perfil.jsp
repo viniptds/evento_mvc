@@ -1,3 +1,4 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="model.Evento"%>
 <%@page import="dao.EventoDAO"%>
@@ -7,7 +8,7 @@
     EventoDAO insd = new EventoDAO();
     int cod = 0;
     String nome = "";
-    LocalDate inicio, fim;
+    LocalDate inicio = null, fim = null;
 %>
 
 <%
@@ -41,11 +42,11 @@
             <br>
             
             <label>Inicio: </label>
-            <input type="text" name="inicio" required="required" value="<% out.print(inicio); %>">
+            <input type="text" name="inicio" required="required" value="<% out.print((inicio == null) ? "" : inicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %>">
             <br>
             
             <label>Fim: </label>
-            <input type="text" name="fim" required="required" value="<% out.print(fim); %>">
+            <input type="text" name="fim" required="required" value="<% out.print((fim == null) ? "" : fim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %>">
             <br>
                         
             <input type="submit" name="bChange" value="Enviar">
@@ -56,9 +57,17 @@
 %>
 
         <a href="<%out.print(application.getContextPath());
-           %>/EventoController?path=listagem.jsp&cod=<%
+           %>/EventoController?path=listagem.jsp&codevt=<%
                out.print(evt.getCodigo());%>&delete=true&list=true">Deletar</a>
-
+               <br>
+               <br>
+               
+        <a href="">Visualizar palestras</a>
+        <br>
+        
+        <a href="">Relatório de Presença</a>
+        
+               
 <%
     }
 %>

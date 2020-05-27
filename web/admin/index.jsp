@@ -27,6 +27,11 @@
             <br>
             
             <li>
+                <a href="PalestraController">Gerenciar Palestras</a>
+            </li>                               
+            <br>
+            
+            <li>
                 <a href="InstrutorController">Gerenciar Instrutor</a>
             </li>                               
             <br>

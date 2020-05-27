@@ -142,10 +142,9 @@ public class UsuarioDAO {
     
     public boolean update(Usuario u)
     {
-        String sql = "update usuario set usu_nome = '#1', usu_login = '#2', usu_senha = '#3' where usu_codigo = #4";
-        sql = sql.replace("#1", u.getNome());
-        sql = sql.replace("#2", u.getLogin());
-        sql = sql.replace("#3", u.getSenha());
+        String sql = "update usuario set usu_nome = '#1', usu_senha = '#2' where usu_codigo = #4";
+        sql = sql.replace("#1", u.getNome());        
+        sql = sql.replace("#2", u.getSenha());
         sql = sql.replace("#4", ""+u.getCodigo());
         
         try (Connection conn = Conexao.connect())

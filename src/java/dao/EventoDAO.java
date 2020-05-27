@@ -26,7 +26,7 @@ public class EventoDAO
 {
     public void insert(Evento evt)
     {
-        String sql = "insert into evento (eve_nome, eve_inicio, eve_fim) values (#1, #2, #3)";
+        String sql = "insert into evento (eve_nome, eve_inicio, eve_fim) values ('#1', '#2', '#3')";
         
         sql = sql.replace("#1", evt.getNome());
         sql = sql.replace("#2",""+ evt.getInicio());

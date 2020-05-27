@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Evento;
+import model.Usuario;
 import util.ConfigPagina;
+import util.Erros;
 
 /**
  *
@@ -39,6 +41,7 @@ public class EventoController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) 
         {
+            Erros err = new Erros();
             
             HttpSession session = request.getSession();
             
@@ -60,11 +63,11 @@ public class EventoController extends HttpServlet {
             }
             else
             {
-                if(request.getParameter("coduser") != null)
+                if(request.getParameter("codevt") != null)
                 {
                     try 
                     {
-                        cod = Integer.parseInt(request.getParameter("coduser"));
+                        cod = Integer.parseInt(request.getParameter("codevt"));
 
                         if(cod > 0)
                         {
@@ -76,8 +79,9 @@ public class EventoController extends HttpServlet {
                     }
                     catch(NumberFormatException ex)
                     {
-                        System.out.println("Erro ao converter valor!");
+                        err.addMensagem("Erro ao converter valor!");
                     }
+                    request.removeAttribute("codevt");
                 }
                 
                 if(request.getParameter("bChange") != null)
@@ -115,7 +119,8 @@ public class EventoController extends HttpServlet {
                                         {
                                             evt = new Evento(cod, nome, inicio, fim);
                                             if(session.getAttribute("altered_evento") != null)
-                                            {                                
+                                            {                
+                                                evt.setCodigo(((Evento)session.getAttribute("altered_evento")).getCodigo());
                                                 insd.update(evt);
                                                 session.removeAttribute("altered_evento");
                                                 System.out.println("Alterado!");
@@ -129,18 +134,18 @@ public class EventoController extends HttpServlet {
                                             nome = "";
                                             inicio=null;
                                             fim=null;
-                                            request.removeAttribute("bChange");
+                                            request.setAttribute("bChange", null);
                                         }
                                     }
                                     catch(NumberFormatException e)
                                     {
-                                        out.print("<script> alert('Data Fim Inválida') </script>");
+                                        err.addMensagem("<script> alert('Data Fim Inválida') </script>");
                                     }
                                 }
                             }
                             catch(NumberFormatException e)
                             {
-                                out.print("<script> alert('Data Inicio Inválida') </script>");
+                                err.addMensagem("<script> alert('Data Inicio Inválida') </script>");
                             }
                         }
                     }
@@ -176,14 +181,14 @@ public class EventoController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/"+path, title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/"+path, title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
                 }                
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/index.jsp", title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/index.jsp", title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

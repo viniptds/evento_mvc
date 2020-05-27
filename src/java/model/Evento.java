@@ -5,18 +5,26 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  *
  * @author rique
  */
-public class Evento 
+public class Evento implements Serializable
 {
     int codigo;
     String nome;
     LocalDate inicio, fim;
+    ArrayList<Palestra> pals;
 
+    public Evento()
+    {
+        
+    }
+    
     public Evento(int codigo, String nome, LocalDate inicio, LocalDate fim) {
         this.codigo = codigo;
         this.nome = nome;
@@ -55,6 +63,15 @@ public class Evento
     public void setFim(LocalDate fim) {
         this.fim = fim;
     }
+
+    public ArrayList<Palestra> getPals() {
+        return pals;
+    }
+
+    public void setPals(ArrayList<Palestra> pals) {
+        this.pals = pals;
+    }
+    
     
     
     

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Instrutor;
+import model.Usuario;
 import util.ConfigPagina;
 
 /**
@@ -58,11 +59,11 @@ public class InstrutorController extends HttpServlet {
             }
             else
             {
-                if(request.getParameter("coduser") != null)
+                if(request.getParameter("codinst") != null)
                 {
                     try 
                     {
-                        cod = Integer.parseInt(request.getParameter("coduser"));
+                        cod = Integer.parseInt(request.getParameter("codinst"));
 
                         if(cod > 0)
                         {
@@ -92,7 +93,8 @@ public class InstrutorController extends HttpServlet {
                             {
                                 in = new Instrutor(cod, nome, curr);
                                 if(session.getAttribute("altered_inst") != null)
-                                {                                
+                                {                   
+                                    in.setCodigo(((Instrutor)session.getAttribute("altered_inst")).getCodigo());
                                     insd.update(in);
                                     session.removeAttribute("altered_inst");
                                     System.out.println("Alterado!");
@@ -140,14 +142,15 @@ public class InstrutorController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/"+path, title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/"+path, title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
                 }                
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/index.jsp", title[0]));
+                    session.removeAttribute("altered_inst");
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/index.jsp", title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

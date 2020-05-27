@@ -3,6 +3,13 @@
 <jsp:useBean id="erros" class="util.Erros" scope="request"/>
 <jsp:useBean id="configuracao" class="util.ConfigPagina" scope="request"/>
 
+<%
+    if(session.getAttribute("user") == null && session.getAttribute("aluno") == null 
+            && this.getServletContext().getContextPath() != application.getContextPath())
+    {
+        response.sendRedirect("ApplicationController");
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>

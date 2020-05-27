@@ -20,7 +20,7 @@
     {
         lins = (ArrayList<Instrutor>)session.getAttribute("listaInst");
     }    
-    
+    request.removeAttribute("bChange");
 %>
             
         <a href="<%out.print(application.getContextPath());%>/InstrutorController">Menu</a>                
@@ -56,7 +56,7 @@
             <tr>
                 <td>
                     <a href="<%out.print(application.getContextPath());
-                       %>/InstrutorController?path=perfil.jsp&coduser=<%
+                       %>/InstrutorController?path=perfil.jsp&codinst=<%
                         out.print(u.getCodigo()); %>"> 
                         <% out.print(u.getNome()); %>
                     </a>

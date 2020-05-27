@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Usuario;
 import util.ConfigPagina;
 
 /**
@@ -52,14 +53,14 @@ public class AlunoController extends HttpServlet {
                     path = request.getParameter("path");
                     
                     //response.sendRedirect(path);                    
-                    request.setAttribute("configuracao", new ConfigPagina("/aluno/"+path, title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/aluno/"+path, title[0], null));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                 }
                 else
                 {
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/aluno/index.jsp");            
-                    request.setAttribute("configuracao", new ConfigPagina("/aluno/index.jsp", title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/aluno/index.jsp", title[0], null));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                 }

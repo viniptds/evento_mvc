@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Usuario;
 import util.ConfigPagina;
+import util.Erros;
 
 /**
  *
@@ -36,6 +37,8 @@ public class UsuarioController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            Erros err = new Erros();
             
             HttpSession session = request.getSession();
             UsuarioDAO usd = new UsuarioDAO();
@@ -61,18 +64,25 @@ public class UsuarioController extends HttpServlet {
                     {
                         cod = Integer.parseInt(request.getParameter("coduser"));
 
-                        if(cod > 0)
-                        {
-                            u = usd.get(cod);
-                            session.setAttribute("altered_user", u);                            
+                        u = usd.get(cod);
+                        
+                        if(u != null)
+                        {                                                        
+                            session.setAttribute("altered_user", u);
                         }
                         else
+                        {
+                            err.addMensagem("Código inválido");
+                            
                             response.sendRedirect("listagem.jsp");
+                        }
                     }
                     catch(NumberFormatException ex)
                     {
-                        System.out.println("Erro ao converter valor!");
+                        err.addMensagem("Erro ao converter valor!");
                     }
+                    
+                    request.removeAttribute("coduser");                    
                 }
                 
                 if(request.getParameter("bChange") != null)
@@ -90,18 +100,30 @@ public class UsuarioController extends HttpServlet {
                                 senha = request.getParameter("senha");
 
                                 if(nome.length() > 0 && login.length() > 0 && senha.length() > 0)
-                                {
-                                    u = new Usuario(cod, nome, login, senha);
+                                {                                    
                                     if(session.getAttribute("altered_user") != null)
-                                    {                                
-                                        usd.update(u);
-                                        session.removeAttribute("altered_user");
-                                        System.out.println("Alterado!");
+                                    {
+                                        
+                                        u = usd.get(cod);
+                                        u.setNome(nome);
+                                        u.setSenha(senha);
+                                        
+                                        if(!usd.update(u))
+                                        {
+                                            err.addMensagem("Erro ao alterar!");
+                                        }                                        
+                                        else
+                                        {
+                                            session.removeAttribute("altered_user");                                                
+                                        }                                        
                                     }
                                     else
                                     {
-                                        usd.insert(u);          
-                                        System.out.println("Inserido!");
+                                        u = new Usuario(cod, nome, login, senha);
+                                        if(!usd.insert(u))
+                                        {
+                                            err.addMensagem("Erro ao inserir");                                            
+                                        }
                                     }
                                     cod = 0;
                                     nome = login = senha = "";                                                           
@@ -112,10 +134,12 @@ public class UsuarioController extends HttpServlet {
                 }
                 
                 if(request.getParameter("delete") != null)
-                {
+                {                                        
                     u = (Usuario)session.getAttribute("altered_user");
+                    System.out.println(u.getCodigo());
                     if(request.getParameter("delete").equals("true") && u != null)
-                    {                                                
+                    {                               
+                        System.out.println("-----");
                         if(!u.getLogin().equals("admin"))
                         {
                             usd.remove(u);
@@ -144,16 +168,17 @@ public class UsuarioController extends HttpServlet {
                 
                 if(request.getParameter("path") != null)
                 {
+                    System.out.println("--");
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/"+path, title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/"+path, title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
                 }                
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/index.jsp", title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/index.jsp", title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

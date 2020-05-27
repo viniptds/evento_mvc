@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Aluno;
 import model.Cidade;
+import model.Usuario;
 import persist.DAOException;
 import util.ConfigPagina;
 import util.Erros;
@@ -228,14 +229,14 @@ public class AdmAlunoController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/"+path);
                 }
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0]));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0], (Usuario)session.getAttribute("user")));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/index.jsp");

@@ -32,13 +32,16 @@
 
         <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>
         
-        <form action="<%out.print(application.getContextPath());%>/UsuarioController?path=listagem.jsp&list=true" method="post">            
+        <form action="<%out.print(application.getContextPath());
+              %>/UsuarioController?path=listagem.jsp&list=true&coduser=<%
+               out.print(u.getCodigo());%>" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>
             
             <label>Login: </label>
-            <input type="text" name="login" <% if(session.getAttribute("altered_user") != null) out.print("readonly='readonly'");%> required="required" value="<% out.print(login); %>">
+            <input type="text" name="login" <% if(session.getAttribute("altered_user") != null) 
+                out.print("readonly='readonly'");%> required="required" value="<% out.print(login); %>">
             <br>
             
             <label>Senha: </label>
@@ -53,7 +56,7 @@
 %>
 
         <a href="<%out.print(application.getContextPath());
-           %>/UsuarioController?path=listagem.jsp&cod=<%
+           %>/UsuarioController?path=listagem.jsp&coduser=<%
                out.print(u.getCodigo());%>&delete=true&list=true">Deletar</a>
 
 <%

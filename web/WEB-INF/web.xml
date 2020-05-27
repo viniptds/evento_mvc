@@ -3,12 +3,15 @@
     <servlet>
         <servlet-name>ApplicationController</servlet-name>
         <servlet-class>controller.ApplicationController</servlet-class>
-    </servlet>    
+    </servlet>
+    <servlet>
+        <servlet-name>PalestraController</servlet-name>
+        <servlet-class>controller.PalestraController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ApplicationController</servlet-name>
-        <url-pattern>/</url-pattern>        
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>AdminController</servlet-name>
         <servlet-class>controller.AdminController</servlet-class>
@@ -17,7 +20,6 @@
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/AdminController</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>UsuarioController</servlet-name>
         <servlet-class>controller.UsuarioController</servlet-class>
@@ -26,7 +28,6 @@
         <servlet-name>UsuarioController</servlet-name>
         <url-pattern>/UsuarioController</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>AlunoController</servlet-name>
         <servlet-class>controller.AlunoController</servlet-class>
@@ -35,7 +36,6 @@
         <servlet-name>AlunoController</servlet-name>
         <url-pattern>/AlunoController</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>AdmAlunoController</servlet-name>
         <servlet-class>controller.AdmAlunoController</servlet-class>
@@ -44,7 +44,6 @@
         <servlet-name>AdmAlunoController</servlet-name>
         <url-pattern>/AdmAlunoController</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>EventoController</servlet-name>
         <url-pattern>/EventoController</url-pattern>
@@ -53,7 +52,6 @@
         <servlet-name>EventoController</servlet-name>
         <servlet-class>controller.EventoController</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>InstrutorController</servlet-name>
         <servlet-class>controller.InstrutorController</servlet-class>
@@ -61,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>InstrutorController</servlet-name>
         <url-pattern>/InstrutorController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PalestraController</servlet-name>
+        <url-pattern>/PalestraController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

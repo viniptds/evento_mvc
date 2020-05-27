@@ -1,3 +1,4 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="model.Evento"%>
 <%@page import="java.util.ArrayList"%>
 
@@ -56,15 +57,15 @@
             <tr>
                 <td>
                     <a href="<%out.print(application.getContextPath());
-                       %>/EventoController?path=perfil.jsp&coduser=<%
+                       %>/EventoController?path=perfil.jsp&codevt=<%
                         out.print(u.getCodigo()); %>"> 
                         <% out.print(u.getNome()); %>
                     </a>
                 </td>
 
-                <td><% out.print(u.getInicio()); %></td>
+                <td><% out.print(u.getInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %></td>
 
-                <td><% out.print(u.getFim()); %></td>                
+                <td><% out.print(u.getFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %></td>                
             </tr>
             
 <%

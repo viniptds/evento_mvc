@@ -45,21 +45,8 @@
     }
 %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
         <div class="p-2">
-            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController">Menu</a>           
-            
-            <c:if test="${erros.possuiMensagem}">
-                <div class="bg-warning p-1 border border-danger">
-                    <p class="h3 text-center">Erros</p>
-                    <ul>
-                        <c:forEach var="msg" items="${erros.mensagens}">
-                            <li>${msg}</li>
-                            </c:forEach>
-                    </ul>
-                </div>
-            </c:if>
+            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController">Menu</a>
                             
             <form method="post" action="<%out.print(application.getContextPath());%>/AdmAlunoController">
                 <div class="form-group">
@@ -158,6 +145,10 @@
         <a href="<%out.print(application.getContextPath());
            %>/AdmAlunoController?path=listagem.jsp&cod=<%
                out.print(al.getCodigo());%>&delete=true&list=true">Deletar</a>
+        <br>
+        <br>
+        
+        <a href="">Visualizar Palestras do Aluno</a>
         
 <%
 }

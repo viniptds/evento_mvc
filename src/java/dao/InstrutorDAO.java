@@ -82,7 +82,7 @@ public class InstrutorDAO
     public ArrayList<Instrutor> listar()
     {
         ArrayList<Instrutor> in = new ArrayList<>();
-        String sql = "select * from instrutor";
+        String sql = "select * from instrutor order by ins_nome";
         try (Connection conn = Conexao.connect()) {
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql)) {
