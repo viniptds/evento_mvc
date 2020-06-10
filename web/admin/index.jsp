@@ -26,15 +26,15 @@
             </li>
             <br>
             
-            <li>
+<!--            <li>
                 <a href="PalestraController">Gerenciar Palestras</a>
             </li>                               
-            <br>
+            <br>-->
             
-            <li>
+<!--            <li>
                 <a href="InstrutorController">Gerenciar Instrutor</a>
             </li>                               
-            <br>
+            <br>-->
             
             <li>
                 <a href="AdmAlunoController">Gerenciar Alunos</a>

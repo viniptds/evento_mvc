@@ -5,22 +5,21 @@
  */
 package controller;
 
+import dao.CidadeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.Usuario;
-import util.ConfigPagina;
+import model.Cidade;
 
 /**
  *
  * @author viniciuspadovan
  */
-public class AdminController extends HttpServlet {
+public class CidadeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,30 +35,20 @@ public class AdminController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HttpSession session = request.getSession();
-            String path;
-            
-            if(session.getAttribute("user") == null)
+            CidadeDAO cdao = new CidadeDAO();
+            ArrayList<Cidade> cities = new ArrayList<>();
+            int uf;
+            if(request.getAttribute("uf-id") != null)
             {
-                response.sendRedirect("ApplicationController");
-            }
-            else
-            {
-                if(request.getParameter("path") != null)
-                {                    
-                    path = request.getParameter("path");                                        
-//                    response.sendRedirect(this.getServletContext().getContextPath()+"/admin/"+path);
-                    
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/"+ path, "Controle Administrativo", ((Usuario)session.getAttribute("user")).getLogin()));
-                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
-                    rd.forward(request, response);
-                }
-                else
+                uf  = Integer.parseInt(request.getAttribute("uf-id").toString());
+                
+                cities = cdao.listar(String.valueOf(uf), "uf_codigo");
+                
+                if(cities != null && cities.size() > 0)
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/index.jsp", "Controle Administrativo", ((Usuario)session.getAttribute("user")).getLogin()));
-                    RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
-                    rd.forward(request, response);
-                }                    
+                    request.setAttribute("cities", cities);                   
+                }
+                
             }
         }
     }

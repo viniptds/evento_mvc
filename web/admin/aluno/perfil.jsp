@@ -44,8 +44,9 @@
         
     }
 %>
-
-        <div class="p-2">
+        
+        <script type="text/javascript" src="ajax-city.js"></script>
+        <div class="p-2" >
             <a href="<%out.print(application.getContextPath());%>/AdmAlunoController">Menu</a>
                             
             <form method="post" action="<%out.print(application.getContextPath());%>/AdmAlunoController">
@@ -92,9 +93,9 @@
                 
                 <div class="form-group">
                     <label>UF</label><br/>
-                    <select name="uf">
+                    <select name="uf" onchange="doCompletion()">
                         <%for(UF uf : uf_list) 
-                        { 
+                        {
                         %>
                         
                         <option value="<% out.print(uf.getCodigo()); %>" >

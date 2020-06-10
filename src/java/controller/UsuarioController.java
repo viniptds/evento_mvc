@@ -167,18 +167,17 @@ public class UsuarioController extends HttpServlet {
                 }
                 
                 if(request.getParameter("path") != null)
-                {
-                    System.out.println("--");
+                {                    
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/"+path, title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
-                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
+                    //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);                    
                 }                
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/index.jsp", title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/usuario/index.jsp", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

@@ -12,17 +12,17 @@ public class ConfigPagina implements Serializable {
 
     private String includeURL;
     private String titulo;        
-    private Usuario us;
+    private String log;
     
     
     public ConfigPagina() {
         this(null, null, null);
     }
 
-    public ConfigPagina(String includeURL, String titulo, Usuario us) {
+    public ConfigPagina(String includeURL, String titulo, String us) {
         this.includeURL = includeURL;
         this.titulo = titulo;
-        this.us = us;
+        this.log = us;
     }
 
     public String getIncludeURL() {
@@ -33,12 +33,12 @@ public class ConfigPagina implements Serializable {
         return titulo;
     }
 
-    public Usuario getUs() {
-        return us;
+    public String getLog() {
+        return log;
     }
 
-    public void setUs(Usuario us) {
-        this.us = us;
+    public void setLog(String us) {
+        this.log = us;
     }
     
 

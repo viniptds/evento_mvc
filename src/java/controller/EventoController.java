@@ -72,7 +72,7 @@ public class EventoController extends HttpServlet {
                         if(cod > 0)
                         {
                             evt = insd.busca(cod);
-                            session.setAttribute("altered_evento", evt);                            
+                            session.setAttribute("altered_evento", evt);
                         }
                         else
                             response.sendRedirect("listagem.jsp");
@@ -181,14 +181,14 @@ public class EventoController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/"+path, title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
                 }                
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/index.jsp", title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/index.jsp", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

@@ -214,29 +214,29 @@ public class AdmAlunoController extends HttpServlet {
                 
                 if(request.getParameter("list") != null)
                 {                                        
-//                    if(request.getParameter("search") == null)
-//                    {
-//                        session.setAttribute("listaAluno", dao.list());
-//                    }
-//                    else
-//                    {
-//                        String search = request.getParameter("search");
-//                        session.setAttribute("listaAluno", dao.search(search, "alu_email"));
-//                    }                    
+                    if(request.getParameter("search") == null)
+                    {
+                        session.setAttribute("listaAluno", dao.list());
+                    }
+                    else
+                    {
+                        String search = request.getParameter("search");
+                        session.setAttribute("listaAluno", dao.search(search, "alu_email"));
+                    }                    
                 }                                                       
                 
                 if(request.getParameter("path") != null)
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0], null));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/"+path);
                 }
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0], null));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/index.jsp");

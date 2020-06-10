@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -17,13 +18,14 @@ public class Palestra {
     int capacidade, cod;
     String descricao, nome;
     Evento evento;
+    LocalDate data;
 
     public Palestra()
     {
         
     }
     
-    public Palestra(int cod, String nome, String descricao, int capacidade, ArrayList<Instrutor> instruts, ArrayList<Aluno> alunos, Evento evento) {
+    public Palestra(int cod, String nome, String descricao, int capacidade, LocalDate data, ArrayList<Instrutor> instruts, ArrayList<Aluno> alunos, Evento evento) {
         this.instruts = instruts;
         this.alunos = alunos;
         this.capacidade = capacidade;
@@ -31,6 +33,7 @@ public class Palestra {
         this.descricao = descricao;
         this.nome = nome;
         this.evento = evento;
+        this.data = data;
     }
 
     public ArrayList<Instrutor> getInstruts() {
@@ -88,6 +91,13 @@ public class Palestra {
     public void setEvento(Evento evento) {
         this.evento = evento;
     }
-    
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }        
     
 }

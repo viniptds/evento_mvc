@@ -1,11 +1,9 @@
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="model.Evento"%>
-<%@page import="dao.EventoDAO"%>
 
 <%!
-    Evento evt;
-    EventoDAO insd = new EventoDAO();
+    Evento evt;    
     int cod = 0;
     String nome = "";
     LocalDate inicio = null, fim = null;
@@ -62,7 +60,7 @@
                <br>
                <br>
                
-        <a href="">Visualizar palestras</a>
+               <a href="PalestraController?path=listagem.jsp&list=true&evt=<%out.print(evt.getCodigo());%>">Visualizar palestras</a>
         <br>
         
         <a href="">Relatório de Presença</a>

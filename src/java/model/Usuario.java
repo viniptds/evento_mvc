@@ -11,9 +11,9 @@ import java.io.Serializable;
  *
  * @author viniciuspadovan
  */
-public class Usuario implements Serializable{
-    int codigo;
-    String nome, login, senha;
+public class Usuario extends Pessoa implements Serializable {
+    
+    String  login;
 
     public Usuario() {
     }

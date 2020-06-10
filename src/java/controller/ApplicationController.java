@@ -116,14 +116,14 @@ public class ApplicationController extends HttpServlet {
                 response.sendRedirect(this.getServletContext().getContextPath()+"/AdminController");
             }
             else
-            if(session.getAttribute("aluno") != null)
-            {
-                response.sendRedirect(this.getServletContext().getContextPath()+"/AlunoController");                
-            }
-            else
-            {
-                response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
-            }
+                if(session.getAttribute("aluno") != null)
+                {
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/AlunoController");                
+                }
+                else
+                {
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/index.jsp");
+                }
         }
     }
 

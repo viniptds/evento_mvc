@@ -23,14 +23,13 @@
     if(al != null)
     {
 %>
-
-        <p>Olá, <%out.println(al.getNome() != null ? al.getNome() : "");%>
-        <p> <a href="ApplicationController?action=logout">Sair</a></p>
+        
         <p>
             Funções do Aluno:
         </p>
         <ul>
-            <li>Manutenção</li>
+            <li><a href="matricula.jsp">Realizar Matrícula</a></li>
+            <li><a href="">Visualizar</a></li>
         </ul>
 <%
 }

@@ -142,7 +142,7 @@ public class InstrutorController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/"+path, title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
@@ -150,7 +150,7 @@ public class InstrutorController extends HttpServlet {
                 else
                 {
                     session.removeAttribute("altered_inst");
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/index.jsp", title[0], (Usuario)session.getAttribute("user")));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/index.jsp", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

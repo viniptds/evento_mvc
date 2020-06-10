@@ -103,32 +103,49 @@ public class InstrutorDAO
 
     public ArrayList search(String termo, String field)
     {
-        ArrayList<Instrutor> lus = new ArrayList();
-        
-        String sql = "select * from instrutor";
+        ArrayList<Instrutor> lus = new ArrayList();        
+        String sql = "select * from";
+                        
         if(termo.length() > 0)
         { 
-            sql += " where #1 like '%#2%'"; // ... offset 1
-                
+            if(field.equals("pal_codigo"))
+            {
+                sql += " palestra_instrutor where #1 = #2";
+            }
+            else
+            {
+                sql += " instrutor";            
+                if(field.equals("ins_codigo"))
+                    sql += " where #1 = #2";
+                else
+                    sql += " where #1 like '%#2%'"; // ... offset 1
+                sql += " order by ins_nome";
+            }    
             sql = sql.replace("#1", ""+field); 
             sql = sql.replace("#2", ""+termo);                
         }
-        sql += " order by ins_nome";
+        
+        
         
         try (Connection conn = Conexao.connect()) 
         {
             try (Statement st = conn.createStatement()) 
             {
                 try (ResultSet rs = st.executeQuery(sql)) 
-                {
-                    while (rs.next()) 
-                    {
-                        lus.add(gerar(rs));
-                    }                    
+                {                    
+                        while (rs.next()) 
+                        {
+                            if(field.equals("pal_codigo"))
+                            {
+                                lus.add(busca(rs.getInt("ins_codigo")));                        
+                            }
+                            else
+                                lus.add(gerar(rs));
+                        }                    
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Erro no SQL.");
+            System.out.println("Erro no SQL. "+ ex);
         } catch (NullPointerException ex) {            
             System.out.println("Falha abrindo banco de dados.");
         }

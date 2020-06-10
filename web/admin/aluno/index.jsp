@@ -15,8 +15,6 @@
     }
 %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
         <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
                         
         <ul>
@@ -24,6 +22,6 @@
                 <a href="<%out.print(application.getContextPath());%>/AdmAlunoController?path=perfil.jsp">Cadastrar Aluno</a>
             </li>
             <li>
-                <a href="">Listar Aluno(s)</a>
+                <a href="AdmAlunoController?path=listagem.jsp?list=true">Listar Aluno(s)</a>
             </li>
         </ul>

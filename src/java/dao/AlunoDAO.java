@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Aluno;
@@ -143,5 +144,79 @@ public class AlunoDAO {
             throw new DAOException("Falha abrindo banco de dados.");
         }
         return null;
+    }
+    
+    public ArrayList list()
+    {
+        ArrayList<Aluno> lal = new ArrayList();        
+        String sql = "select * from aluno order by alu_nome";
+                               
+        
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {                    
+                        while (rs.next()) 
+                        {                                                        
+                            lal.add(gerar(rs));
+                        }                    
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL. "+ ex);
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return lal;    
+    }
+    
+    public ArrayList search(String termo, String field)
+    {
+        ArrayList<Aluno> lus = new ArrayList();        
+        String sql = "select * from aluno";
+                        
+        if(termo.length() > 0)
+        { 
+//            if(field.equals("alu_codigo"))
+//            {
+//                sql += " palestra_instrutor where #1 = #2";
+//            }
+//            else
+//            {
+//                sql += " aluno";            
+                if(field.equals("alu_codigo") || field.equals("cid_codigo"))
+                    sql += " where #1 = #2";
+                else
+                    sql += " where #1 like '%#2%'"; // ... offset 1
+                sql += " order by alu_nome";
+//            }    
+            sql = sql.replace("#1", ""+field); 
+            sql = sql.replace("#2", ""+termo);                
+        }
+        
+        
+        
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {                    
+                        while (rs.next()) 
+                        {                            
+                            lus.add(gerar(rs));
+                        }                    
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL. "+ ex);
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return lus;    
     }
 }

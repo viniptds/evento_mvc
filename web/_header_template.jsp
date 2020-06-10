@@ -1,8 +1,15 @@
 
 <h1>${configuracao.titulo}</h1>
     
-<div class="menu">
-    <p>Logado como <span><b>${configuracao.us.getLogin()}</b></span></p>
-    <p> <a href="ApplicationController?action=logout">Sair</a></p>
+<div class="menu">    
+    <p>Logado como 
+            <span><b>
+                    ${configuracao.log}
+                </b></span>
+        </p>
+    </c:if>
+    <p> 
+        <a href="ApplicationController?action=logout">Sair</a>
+    </p>
 
 </div>

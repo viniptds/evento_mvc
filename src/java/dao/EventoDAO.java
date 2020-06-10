@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Evento;
-import model.Instrutor;
 import persist.Conexao;
 import persist.DAOException;
 

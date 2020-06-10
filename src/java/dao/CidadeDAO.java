@@ -50,7 +50,7 @@ public class CidadeDAO
     public ArrayList<Cidade> listar(String nome, String field) {
         String sql = "select * from cidade";
         if (Util.isNotEmpty(nome) && Util.isNotEmpty(field)) {
-            if(field.equals("uf_codigo"))
+            if(field.equals("uf_codigo") || field.equals("cid_codigo"))
             {
                 sql += " where "+field+" = " + nome;
             }

@@ -5,22 +5,25 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  *
  * @author viniciuspadovan
  */
-public class Aluno {
-    int codigo, num;
-    String nome, email, senha, endereco, complemento, cep, cpf;
+public class Aluno extends Pessoa implements Serializable{
+    int num;
+    String email, endereco, complemento, cep, cpf;
     LocalDate datanasc;
     Cidade cidade;
 
     public Aluno() {
     }
     
-    public Aluno(int codigo, int num, String nome, String email, String senha, String endereco, String complemento, String cep, String cpf, LocalDate datanasc, Cidade cidade) {
+    public Aluno(int codigo, int num, String nome, String email, String senha, 
+            String endereco, String complemento, String cep, String cpf, 
+            LocalDate datanasc, Cidade cidade) {
         this.codigo = codigo;
         this.num = num;
         this.nome = nome;
