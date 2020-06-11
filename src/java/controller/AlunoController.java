@@ -42,6 +42,7 @@ public class AlunoController extends HttpServlet {
             
             HttpSession session = request.getSession();
             
+            session.removeAttribute("altered_mat");
             
             if(session.getAttribute("aluno") == null)
             { 
@@ -53,7 +54,7 @@ public class AlunoController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    //response.sendRedirect(path);                    
+                    //response.sendRedirect(path);
                     request.setAttribute("configuracao", new ConfigPagina("/aluno/"+path, title[0], ((Aluno)session.getAttribute("aluno")).getNome()));
                 }
                 else

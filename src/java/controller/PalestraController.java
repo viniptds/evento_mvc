@@ -145,7 +145,7 @@ public class PalestraController extends HttpServlet {
                                         }
                                         else
                                         {
-                                            p = new Palestra(cod, nome, desc, cap, data, null, null, null);
+                                            p = new Palestra(cod, nome, desc, cap, data, null, null);
                                             if(!pald.insert(p))
                                             {
                                                 err.addMensagem("Erro ao inserir");                                            

@@ -28,8 +28,8 @@
             Funções do Aluno:
         </p>
         <ul>
-            <li><a href="matricula.jsp">Realizar Matrícula</a></li>
-            <li><a href="">Visualizar</a></li>
+            <li><a href="MatriculaController?path=matricula.jsp&bEvt=true">Realizar Matrícula</a></li>
+            <li><a href="MatriculaController?path=listagem.jsp&list=true">Visualizar Matrículas</a></li>
         </ul>
 <%
 }

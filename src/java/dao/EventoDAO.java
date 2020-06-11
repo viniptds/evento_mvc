@@ -23,6 +23,14 @@ import persist.DAOException;
  */
 public class EventoDAO 
 {
+    PalestraDAO pd;
+
+    public EventoDAO() {
+        pd = new PalestraDAO();
+    }
+    
+    
+    
     public void insert(Evento evt)
     {
         String sql = "insert into evento (eve_nome, eve_inicio, eve_fim) values ('#1', '#2', '#3')";
@@ -77,8 +85,9 @@ public class EventoDAO
     }
 
     private Evento gerar(ResultSet rs) throws SQLException {
-        return new Evento(rs.getInt("eve_codigo"), rs.getString("eve_nome"), LocalDate.parse(rs.getDate("eve_inicio").toString()), 
-                LocalDate.parse(rs.getDate("eve_fim").toString()));
+        int codevt = rs.getInt("eve_codigo");
+        return new Evento(codevt, rs.getString("eve_nome"), LocalDate.parse(rs.getDate("eve_inicio").toString()), 
+                LocalDate.parse(rs.getDate("eve_fim").toString()), pd.search("eve_codigo", ""+codevt));
     }
 
     public Evento busca(int codigo) {
@@ -100,14 +109,29 @@ public class EventoDAO
         return null;
     }
     
-    public ArrayList<Evento> listar()
+    public ArrayList<Evento> listar(boolean edisponivel, int ...param)
     {
         ArrayList<Evento> evt = new ArrayList<>();
-        String sql = "select * from evento";
+        String sql = "select * from evento ";
+        
+        if(edisponivel)
+        {
+            sql = "select evento.eve_codigo, evento.eve_nome, evento.eve_inicio, evento.eve_fim from evento\n" +
+            "inner join palestra on palestra.eve_codigo = evento.eve_codigo\n" +
+            "left join matricula on matricula.eve_codigo = evento.eve_codigo\n" +
+            "left join matricula_palestra on matricula_palestra.pal_codigo = palestra.pal_codigo\n";
+            
+            if(param.length > 0 )
+                sql+= " where matricula.alu_codigo <> "+param[0];     
+            
+            sql+="or matricula_palestra.mat_codigo is null group by evento.eve_codigo "
+                    + "having sum(palestra.pal_nr_inscritos_max) > count(matricula_palestra.mat_codigo)\n";
+        }
         try (Connection conn = Conexao.connect()) {
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql)) {
                     while (rs.next()) {
+                        
                          evt.add(gerar(rs));
                     }
                     
@@ -156,5 +180,8 @@ public class EventoDAO
         
         return lus;    
     }
+    
+    
+    
     
 }

@@ -14,10 +14,9 @@ import java.util.ArrayList;
  */
 public class Palestra {
     ArrayList<Instrutor> instruts;
-    ArrayList<Aluno> alunos;
+    ArrayList<Matricula> mats;
     int capacidade, cod;
-    String descricao, nome;
-    Evento evento;
+    String descricao, nome;    
     LocalDate data;
 
     public Palestra()
@@ -25,14 +24,13 @@ public class Palestra {
         
     }
     
-    public Palestra(int cod, String nome, String descricao, int capacidade, LocalDate data, ArrayList<Instrutor> instruts, ArrayList<Aluno> alunos, Evento evento) {
+    public Palestra(int cod, String nome, String descricao, int capacidade, LocalDate data, ArrayList<Instrutor> instruts, ArrayList<Matricula> mats) {
         this.instruts = instruts;
-        this.alunos = alunos;
+        this.mats = mats;
         this.capacidade = capacidade;
         this.cod = cod;
         this.descricao = descricao;
-        this.nome = nome;
-        this.evento = evento;
+        this.nome = nome;        
         this.data = data;
     }
 
@@ -44,12 +42,12 @@ public class Palestra {
         this.instruts = instruts;
     }
 
-    public ArrayList<Aluno> getAlunos() {
-        return alunos;
+    public ArrayList<Matricula> getMatriculas() {
+        return mats;
     }
 
-    public void setAlunos(ArrayList<Aluno> alunos) {
-        this.alunos = alunos;
+    public void setAlunos(ArrayList<Matricula> mats) {
+        this.mats = mats;
     }
 
     public int getCapacidade() {
@@ -82,15 +80,7 @@ public class Palestra {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Evento getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
+    }   
 
     public LocalDate getData() {
         return data;

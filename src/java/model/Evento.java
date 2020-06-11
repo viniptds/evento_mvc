@@ -25,11 +25,12 @@ public class Evento implements Serializable
         
     }
     
-    public Evento(int codigo, String nome, LocalDate inicio, LocalDate fim) {
+    public Evento(int codigo, String nome, LocalDate inicio, LocalDate fim, ArrayList<Palestra> pals) {
         this.codigo = codigo;
         this.nome = nome;
         this.inicio = inicio;
         this.fim = fim;
+        this.pals = pals;
     }
 
     public int getCodigo() {

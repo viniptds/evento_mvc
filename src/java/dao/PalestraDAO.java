@@ -28,8 +28,7 @@ public class PalestraDAO {
     
     public PalestraDAO()
     {
-        ald = new AlunoDAO();
-        evd = new EventoDAO();        
+        ald = new AlunoDAO();            
         insd = new InstrutorDAO();
                 
     }
@@ -43,13 +42,11 @@ public class PalestraDAO {
             
             p = new Palestra(palcod, rs.getString("pal_nome"),
                     rs.getString("pal_descricao"), rs.getInt("pal_nr_inscritos_max"), 
-                    LocalDate.parse(rs.getDate("pal_data").toString()), insd.search(""+palcod, "pal_codigo"), null, 
-                    evd.busca(codevt));
-            return p;
+                    LocalDate.parse(rs.getDate("pal_data").toString()), insd.search(""+palcod, "pal_codigo"), null);            
         } catch (SQLException ex) {
             Logger.getLogger(PalestraDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return p;
     }
     
     public Palestra get(int cod)

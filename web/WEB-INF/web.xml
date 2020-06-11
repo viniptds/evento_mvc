@@ -12,6 +12,10 @@
         <servlet-name>CidadeController</servlet-name>
         <servlet-class>controller.CidadeController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MatriculaController</servlet-name>
+        <servlet-class>controller.MatriculaController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ApplicationController</servlet-name>
         <url-pattern>/</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>CidadeController</servlet-name>
         <url-pattern>/CidadeController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MatriculaController</servlet-name>
+        <url-pattern>/MatriculaController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

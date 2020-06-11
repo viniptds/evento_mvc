@@ -1,7 +1,6 @@
 package util;
 
 import java.io.Serializable;
-import model.Usuario;
 
 /**
  * Bean para as configurações de uma página

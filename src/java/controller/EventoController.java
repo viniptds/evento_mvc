@@ -117,7 +117,7 @@ public class EventoController extends HttpServlet {
                                         
                                         if(nome.length() > 0 && inicio!=null && fim!=null)
                                         {
-                                            evt = new Evento(cod, nome, inicio, fim);
+                                            evt = new Evento(cod, nome, inicio, fim, null);
                                             if(session.getAttribute("altered_evento") != null)
                                             {                
                                                 evt.setCodigo(((Evento)session.getAttribute("altered_evento")).getCodigo());
@@ -168,7 +168,7 @@ public class EventoController extends HttpServlet {
                 {
                     if(request.getParameter("search") == null)
                     {
-                        session.setAttribute("listaEvento", insd.listar());
+                        session.setAttribute("listaEvento", insd.listar(false));
                     }
                     else
                     {
