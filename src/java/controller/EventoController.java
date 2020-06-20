@@ -45,7 +45,7 @@ public class EventoController extends HttpServlet {
             
             HttpSession session = request.getSession();
             
-            EventoDAO insd = new EventoDAO();            
+            EventoDAO evtd = new EventoDAO();            
             Evento evt = null;
             
             String path, data[];    
@@ -55,7 +55,7 @@ public class EventoController extends HttpServlet {
             LocalDate inicio, fim;
             int cod = 0, dia, mes, ano;
                                     
-            session.removeAttribute("listaEvento");
+            session.removeAttribute("listaEvento");            
             
             if(session.getAttribute("user") == null)
             {
@@ -71,7 +71,7 @@ public class EventoController extends HttpServlet {
 
                         if(cod > 0)
                         {
-                            evt = insd.busca(cod);
+                            evt = evtd.busca(cod);
                             session.setAttribute("altered_evento", evt);
                         }
                         else
@@ -82,6 +82,10 @@ public class EventoController extends HttpServlet {
                         err.addMensagem("Erro ao converter valor!");
                     }
                     request.removeAttribute("codevt");
+                }
+                else
+                {
+                    session.removeAttribute("altered_evento");
                 }
                 
                 if(request.getParameter("bChange") != null)
@@ -121,13 +125,13 @@ public class EventoController extends HttpServlet {
                                             if(session.getAttribute("altered_evento") != null)
                                             {                
                                                 evt.setCodigo(((Evento)session.getAttribute("altered_evento")).getCodigo());
-                                                insd.update(evt);
+                                                evtd.update(evt);
                                                 session.removeAttribute("altered_evento");
                                                 System.out.println("Alterado!");
                                             }
                                             else
                                             {
-                                                insd.insert(evt);          
+                                                evtd.insert(evt);          
                                                 System.out.println("Inserido!");
                                             }
                                             cod = 0;
@@ -156,7 +160,7 @@ public class EventoController extends HttpServlet {
                     evt = (Evento)session.getAttribute("altered_evento");
                     if(request.getParameter("delete").equals("true") && evt != null)
                     {                                                                        
-                            insd.remove(evt);
+                            evtd.remove(evt);
                             System.out.println("Removido!");                    
                         
                     }
@@ -168,12 +172,12 @@ public class EventoController extends HttpServlet {
                 {
                     if(request.getParameter("search") == null)
                     {
-                        session.setAttribute("listaEvento", insd.listar(false));
+                        session.setAttribute("listaEvento", evtd.listar(false));
                     }
                     else
                     {
                         search = request.getParameter("search");
-                        session.setAttribute("listaEvento", insd.search(search, "eve_nome"));
+                        session.setAttribute("listaEvento", evtd.search(search, "eve_nome"));
                     }
                 }
                 

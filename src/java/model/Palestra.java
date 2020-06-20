@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author viniciuspadovan
  */
-public class Palestra {
+public class Palestra implements Serializable {
     ArrayList<Instrutor> instruts;
     ArrayList<Matricula> mats;
     int capacidade, cod;
@@ -46,7 +47,7 @@ public class Palestra {
         return mats;
     }
 
-    public void setAlunos(ArrayList<Matricula> mats) {
+    public void setMatriculas(ArrayList<Matricula> mats) {
         this.mats = mats;
     }
 

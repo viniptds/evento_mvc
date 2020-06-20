@@ -23,10 +23,10 @@ import persist.DAOException;
  */
 public class EventoDAO 
 {
-    PalestraDAO pd;
+    
 
     public EventoDAO() {
-        pd = new PalestraDAO();
+//        
     }
     
     
@@ -85,6 +85,7 @@ public class EventoDAO
     }
 
     private Evento gerar(ResultSet rs) throws SQLException {
+        PalestraDAO pd = new PalestraDAO();
         int codevt = rs.getInt("eve_codigo");
         return new Evento(codevt, rs.getString("eve_nome"), LocalDate.parse(rs.getDate("eve_inicio").toString()), 
                 LocalDate.parse(rs.getDate("eve_fim").toString()), pd.search("eve_codigo", ""+codevt));

@@ -23,6 +23,7 @@
     }
     else
     {
+        ev = null;
         response.sendRedirect("EventoController");
     }
     
@@ -30,19 +31,28 @@
     if(session.getAttribute("listaPal") != null)
     {
         lpal = (ArrayList<Palestra>)session.getAttribute("listaPal");
-    }    
-    
+    }        
 %>
-            
-        <a href="<%out.print(application.getContextPath());%>/EventoController<%out.print((ev!=null) ? "?path=perfil.jsp&codevt="+ev.getCodigo() : "");%>">Menu</a>                        
-        <form method="post" action="<%out.print(application.getContextPath());%>/PalestraController?path=listagem.jsp&list=true">
-            
+
+<%
+    if(ev != null)
+    {
+%>      
+
+        <a href="<%out.print(application.getContextPath()+"/EventoController?path=perfil.jsp&codevt="+ev.getCodigo());%>">Voltar</a>                        
+
+<%
+    }
+%>
+  
+        <form method="post" action="<%out.print(application.getContextPath()+"/PalestraController?"+request.getQueryString());%>">            
             <label>Buscar: </label>
             <input type="text" name="search" value="<%out.print(search.length() > 0 ? search : "");%>">
             
             <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/PalestraController?path=perfil.jsp">Nova Palestra</a>
+            
+        <a href="<%out.print(application.getContextPath());%>/PalestraController?path=perfil.jsp">Nova Palestra</a>
             
         
 <%
@@ -76,7 +86,7 @@
 
                 <td><% out.print(p.getDescricao()); %></td>                  
                 <td><% out.print(p.getCapacidade()); %></td>  
-                <td><% out.print((p.getAlunos() == null) ? p.getCapacidade() : p.getCapacidade()-p.getAlunos().size()); %></td>  
+                <td><% out.print((p.getMatriculas()== null) ? p.getCapacidade() : p.getCapacidade()-p.getMatriculas().size()); %></td>  
             </tr>
             
 <%

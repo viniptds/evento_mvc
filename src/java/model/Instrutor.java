@@ -16,7 +16,7 @@ public class Instrutor implements Serializable
 {
     int codigo;
     String nome, curriculo;
-    ArrayList<Palestra> palestras;
+//    ArrayList<Palestra> palestras;
 
     public Instrutor(int codigo, String nome, String curriculo) {
         this.codigo = codigo;

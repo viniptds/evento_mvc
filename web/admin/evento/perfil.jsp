@@ -28,12 +28,24 @@
         nome = "";
         inicio=null;
         fim=null;
+        evt = null;
     }
 
 %>
-
+<%
+    if(evt != null)
+    {
+%>
+        <a href="<%out.print(application.getContextPath());%>/EventoController?path=listagem.jsp&list=true">Voltar</a>
+<%
+    }
+    else
+    {
+%>
         <a href="<%out.print(application.getContextPath());%>/EventoController">Menu</a>
-        
+<%
+}
+%>
         <form action="<%out.print(application.getContextPath());%>/EventoController?path=listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
@@ -50,7 +62,7 @@
             <input type="submit" name="bChange" value="Enviar">
         </form>
 <%
-    if(session.getAttribute("altered_evento") != null)
+    if(evt != null)
     {            
 %>
 

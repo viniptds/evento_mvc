@@ -1,10 +1,12 @@
 
+<%@page import="model.Palestra"%>
 <%@page import="model.Instrutor"%>
 <%@page import="java.util.ArrayList"%>
 
 <%!
     ArrayList<Instrutor> lins;
     Instrutor in;    
+    Palestra pal;
     String search = "";
     int cod;
 %>
@@ -16,16 +18,32 @@
         response.sendRedirect("ApplicationController");        
     }
     
+    if(session.getAttribute("altered_pal") != null)
+    {
+        pal = (Palestra)session.getAttribute("altered_pal");
+    }
+    else
+    {
+        pal = null;
+        response.sendRedirect("PalestraController");
+    }
+    
     if(session.getAttribute("listaInst") != null)
     {
         lins = (ArrayList<Instrutor>)session.getAttribute("listaInst");
     }    
-    request.removeAttribute("bChange");
+    request.removeAttribute("bChange");    
 %>
             
-        <a href="<%out.print(application.getContextPath());%>/InstrutorController">Menu</a>                
-        
-        <form method="post" action="<%out.print(application.getContextPath());%>/InstrutorController?path=listagem.jsp&list=true">
+<%
+    if(pal != null)
+    {
+%>
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
+<%
+    }
+%>                       
+        <form method="post" action="<%out.print(application.getContextPath()+"/InstrutorController?"+request.getQueryString());%>">
             
             <label>Buscar: </label>
             <input type="text" name="search" value="<%out.print(search.length() > 0 ? search : "");%>">

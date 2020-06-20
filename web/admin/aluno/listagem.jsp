@@ -1,8 +1,9 @@
 
+<%@page import="model.Palestra"%>
 <%@page import="model.Aluno"%>
 <%@page import="java.util.ArrayList"%>
 <%!
-
+    Palestra pal;
     ArrayList<Aluno> alunos;
     String search = "";
 %>
@@ -12,6 +13,14 @@
     {        
         response.sendRedirect("ApplicationController");        
     }
+    if(session.getAttribute("altered_pal") != null)
+    {
+        pal = (Palestra)session.getAttribute("altered_pal");
+    }
+    else
+    {
+        pal = null;        
+    }
     
     if(session.getAttribute("listaAluno") != null)
     {
@@ -19,9 +28,15 @@
     }    
    
 %>
-
-        <a href="<%out.print(application.getContextPath());%>/AlunoController">Menu</a>                
-        
+<%
+    if(pal != null)
+    {
+%>
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
+<%
+    }
+%>
+                          
         <form method="post" action="<%out.print(application.getContextPath());%>/AlunoController?path=listagem.jsp&list=true">
             
             <label>Buscar: </label>

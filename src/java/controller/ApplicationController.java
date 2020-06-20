@@ -108,6 +108,16 @@ public class ApplicationController extends HttpServlet {
                 {
                     session.removeAttribute("user");
                     session.removeAttribute("aluno");
+                    session.removeAttribute("altered_aluno");
+                    session.removeAttribute("altered_evento");
+                    session.removeAttribute("altered_mat");
+                    session.removeAttribute("altered_pal");
+                    session.removeAttribute("altered_ins");                    
+                    session.removeAttribute("listaMat");
+                    session.removeAttribute("listaAluno");
+                    session.removeAttribute("listaInst");
+                    session.removeAttribute("listaPal");
+                    session.removeAttribute("listaEvento");                    
                 }
             }               
             

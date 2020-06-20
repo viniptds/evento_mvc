@@ -17,7 +17,7 @@ public class Matricula implements Serializable{
     Evento evento;
     boolean confirmado;    
 
-    public Matricula(int codigo, Aluno aluno, Evento evento, boolean confirmado) {
+    public Matricula(int codigo, Aluno aluno, boolean confirmado) {
         this.codigo = codigo;
         this.aluno = aluno;
         this.evento = evento;

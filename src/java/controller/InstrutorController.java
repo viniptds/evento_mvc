@@ -8,6 +8,7 @@ package controller;
 import dao.InstrutorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Instrutor;
+import model.Palestra;
 import model.Usuario;
 import util.ConfigPagina;
 
@@ -44,6 +46,8 @@ public class InstrutorController extends HttpServlet {
             
             InstrutorDAO insd = new InstrutorDAO();            
             Instrutor in = null;
+            
+            Palestra pal = (Palestra)session.getAttribute("altered_pal");
             
             String path;    
             String title [] = {"Menu Instrutor", "Listagem de Instrutor(es)", "Perfil"};
@@ -126,16 +130,27 @@ public class InstrutorController extends HttpServlet {
                 }
                 
                 if(request.getParameter("list") != null)
-                {
-                    if(request.getParameter("search") == null)
+                {      
+                    ArrayList<Instrutor> insts = null;
+                    
+                    if(request.getParameter("pal") != null)
                     {
-                        session.setAttribute("listaInst", insd.listar());
-                    }
+                        insts = pal.getInstruts();
+                    }    
                     else
                     {
-                        search = request.getParameter("search");
-                        session.setAttribute("listaInst", insd.search(search, "ins_nome"));
+                        insts = insd.listar();
                     }
+                    
+                    
+//                    if(request.getParameter("search") == null)
+//                    {
+//                        search = request.getParameter("search");
+//                        session.setAttribute("listaInst", insd.search(search, "ins_nome"));                        
+//                    }
+                    
+                    session.setAttribute("listaInst", insts);
+                    
                 }
                 
                 if(request.getParameter("path") != null)

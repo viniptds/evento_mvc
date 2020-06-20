@@ -50,6 +50,16 @@
     <form action="MatriculaController?path=matricula.jsp" method="post">
 
 <%
+    if(mat != null)
+    {
+%>
+
+    <p>Matrícula <%out.print(mat.getCodigo());%> </p>
+<%
+    }
+%>
+
+<%
     if(evts != null && evts.size() > 0)
     {
 %>

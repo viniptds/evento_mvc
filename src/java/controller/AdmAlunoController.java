@@ -7,6 +7,7 @@ package controller;
 
 import dao.AlunoDAO;
 import dao.CidadeDAO;
+import dao.PalestraDAO;
 import dao.UFDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Aluno;
 import model.Cidade;
+import model.Matricula;
+import model.Palestra;
 import model.Usuario;
 import persist.DAOException;
 import util.ConfigPagina;
@@ -57,8 +60,10 @@ public class AdmAlunoController extends HttpServlet {
             UFDAO ufd = new UFDAO();
             AlunoDAO dao = new AlunoDAO();
             Aluno al = new Aluno();
+            PalestraDAO pald = new PalestraDAO();
+            Palestra pal = (Palestra)session.getAttribute("altered_pal");
             
-            int cod = 0, num;
+            int cod = 0, num, codpal = 0;
             String nome, email, senha, cpf, endereco, complemento = "", cep;
             LocalDate data;
             
@@ -66,7 +71,7 @@ public class AdmAlunoController extends HttpServlet {
             if(session.getAttribute("user") == null)
                 response.sendRedirect("ApplicationController");
             else
-            {
+            {                                
                 //coleta codigo para alteracao
                 if(request.getParameter("codaluno") != null)
                 {
@@ -213,16 +218,28 @@ public class AdmAlunoController extends HttpServlet {
                 }
                 
                 if(request.getParameter("list") != null)
-                {                                        
-                    if(request.getParameter("search") == null)
+                {          
+                    ArrayList<Aluno> als = null;
+                    
+                    if(request.getParameter("pal") != null)
                     {
-                        session.setAttribute("listaAluno", dao.list());
+                        als = new ArrayList<>();
+                        for(Matricula m : pal.getMatriculas())
+                            als.add(m.getAluno());
                     }
                     else
-                    {
-                        String search = request.getParameter("search");
-                        session.setAttribute("listaAluno", dao.search(search, "alu_email"));
-                    }                    
+                    {     
+                        als = dao.list();
+                        
+                    }
+                    
+//                    if(request.getParameter("search") != null)
+//                    {
+//                        String search = request.getParameter("search");
+//                        session.setAttribute("listaAluno", dao.search(search, "alu_email"));
+//                    }          
+                    
+                    session.setAttribute("listaAluno", als);
                 }                                                       
                 
                 if(request.getParameter("path") != null)

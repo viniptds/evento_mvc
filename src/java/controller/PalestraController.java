@@ -92,6 +92,10 @@ public class PalestraController extends HttpServlet {
                     
                     request.removeAttribute("codpal");                    
                 }
+                else
+                {
+                    session.removeAttribute("altered_pal");
+                }
                 
                 if(request.getParameter("bChange") != null)
                 {
@@ -176,27 +180,20 @@ public class PalestraController extends HttpServlet {
                 {
                     ArrayList<Palestra> pals = null;
                     
-                    if(request.getParameter("search") == null)
-                    {
-                        pals = pald.list();    
-                        System.out.println("+");
-                    }
-                    else
-                    {
-                        search = request.getParameter("search");
-                        pals = pald.search("pal_nome", search);                                                
-                    }
-                                        
                     if(request.getParameter("evt") != null)
                     {
                         pals = pald.search("eve_codigo", ""+evt.getCodigo());
-                        
-                        for(Palestra pa : pals)
-                        {
-                            System.out.println(pa.getCod()+" - "+pa.getNome());
-                        }
-                        
                     }
+                    else
+                    {
+                        pals = pald.list();
+                    }
+                    
+//                    if(request.getParameter("search") != null)                    
+//                    {
+//                        search = request.getParameter("search");
+//                        pals = pald.search("pal_nome", search);                                                
+//                    }                                                            
                     
                     session.setAttribute("listaPal", pals);
                 }
