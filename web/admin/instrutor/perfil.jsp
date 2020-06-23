@@ -1,7 +1,9 @@
 
+<%@page import="model.Palestra"%>
 <%@page import="dao.InstrutorDAO"%>
 <%@page import="model.Instrutor"%>
 <%!
+    Palestra pal;
     Instrutor in;
     InstrutorDAO insd = new InstrutorDAO();
     int cod = 0;
@@ -26,9 +28,25 @@
         nome = curr = "";
     }
 
+    if(session.getAttribute("altered_pal") != null)
+    {
+        pal = (Palestra)session.getAttribute("altered_pal");
+    }
+    else
+    {
+        pal = null;
+        response.sendRedirect("PalestraController");
+    }    
 %>
 
-        <a href="<%out.print(application.getContextPath());%>/InstrutorController">Menu</a>
+<%
+    if(pal != null)
+    {
+%>
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
+<%
+    }
+%>                  
         
         <form action="<%out.print(application.getContextPath());%>/InstrutorController?path=listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
@@ -45,17 +63,18 @@
     if(session.getAttribute("altered_inst") != null)
     {            
 %>
-
+        <br>
+        <br> 
         <a href="<%out.print(application.getContextPath());
            %>/InstrutorController?path=listagem.jsp&cod=<%
-               out.print(in.getCodigo());%>&delete=true&list=true">Deletar</a>
-        <br>
-        <br>
+               out.print(in.getCodigo());%>&delete=true&list=true">Deletar desta Palestra</a>
+        <br>   
         
-        <a href="">Vincular a uma palestra</a>
+               <a href="<%out.print(application.getContextPath());
+           %>/InstrutorController?path=listagem.jsp&cod=<%
+               out.print(in.getCodigo());%>&delete=true&list=true&all=true">Deletar Permanentemente</a>
         <br>
-        
-        <a href="">Visualizar palestras</a>
+        <br>                
         
 <%
     }

@@ -62,15 +62,13 @@ public class MatriculaController extends HttpServlet {
             Palestra pal;
             
             session.removeAttribute("listaMat");
-//            session.removeAttribute("listaEvt");
-            session.removeAttribute("evts");
+            session.removeAttribute("listaEvt");            
             session.removeAttribute("evento");
+            session.removeAttribute("pals");
+            session.removeAttribute("palestra");
             
-            if(al == null)
-            {
-                response.sendRedirect("ApplicationController");
-            }
-            else
+            
+            if(al != null)
             {
                 if(request.getParameter("codmat") != null)
                 {
@@ -79,17 +77,11 @@ public class MatriculaController extends HttpServlet {
                         codmat = Integer.parseInt(request.getParameter("codmat"));
 
                         m = matd.get(codmat);
+                        pal = pald.getByMatricula(codmat);
                         
-                        if(m != null)
-                        {                                                        
-                            session.setAttribute("altered_mat", m);
-                        }
-                        else
-                        {
-                            err.addMensagem("Código inválido");
-                            
-                            response.sendRedirect("listagem.jsp");
-                        }
+                        session.setAttribute("altered_mat", m);
+                        session.setAttribute("palestra", pal);
+                        
                     }
                     catch(NumberFormatException ex)
                     {
@@ -103,14 +95,24 @@ public class MatriculaController extends HttpServlet {
                 
                 if(request.getParameter("bEvt") != null)
                 {                    
-                    session.setAttribute("listaEvt", evtd.listar(true, al.getCodigo()));
+                    session.setAttribute("listaEvt", evtd.listar(true));
                 }
                 
                 if(request.getParameter("evento") != null)
-                {
+                {                    
                     try
                     {
                         codevt = Integer.valueOf(request.getParameter("evento"));
+                        
+                        ArrayList<Matricula> mats = matd.getAll(al.getCodigo());                                        
+                        ArrayList<Palestra> pals = new ArrayList<Palestra>();
+                        
+                        
+                        for(Palestra p : pald.search(3, "eve_codigo", ""+codevt))
+                            if(!p.getAlunos().contains(al))
+                                pals.add(p);
+                        
+                        session.setAttribute("pals", pals);
                         session.setAttribute("evento", evtd.busca(codevt));
                     }
                     catch(NumberFormatException ex)
@@ -134,10 +136,12 @@ public class MatriculaController extends HttpServlet {
                 
                 if(request.getParameter("bPal") != null)
                 {
-                    if(session.getAttribute("palestra") != null && session.getAttribute("evento") != null)                        
-                    {
-                        evt = (Evento)session.getAttribute("evento");
-                        pal = (Palestra)session.getAttribute("palestra");
+                    evt = (Evento)session.getAttribute("evento");
+                    pal = (Palestra)session.getAttribute("palestra");
+                    
+                    if(evt != null && pal != null)                        
+                    {                        
+                        
                         
                         if(session.getAttribute("altered_mat") != null)
                         {
@@ -146,74 +150,17 @@ public class MatriculaController extends HttpServlet {
                         }
                         else
                         {
-                            matd.insert(new Matricula(codpal, al, evt, pal, false);
+                            m = new Matricula(0, al, false, evt);
+                            System.out.println(m);
+                            matd.insert(m);
+                            System.out.println("***");
+                            matd.addMatricula(m, pal.getCod());
                         }
-                        session.removeAttribute("palestra");
+                        
+                        session.removeAttribute("palestra");   
                         session.removeAttribute("evento");
                     }
-//                    if(request.getParameter("nome") != null)
-//                    {
-//                        nome = request.getParameter("nome");
-//
-//                        if(request.getParameter("desc") != null)
-//                        {
-//                            desc = request.getParameter("desc");
-//
-//                            if(request.getParameter("cap") != null)
-//                            {
-//                                try
-//                                {                                                                    
-//                                    cap = Integer.parseInt(request.getParameter("cap"));
-//                                }
-//                                catch(NumberFormatException ex)
-//                                {
-//                                    err.addMensagem("Valor inválido para CAPACIDADE");
-//                                }
-//                                
-//                                if(request.getParameter("data") != null)
-//                                {
-//                                    try
-//                                    {
-//                                        data = LocalDate.parse(request.getParameter("data").toString());
-//                                    }
-//                                    catch(DateTimeParseException ex)
-//                                    {
-//                                        err.addMensagem("Data inválida");
-//                                    }
-//                                
-//                                    if(nome.length() > 0 && desc.length() > 0 && cap > 0 && data.isBefore(LocalDate.now()))
-//                                    {                                    
-//                                        if(session.getAttribute("altered_pal") != null)
-//                                        {
-//
-//                                            p = pald.get(cod);
-//                                            p.setNome(nome);
-//                                            p.setCapacidade(cap);
-//                                            p.setDescricao(desc);
-//                                            if(!pald.update(p))
-//                                            {
-//                                                err.addMensagem("Erro ao alterar!");
-//                                            }                                        
-//                                            else
-//                                            {
-//                                                session.removeAttribute("altered_pal");                                                
-//                                            }                                        
-//                                        }
-//                                        else
-//                                        {
-//                                            p = new Palestra(cod, nome, desc, cap, data, null, null, null);
-//                                            if(!pald.insert(p))
-//                                            {
-//                                                err.addMensagem("Erro ao inserir");                                            
-//                                            }
-//                                        }
-//                                        cod = cap = 0;
-//                                        nome = desc = "";                                                           
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
+//                   
                 }
                     
                 if(request.getParameter("delete") != null)
@@ -223,8 +170,7 @@ public class MatriculaController extends HttpServlet {
                         matd.remove(m);
                         System.out.println("Removido!");                                                                   
                     }
-                    session.removeAttribute("altered_mat");
-                    //response.sendRedirect("ApplicationController");
+                    session.removeAttribute("altered_mat");                    
                 }
                 
                 if(request.getParameter("list") != null)
@@ -269,6 +215,10 @@ public class MatriculaController extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                 }
+            }
+            else
+            {
+                response.sendRedirect("ApplicationController");
             }
         
         }

@@ -15,19 +15,20 @@ import java.util.ArrayList;
  */
 public class Palestra implements Serializable {
     ArrayList<Instrutor> instruts;
-    ArrayList<Matricula> mats;
+    ArrayList<Aluno> alunos;
     int capacidade, cod;
     String descricao, nome;    
     LocalDate data;
-
+    int codevt;
+    
     public Palestra()
     {
         
     }
     
-    public Palestra(int cod, String nome, String descricao, int capacidade, LocalDate data, ArrayList<Instrutor> instruts, ArrayList<Matricula> mats) {
+    public Palestra(int cod, String nome, String descricao, int capacidade, LocalDate data, ArrayList<Instrutor> instruts, ArrayList<Aluno> alunos) {
         this.instruts = instruts;
-        this.mats = mats;
+        this.alunos = alunos;
         this.capacidade = capacidade;
         this.cod = cod;
         this.descricao = descricao;
@@ -41,14 +42,6 @@ public class Palestra implements Serializable {
 
     public void setInstruts(ArrayList<Instrutor> instruts) {
         this.instruts = instruts;
-    }
-
-    public ArrayList<Matricula> getMatriculas() {
-        return mats;
-    }
-
-    public void setMatriculas(ArrayList<Matricula> mats) {
-        this.mats = mats;
     }
 
     public int getCapacidade() {
@@ -90,5 +83,51 @@ public class Palestra implements Serializable {
     public void setData(LocalDate data) {
         this.data = data;
     }        
+
+    public ArrayList<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(ArrayList<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
     
+    public int getCodevt() {
+        return codevt;
+    }
+
+    public void setCodevt(int codevt) {
+        this.codevt = codevt;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Palestra other = (Palestra) obj;
+        if (this.cod != other.cod) {
+            return false;
+        }
+        return true;
+    }       
+
+    @Override
+    public String toString() {
+        return "Palestra{" + "instruts=" + instruts + ", alunos=" + alunos + ", capacidade=" + capacidade + ", cod=" + cod + ", descricao=" + descricao + ", nome=" + nome + ", data=" + data + ", codevt=" + codevt + '}';
+    }
+   
 }

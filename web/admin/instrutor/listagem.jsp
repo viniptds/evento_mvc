@@ -51,7 +51,8 @@
             <input type="submit" name="bSearch" value="Buscar">
         </form>
             <a href="<%out.print(application.getContextPath());%>/InstrutorController?path=perfil.jsp">Novo Instrutor</a>
-            
+            <br>
+            <a href="<%out.print(application.getContextPath());%>/InstrutorController?path=join.jsp&list=true&filter=true">Vincular Instrutor</a>
         
 <%
     if(lins != null)

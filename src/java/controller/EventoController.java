@@ -55,7 +55,10 @@ public class EventoController extends HttpServlet {
             LocalDate inicio, fim;
             int cod = 0, dia, mes, ano;
                                     
-            session.removeAttribute("listaEvento");            
+            session.removeAttribute("listaEvento");
+            session.removeAttribute("altered_pal");
+            session.removeAttribute("altered_aluno");
+            session.removeAttribute("altered_inst");
             
             if(session.getAttribute("user") == null)
             {
@@ -86,8 +89,7 @@ public class EventoController extends HttpServlet {
                 else
                 {
                     session.removeAttribute("altered_evento");
-                }
-                
+                }                
                 if(request.getParameter("bChange") != null)
                 {
                     if(request.getParameter("nome") != null)
@@ -118,7 +120,7 @@ public class EventoController extends HttpServlet {
                                         ano = Integer.parseInt(data[2]);
 
                                         fim = LocalDate.of(ano, mes, dia);
-                                        
+                                                                               
                                         if(nome.length() > 0 && inicio!=null && fim!=null)
                                         {
                                             evt = new Evento(cod, nome, inicio, fim, null);

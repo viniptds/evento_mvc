@@ -52,11 +52,11 @@
             <br>
             
             <label>Inicio: </label>
-            <input type="text" name="inicio" required="required" value="<% out.print((inicio == null) ? "" : inicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %>">
+            <input type="text" name="inicio" required="required" placeholder="DD/MM/AAAA" value="<% out.print((inicio == null) ? "" : inicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %>">
             <br>
             
             <label>Fim: </label>
-            <input type="text" name="fim" required="required" value="<% out.print((fim == null) ? "" : fim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %>">
+            <input type="text" name="fim" required="required" placeholder="DD/MM/AAAA" value="<% out.print((fim == null) ? "" : fim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))); %>">
             <br>
                         
             <input type="submit" name="bChange" value="Enviar">
@@ -75,7 +75,7 @@
                <a href="PalestraController?path=listagem.jsp&list=true&evt=<%out.print(evt.getCodigo());%>">Visualizar palestras</a>
         <br>
         
-        <a href="">Relatório de Presença</a>
+        <a href="EventoController?path=relatorio.jsp&codevt=<%out.print(evt.getCodigo());%>">Relatório de Presença</a>
         
                
 <%

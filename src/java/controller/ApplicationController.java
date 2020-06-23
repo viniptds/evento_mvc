@@ -128,7 +128,7 @@ public class ApplicationController extends HttpServlet {
             else
                 if(session.getAttribute("aluno") != null)
                 {
-                    response.sendRedirect(this.getServletContext().getContextPath()+"/AlunoController");                
+                    response.sendRedirect(this.getServletContext().getContextPath()+"/MatriculaController");                
                 }
                 else
                 {

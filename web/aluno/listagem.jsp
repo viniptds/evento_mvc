@@ -1,21 +1,22 @@
 
 
+<%@page import="model.Palestra"%>
 <%@page import="model.Matricula"%>
 <%@page import="java.util.ArrayList"%>
 
 <%!
     ArrayList<Matricula> lmat;
     Matricula mat;    
+    Palestra pal;
     String search = "";
     int cod;
 %>
 
-<%
-    
+<%    
     if(session.getAttribute("user") == null)
     {        
         response.sendRedirect("ApplicationController");        
-    }
+    }        
     
     if(session.getAttribute("listaMat") != null)
     {
@@ -24,7 +25,7 @@
     
 %>
             
-        <a href="<%out.print(application.getContextPath());%>/AlunoController">Menu</a>                
+        <a href="<%out.print(application.getContextPath());%>/AdmAlunoController">Menu</a>                
         
         <form method="post" action="<%out.print(application.getContextPath());%>/MatriculaController?path=matricula.jsp">
             
@@ -33,14 +34,12 @@
             
             <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/MatriculaController?path=perfil.jsp">Nova Matricula</a>
+            <a href="<%out.print(application.getContextPath());%>/MatriculaController?path=matricula.jsp&bEvt=true">Nova Matricula</a>
             
         
 <%
-    if(lmat != null)
-    {        
-        if(lmat.size()>0)
-        {
+    if(lmat != null && lmat.size()>0)
+    {
 %>        
         <br>
         <table border="3">
@@ -76,6 +75,7 @@
         {
 %>
         <p> Não há matrícula(s) para essa busca. </p>
-<%      }
-    }
+<%      
+        }
+    
 %> 

@@ -1,3 +1,6 @@
+<%@page import="model.Aluno"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="model.Matricula"%>
 <%@page import="model.Evento"%>
 <%@page import="model.Instrutor"%>
 <%@page import="dao.PalestraDAO"%>
@@ -8,6 +11,7 @@
     PalestraDAO usd = new PalestraDAO();
     int cod = 0, cap;
     String nome = "", desc = "";
+    LocalDate data;    
 %>
 
 
@@ -24,6 +28,7 @@
         desc = pal.getDescricao();
         cap = pal.getCapacidade();
         cod = pal.getCod();        
+        data = pal.getData();
     }                   
     else
     {
@@ -44,7 +49,7 @@
     {
 %>      
 
-        <a href="<%out.print(application.getContextPath()+"/EventoController?path=perfil.jsp&codevt="+ev.getCodigo());%>">Voltar</a>                        
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=listagem.jsp&list=true&evt="+ev.getCodigo());%>">Voltar</a>                        
 
 <%
     }
@@ -59,7 +64,7 @@
 %>
         
         <form action="<%out.print(application.getContextPath());
-              %>/PalestraController?path=listagem.jsp&list=true" method="post">
+              %>/PalestraController?path=listagem.jsp&list=true<%out.print((ev !=  null) ? "?evt="+ev.getCodigo() : "");%>" method="post">
             <label>Nome: </label><input type="text" autofocus="true" name="nome" value="<% out.print(nome); %>">
             <br>
             
@@ -67,6 +72,9 @@
             <br>
             
             <label>Capacidade: </label><input type="number" name="cap" value="<% out.print(""+cap); %>">            
+            <br>
+            
+            <label>Data: </label><input type="date" name="data" value="<% out.print(""+data); %>">            
             <br>
             
             <input type="submit" name="bChange" value="Enviar">
@@ -85,35 +93,32 @@
         
         <br>
         <br>
-        Vagas Disponíveis: <% out.print(String.valueOf(pal.getCapacidade()-pal.getMatriculas().size())); %>
+        Vagas Disponíveis: <% out.print(String.valueOf(pal.getCapacidade()-pal.getAlunos().size())); %>              
+        <br>                
+        <a href="AdmAlunoController?path=listagem.jsp&list=true&conf=true">Confirmar matrículas</a>
         <br>
-        Oi - <%out.print(pal.getMatriculas().size());%>
+<%
+        if(pal.getAlunos() != null && pal.getAlunos().size()>0)
+        {            
+%>
+        <a href="AdmAlunoController?path=listagem.jsp&list=true">Visualizar Participantes</a>
         <br>
-        <a href="AdmAlunoController?path=listagem.jsp&list=true&pal=<%
-            out.print(pal.getCod());%>">Visualizar Participantes</a>
-        <br>
-        <% 
-        if(pal.getInstruts() != null)
-        {
-                     
-        %>           
-        <a href="InstrutorController?path=listagem.jsp&pal=<%
-               out.print(pal.getCod());%>&list=true">Visualizar Instrutores</a>
+
+<%         
+        }
+        if(pal.getInstruts() != null && pal.getInstruts().size()>0)
+        {                     
+%>           
         
-        <%
+        <a href="InstrutorController?path=listagem.jsp&list=true">Visualizar Instrutores</a>
+        
+<%
         }
         else
         {
-        %>        
+%>        
         
-        <%
-        }
-            if(ev == null)
-        {
-        %>
-                
-        
-        <%
+<%
         }
     }
 %>        

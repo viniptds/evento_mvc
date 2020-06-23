@@ -13,7 +13,7 @@ import java.time.LocalDate;
  * @author viniciuspadovan
  */
 public class Aluno extends Pessoa implements Serializable{
-    int num;
+    int num, codigo;
     String email, endereco, complemento, cep, cpf;
     LocalDate datanasc;
     Cidade cidade;
@@ -123,6 +123,35 @@ public class Aluno extends Pessoa implements Serializable{
 
     public void setCidade(Cidade cidade) {
         this.cidade = cidade;
+    }
+
+    @Override
+    public String toString() {
+        return "Aluno{" + "num=" + num + ", email=" + email + ", endereco=" + endereco + ", complemento=" + complemento + ", cep=" + cep + ", cpf=" + cpf + ", datanasc=" + datanasc + ", cidade=" + cidade + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Aluno other = (Aluno) obj;
+        if (this.codigo != other.codigo) {
+            return false;
+        }
+        return true;
     }
     
     

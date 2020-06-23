@@ -22,15 +22,11 @@ import persist.DAOException;
  * @author rique
  */
 public class EventoDAO 
-{
-    
-
+{    
     public EventoDAO() {
-//        
+        
     }
-    
-    
-    
+            
     public void insert(Evento evt)
     {
         String sql = "insert into evento (eve_nome, eve_inicio, eve_fim) values ('#1', '#2', '#3')";
@@ -88,7 +84,7 @@ public class EventoDAO
         PalestraDAO pd = new PalestraDAO();
         int codevt = rs.getInt("eve_codigo");
         return new Evento(codevt, rs.getString("eve_nome"), LocalDate.parse(rs.getDate("eve_inicio").toString()), 
-                LocalDate.parse(rs.getDate("eve_fim").toString()), pd.search("eve_codigo", ""+codevt));
+                LocalDate.parse(rs.getDate("eve_fim").toString()), pd.search(0, "eve_codigo", ""+codevt));
     }
 
     public Evento busca(int codigo) {
@@ -123,11 +119,12 @@ public class EventoDAO
             "left join matricula_palestra on matricula_palestra.pal_codigo = palestra.pal_codigo\n";
             
             if(param.length > 0 )
-                sql+= " where matricula.alu_codigo <> "+param[0];     
+                sql+= " where matricula.alu_codigo <> "+param[0] + " or matricula_palestra.mat_codigo is null";     
             
-            sql+="or matricula_palestra.mat_codigo is null group by evento.eve_codigo "
+            sql+=" group by evento.eve_codigo "
                     + "having sum(palestra.pal_nr_inscritos_max) > count(matricula_palestra.mat_codigo)\n";
         }
+        
         try (Connection conn = Conexao.connect()) {
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql)) {
@@ -181,8 +178,5 @@ public class EventoDAO
         
         return lus;    
     }
-    
-    
-    
-    
+                
 }

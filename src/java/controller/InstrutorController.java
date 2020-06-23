@@ -6,6 +6,7 @@
 package controller;
 
 import dao.InstrutorDAO;
+import dao.PalestraDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class InstrutorController extends HttpServlet {
             Instrutor in = null;
             
             Palestra pal = (Palestra)session.getAttribute("altered_pal");
-            
+            PalestraDAO pd = new PalestraDAO();
             String path;    
             String title [] = {"Menu Instrutor", "Listagem de Instrutor(es)", "Perfil"};
             
@@ -95,22 +96,30 @@ public class InstrutorController extends HttpServlet {
                             
                             if(nome.length() > 0 && curr.length() > 0)
                             {
-                                in = new Instrutor(cod, nome, curr);
-                                if(session.getAttribute("altered_inst") != null)
-                                {                   
-                                    in.setCodigo(((Instrutor)session.getAttribute("altered_inst")).getCodigo());
-                                    insd.update(in);
-                                    session.removeAttribute("altered_inst");
-                                    System.out.println("Alterado!");
+                                if(pal != null)
+                                {                                                                    
+                                    in = new Instrutor(cod, nome, curr);                                                                
+                                    if(session.getAttribute("altered_inst") != null)
+                                    {                   
+                                        in.setCodigo(((Instrutor)session.getAttribute("altered_inst")).getCodigo());
+                                        insd.update(in);
+                                        session.removeAttribute("altered_inst");
+                                        System.out.println("Alterado!");
+                                    }
+                                    else
+                                    {
+                                        insd.insert(in);    
+                                        
+                                        pal.getInstruts().add(in);
+                                        pd.addInstrutor(in, pal.getCod());
+                                        
+                                        System.out.println("Inserido!");
+                                        
+                                    }
+                                    cod = 0;
+                                    nome = curr = "";     
+                                    request.removeAttribute("bChange");
                                 }
-                                else
-                                {
-                                    insd.insert(in);          
-                                    System.out.println("Inserido!");
-                                }
-                                cod = 0;
-                                nome = curr = "";     
-                                request.removeAttribute("bChange");
                             }
                         }
                     }
@@ -118,22 +127,38 @@ public class InstrutorController extends HttpServlet {
                 
                 if(request.getParameter("delete") != null)
                 {
-                    in = (Instrutor)session.getAttribute("altered_inst");
+                    in = (Instrutor)session.getAttribute("altered_inst");                    
                     if(request.getParameter("delete").equals("true") && in != null)
-                    {                                                                        
+                    {                                                      
+                        if(pal != null || pal.getInstruts().contains(in))
+                        {
+                            pal.getInstruts().remove(in);
+                            pd.removeInstrutor(in, pal.getCod());
+                        }
+                        
+                        if(request.getParameter("all") != null)
                             insd.remove(in);
-                            System.out.println("Removido!");                    
+                        
+                        System.out.println("Removido!");                    
                         
                     }
                     session.removeAttribute("altered_inst");
                     //response.sendRedirect("ApplicationController");
                 }
                 
+                if(request.getParameter("join") != null)
+                {
+                    System.out.println(pal.getCod() + "  -   "+ in.getNome());
+                    pal.getInstruts().add(in);
+                    pd.addInstrutor(in, pal.getCod());
+                    session.removeAttribute("altered_inst");
+                }
+                
                 if(request.getParameter("list") != null)
                 {      
                     ArrayList<Instrutor> insts = null;
                     
-                    if(request.getParameter("pal") != null)
+                    if(pal != null)
                     {
                         insts = pal.getInstruts();
                     }    
@@ -142,6 +167,11 @@ public class InstrutorController extends HttpServlet {
                         insts = insd.listar();
                     }
                     
+                    if(request.getParameter("filter") != null)
+                    {
+                        insts = insd.listar();                        
+                        insts.removeAll(insd.search(""+pal.getCod(), "pal_codigo"));                                
+                    }
                     
 //                    if(request.getParameter("search") == null)
 //                    {
@@ -152,6 +182,8 @@ public class InstrutorController extends HttpServlet {
                     session.setAttribute("listaInst", insts);
                     
                 }
+                
+                
                 
                 if(request.getParameter("path") != null)
                 {
@@ -165,7 +197,7 @@ public class InstrutorController extends HttpServlet {
                 else
                 {
                     session.removeAttribute("altered_inst");
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/index.jsp", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

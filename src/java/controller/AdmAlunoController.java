@@ -7,6 +7,7 @@ package controller;
 
 import dao.AlunoDAO;
 import dao.CidadeDAO;
+import dao.MatriculaDAO;
 import dao.PalestraDAO;
 import dao.UFDAO;
 import java.io.IOException;
@@ -58,10 +59,12 @@ public class AdmAlunoController extends HttpServlet {
             
             CidadeDAO cd = new CidadeDAO();
             UFDAO ufd = new UFDAO();
-            AlunoDAO dao = new AlunoDAO();
-            Aluno al = new Aluno();
-            PalestraDAO pald = new PalestraDAO();
+            AlunoDAO dao = new AlunoDAO();    
+            MatriculaDAO md = new MatriculaDAO();
+            PalestraDAO pald = new PalestraDAO();                        
             Palestra pal = (Palestra)session.getAttribute("altered_pal");
+            
+            Aluno al = new Aluno();
             
             int cod = 0, num, codpal = 0;
             String nome, email, senha, cpf, endereco, complemento = "", cep;
@@ -203,6 +206,17 @@ public class AdmAlunoController extends HttpServlet {
                     }                                         
                 }                    
                  
+                if(request.getParameter("aluc") != null)
+                {
+                    try
+                    {
+                        md.changeStatus(Integer.parseInt(request.getParameter("aluc")), true);
+                    }
+                    catch(NumberFormatException ex)
+                    {
+                        System.out.println("Erro ao converter");
+                    }
+                }
                 
                 if(request.getParameter("delete") != null)
                 {
@@ -219,18 +233,25 @@ public class AdmAlunoController extends HttpServlet {
                 
                 if(request.getParameter("list") != null)
                 {          
-                    ArrayList<Aluno> als = null;
+                    ArrayList<Aluno> als = new ArrayList<>();
                     
-                    if(request.getParameter("pal") != null)
-                    {
-                        als = new ArrayList<>();
-                        for(Matricula m : pal.getMatriculas())
-                            als.add(m.getAluno());
+                    if(pal != null)
+                    {                        
+                        als = (md.searchMatPal(pal.getCod(), 1));
                     }
                     else
                     {     
-                        als = dao.list();
-                        
+                        als = dao.list();                        
+                    }
+
+                    if(request.getParameter("conf") != null)
+                    {
+                        als = new ArrayList<>();
+                        ArrayList<Aluno> alunos = md.searchMatPal(pal.getCod(), 2);
+                        for(Aluno alu : alunos)
+                        {
+                            als.add(alu);
+                        }
                     }
                     
 //                    if(request.getParameter("search") != null)
@@ -246,23 +267,19 @@ public class AdmAlunoController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0], null));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/"+path);
                 }
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0], null));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/index.jsp");
                 }                        
-            
-                
-                    
-                    
-
+                                                                    
 //        ArrayList<Aluno> listaDeCadastrados;
 //        try {
 //            listaDeCadastrados = dao.listar(null);

@@ -6,6 +6,7 @@
     Palestra pal;
     ArrayList<Aluno> alunos;
     String search = "";
+    boolean conf;
 %>
 <%
     
@@ -26,7 +27,9 @@
     {
         alunos = (ArrayList<Aluno>)session.getAttribute("listaAluno");
     }    
-   
+
+    conf = request.getParameter("conf") != null;
+
 %>
 <%
     if(pal != null)
@@ -35,8 +38,13 @@
         <a href="<%out.print(application.getContextPath()+"/PalestraController?path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
 <%
     }
+    else
+    {
 %>
-                          
+        <a href="<%out.print(application.getContextPath()+"/AdminController");%>">Voltar</a>     
+<%
+    }
+%>
         <form method="post" action="<%out.print(application.getContextPath());%>/AlunoController?path=listagem.jsp&list=true">
             
             <label>Buscar: </label>
@@ -44,14 +52,12 @@
             
             <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/AlunoController?path=perfil.jsp">Novo Aluno</a>
+            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController?path=perfil.jsp">Novo Aluno</a>
             
         
 <%
-    if(alunos != null)
-    {        
-        if(alunos.size()>0)
-        {
+    if(alunos != null && alunos.size()>0)
+    {
 %>        
         <br>
         <table border="3">
@@ -59,6 +65,14 @@
                 <td>Nome</td>
                 <td>Email</td>    
                 <td>CPF</td>
+<%
+            if(conf)
+            {
+%>
+                <td>Confirmar Presença</td>
+<%
+            }
+%>
             </tr>
             
 <% 
@@ -76,18 +90,36 @@
                 </td>
 
                 <td><% out.print(al.getEmail()); %></td>   
-                <td><% out.print(al.getCpf()); %></td>   
-            </tr>            
+                <td><% out.print(al.getCpf()); %></td> 
+<%
+            if(conf)
+            {
+%>
+                <td><a href="AdmAlunoController?path=listagem.jsp&list=true&conf=true&aluc=<%out.print(al.getCodigo());%>">Confirmar</a></td>                
+<%
+            }
+%>
+            </tr>
 <%
             }
 %>
         </table>
 <%
-        }   
-        else
-        {
+    
+    
+    }
+    else
+    {
 %>
         <p> Não há aluno(s) para essa busca. </p>
-<%      }
+<%      
     }
+
+if(conf)
+{
 %> 
+<a href="AdmAlunoController?path=listagem.jsp&list=true">Cancelar</a>
+
+<%
+}
+%>

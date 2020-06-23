@@ -35,9 +35,11 @@ public class InstrutorDAO
         sql = sql.replace("#2", ins.getCurriculo());
 
         
+        
         try (Connection conn = Conexao.connect()) {
             try (Statement st = conn.createStatement()) {
                 st.execute(sql);
+                ins.setCodigo(new Conexao().getMaxPK("instrutor", "ins_codigo"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -48,7 +50,7 @@ public class InstrutorDAO
     
     public void remove(Instrutor ins)
     {
-        String sql = "delete from instrutor where ins_codigo = #1";
+        String sql = "delete from instrutor cascade where ins_codigo = #1";
         
         sql = sql.replace("#1", ""+ins.getCodigo());
         

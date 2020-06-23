@@ -2,7 +2,9 @@ package persist;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,5 +26,41 @@ public class Conexao {
         }
         return null;
     }
-
+    
+    private ResultSet consultar(String sql)
+    {   ResultSet rs=null;
+        try 
+        {
+           Statement statement = Conexao.connect().createStatement();
+             //ResultSet.TYPE_SCROLL_INSENSITIVE,
+             //ResultSet.CONCUR_READ_ONLY);
+           rs = statement.executeQuery( sql );
+           //statement.close();
+        }
+        catch ( SQLException sqlex )
+        { 
+            System.out.println("Erro: "+sqlex.toString());
+            rs = null;
+        }
+        return rs;
+    }
+    
+    
+    public int getMaxPK(String tabela,String chave) 
+    {
+        String sql="select max("+chave+") from "+tabela;
+        int max=0;
+        ResultSet rs = consultar(sql);
+        try 
+        {
+            if(rs.next())
+                max=rs.getInt(1);
+        }
+        catch (SQLException sqlex)
+        { 
+             System.out.println("Erro: " + sqlex.toString());
+             max = -1;
+        }
+        return max;
+    }
 }

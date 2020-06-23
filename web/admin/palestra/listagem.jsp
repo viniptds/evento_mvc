@@ -26,8 +26,7 @@
         ev = null;
         response.sendRedirect("EventoController");
     }
-    
-    
+        
     if(session.getAttribute("listaPal") != null)
     {
         lpal = (ArrayList<Palestra>)session.getAttribute("listaPal");
@@ -86,7 +85,7 @@
 
                 <td><% out.print(p.getDescricao()); %></td>                  
                 <td><% out.print(p.getCapacidade()); %></td>  
-                <td><% out.print((p.getMatriculas()== null) ? p.getCapacidade() : p.getCapacidade()-p.getMatriculas().size()); %></td>  
+                <td><% out.print((p.getAlunos()== null) ? p.getCapacidade() : p.getCapacidade()-p.getAlunos().size()); %></td>  
             </tr>
             
 <%

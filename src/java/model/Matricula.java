@@ -17,7 +17,7 @@ public class Matricula implements Serializable{
     Evento evento;
     boolean confirmado;    
 
-    public Matricula(int codigo, Aluno aluno, boolean confirmado) {
+    public Matricula(int codigo, Aluno aluno, boolean confirmado, Evento evento) {
         this.codigo = codigo;
         this.aluno = aluno;
         this.evento = evento;
@@ -57,6 +57,11 @@ public class Matricula implements Serializable{
 
     public void setConfirmado(boolean confirmado) {
         this.confirmado = confirmado;
+    }
+
+    @Override
+    public String toString() {
+        return "Matricula{" + "codigo=" + codigo + ", aluno=" + aluno + ", evento=" + evento + ", confirmado=" + confirmado + '}';
     }
     
     

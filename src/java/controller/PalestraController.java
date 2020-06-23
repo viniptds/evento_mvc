@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.EventoDAO;
 import dao.PalestraDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,14 +52,18 @@ public class PalestraController extends HttpServlet {
             PalestraDAO pald = new PalestraDAO();
             
             Evento evt = (Evento)session.getAttribute("altered_evento");            
-
-            session.removeAttribute("listaPal");
+            EventoDAO evtd = new EventoDAO();
             
-            int cod=0, cap= 0;
+            
+            int cod=0, cap= 0, codevt;
             String nome, desc, search = "";
             LocalDate data = LocalDate.now();
             
-            Palestra p = null;
+            Palestra p = null;           
+            
+            session.removeAttribute("listaPal");
+            session.removeAttribute("altered_aluno");
+            session.removeAttribute("altered_inst");
             
             if(session.getAttribute("user") == null)
             {
@@ -128,35 +133,44 @@ public class PalestraController extends HttpServlet {
                                     {
                                         err.addMensagem("Data inválida");
                                     }
-                                
+                                    
                                     if(nome.length() > 0 && desc.length() > 0 && cap > 0 && data.isBefore(LocalDate.now()))
-                                    {                                    
-                                        if(session.getAttribute("altered_pal") != null)
+                                    {    
+                                        System.out.println("-");
+                                        if(evt != null)
                                         {
-
-                                            p = pald.get(cod);
-                                            p.setNome(nome);
-                                            p.setCapacidade(cap);
-                                            p.setDescricao(desc);
-                                            if(!pald.update(p))
+                                            
+                                            if(session.getAttribute("altered_pal") != null)
                                             {
-                                                err.addMensagem("Erro ao alterar!");
-                                            }                                        
+                                                p = pald.get(cod);
+                                                p.setNome(nome);
+                                                p.setCapacidade(cap);
+                                                p.setDescricao(desc);
+                                                if(!pald.update(p))
+                                                {
+                                                    err.addMensagem("Erro ao alterar!");
+                                                }                                        
+                                                else
+                                                {
+                                                    session.removeAttribute("altered_pal");                                                
+                                                }                                        
+                                            }
                                             else
                                             {
-                                                session.removeAttribute("altered_pal");                                                
-                                            }                                        
-                                        }
-                                        else
-                                        {
-                                            p = new Palestra(cod, nome, desc, cap, data, null, null);
-                                            if(!pald.insert(p))
-                                            {
-                                                err.addMensagem("Erro ao inserir");                                            
+                                                p = new Palestra(cod, nome, desc, cap, data, null, null);
+                                                p.setCodevt(evt.getCodigo());
+                                                if(!pald.insert(p))
+                                                {
+                                                    System.out.println("Erro ao inserir");                                            
+                                                }
+                                                evt.getPals().add(p);
+                                                evtd.update(evt);
+
                                             }
                                         }
+                                                                                
                                         cod = cap = 0;
-                                        nome = desc = "";                                                           
+                                        nome = desc = "";
                                     }
                                 }
                             }
@@ -182,7 +196,15 @@ public class PalestraController extends HttpServlet {
                     
                     if(request.getParameter("evt") != null)
                     {
-                        pals = pald.search("eve_codigo", ""+evt.getCodigo());
+                        try
+                        {
+                            codevt = Integer.parseInt(request.getParameter("evt"));
+                            pals = pald.search(0, "eve_codigo", ""+codevt);
+                        }
+                        catch(NumberFormatException ex)
+                        {
+                            System.out.println("Erro ao converter");
+                        }
                     }
                     else
                     {
