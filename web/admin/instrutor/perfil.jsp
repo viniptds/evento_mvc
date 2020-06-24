@@ -43,12 +43,12 @@
     if(pal != null)
     {
 %>
-        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?hd=2&path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
 <%
     }
 %>                  
         
-        <form action="<%out.print(application.getContextPath());%>/InstrutorController?path=listagem.jsp&list=true" method="post">            
+        <form action="<%out.print(application.getContextPath());%>/InstrutorController?hd=1&path=listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>
@@ -66,12 +66,12 @@
         <br>
         <br> 
         <a href="<%out.print(application.getContextPath());
-           %>/InstrutorController?path=listagem.jsp&cod=<%
+           %>/InstrutorController?hd=1&path=listagem.jsp&cod=<%
                out.print(in.getCodigo());%>&delete=true&list=true">Deletar desta Palestra</a>
         <br>   
         
                <a href="<%out.print(application.getContextPath());
-           %>/InstrutorController?path=listagem.jsp&cod=<%
+           %>/InstrutorController?hd=1&path=listagem.jsp&cod=<%
                out.print(in.getCodigo());%>&delete=true&list=true&all=true">Deletar Permanentemente</a>
         <br>
         <br>                

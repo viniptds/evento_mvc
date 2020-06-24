@@ -1,4 +1,6 @@
 
+<%@page import="model.Palestra"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="model.UF"%>
 <%@page import="dao.UFDAO"%>
 <%@page import="dao.CidadeDAO"%>
@@ -17,6 +19,7 @@
     UF selected_uf = ufd.busca(1);
     ArrayList<Cidade> city_list = cd.listar(""+selected_uf.getCodigo(), "uf_codigo");
     
+    Palestra pal;
     public void setList(String codigo)
     {
         city_list = cd.listar(codigo, "uf_codigo");
@@ -41,53 +44,73 @@
         {
             al = (Aluno)session.getAttribute("altered_aluno");
         }
+        else
+            al = null;
         
+        if(session.getAttribute("altered_pal") != null)
+        {
+            pal = (Palestra)session.getAttribute("altered_pal");
+        }
+        else
+            pal = null;
     }
 %>
         
-        <script type="text/javascript" src="ajax-city.js"></script>
-        <div class="p-2" >
-            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController">Menu</a>
+<script type="text/javascript" src="ajax-city.js"></script>
+<%
+    if(pal == null)
+    {
+%>        
+        <a href="<%out.print(application.getContextPath());%>/AdminController">Menu</a>
                             
+<%
+    }
+    else
+    {
+%>
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?hd=2&path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>
+<%
+    }
+%>
             <form method="post" action="<%out.print(application.getContextPath());%>/AdmAlunoController">
                 <div class="form-group">
                     <label>Nome</label><br/>
-                    <input type="text" name="nome" value="${erros.possuiMensagem ? param.nome : aluno.nome}" maxlength="20" class="form-control"/>
+                    <input type="text" name="nome" value="<%out.print((al != null) ? al.getNome() : "");%>" maxlength="20" class="form-control"/>
                 </div>
                 
                 <div class="form-group">
                     <label>Email</label><br/>
-                    <input type="text" name="email" value="${erros.possuiMensagem ? param.email : aluno.email}" maxlength="50" class="form-control"/>
+                    <input type="text" name="email" value="<%out.print((al != null) ? al.getEmail() : "");%>" maxlength="50" class="form-control"/>
                 </div>
                 
                 <div class="form-group">
                     <label>CPF: </label><br/>
-                    <input type="text" name="cpf" value="${erros.possuiMensagem ? param.cpf : aluno.cpf}" maxlength="15" class="form-control"/>
+                    <input type="text" name="cpf" value="<%out.print((al != null) ? al.getCpf() : "");%>" maxlength="15" class="form-control"/>
                 </div>
                 
                 <div class="form-group">
                     <label>Data de Nascimento</label><br/>
-                    <input type="date" name="datanasc" value="${erros.possuiMensagem ? param.datanasc : aluno.datanasc}" class="form-control"/>
+                    <input type="date" name="datanasc" value="<%out.print((al != null) ? al.getDatanasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "");%>" class="form-control"/>
                 </div>
                 
                 <div class="form-group">
                     <label>Endereco</label><br/>
-                    <input type="text" name="endereco" value="${erros.possuiMensagem ? param.endereco : aluno.endereco}" maxlength="100" class="form-control"/>
+                    <input type="text" name="endereco" value="<%out.print((al != null) ? al.getEndereco() : "");%>" maxlength="100" class="form-control"/>
                 </div>
                 
                 <div class="form-group">
                     <label>Numero</label><br/>
-                    <input type="text" name="numero" value="${erros.possuiMensagem ? param.numero : aluno.numero}" maxlength="5" class="form-control"/>
+                    <input type="text" name="numero" value="<%out.print((al != null) ? al.getNum() : "");%>" maxlength="5" class="form-control"/>
                 </div>
                 
                 <div class="form-group">
                     <label>Complemento</label><br/>
-                    <input type="text" name="complemento" value="${erros.possuiMensagem ? param.complemento : aluno.complemento}" maxlength="20" class="form-control"/>
+                    <input type="text" name="complemento" value="<%out.print((al != null && al.getComplemento() != null) ? al.getComplemento() : "");%>" maxlength="20" class="form-control"/>
                 </div>
                 
                 <div class="form-group">
                     <label>CEP</label><br/>
-                    <input type="text" name="cep" value="${erros.possuiMensagem ? param.cep : aluno.cep}" maxlength="10" class="form-control"/>
+                    <input type="text" name="cep" value="<%out.print((al != null) ? al.getCep() : "");%>" maxlength="10" class="form-control"/>
                 </div>
                 
                 
@@ -129,7 +152,7 @@
                     
                 <div class="form-group">
                     <label>Senha</label><br/>
-                    <input type="password" name="senha" value="${erros.possuiMensagem ? param.senha : aluno.senha}" maxlength="10" class="form-control"/>
+                    <input type="password" name="senha" maxlength="10" class="form-control"/>
                 </div>
                 
                 <div class="form-group mt-2">
@@ -139,17 +162,13 @@
             </form>            
         </div>
 <% 
-    if(session.getAttribute("altered_aluno") != null) 
+    if(al != null) 
     { 
 %>
         
         <a href="<%out.print(application.getContextPath());
-           %>/AdmAlunoController?path=listagem.jsp&cod=<%
-               out.print(al.getCodigo());%>&delete=true&list=true">Deletar</a>
-        <br>
-        <br>
-        
-        <a href="">Visualizar Palestras do Aluno</a>
+           %>/AdmAlunoController?hd=1&path=listagem.jsp&cod=<%
+               out.print(al.getCodigo());%>&delete=true&list=true">Deletar</a>                
         
 <%
 }

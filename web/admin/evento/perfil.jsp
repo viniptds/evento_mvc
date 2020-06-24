@@ -36,7 +36,7 @@
     if(evt != null)
     {
 %>
-        <a href="<%out.print(application.getContextPath());%>/EventoController?path=listagem.jsp&list=true">Voltar</a>
+        <a href="<%out.print(application.getContextPath());%>/EventoController?hd=1&path=listagem.jsp&list=true">Voltar</a>
 <%
     }
     else
@@ -46,7 +46,7 @@
 <%
 }
 %>
-        <form action="<%out.print(application.getContextPath());%>/EventoController?path=listagem.jsp&list=true" method="post">            
+        <form action="<%out.print(application.getContextPath());%>/EventoController?hd=1&path=listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>
@@ -67,15 +67,15 @@
 %>
 
         <a href="<%out.print(application.getContextPath());
-           %>/EventoController?path=listagem.jsp&codevt=<%
+           %>/EventoController?hd=1&path=listagem.jsp&codevt=<%
                out.print(evt.getCodigo());%>&delete=true&list=true">Deletar</a>
                <br>
                <br>
                
-               <a href="PalestraController?path=listagem.jsp&list=true&evt=<%out.print(evt.getCodigo());%>">Visualizar palestras</a>
+               <a href="PalestraController?hd=1&path=listagem.jsp&list=true&evt=<%out.print(evt.getCodigo());%>">Visualizar palestras</a>
         <br>
         
-        <a href="EventoController?path=relatorio.jsp&codevt=<%out.print(evt.getCodigo());%>">Relatório de Presença</a>
+        <a href="EventoController?hd=3&path=relatorio.jsp&codevt=<%out.print(evt.getCodigo());%>">Relatório de Presença</a>
         
                
 <%

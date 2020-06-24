@@ -220,6 +220,14 @@ public class PalestraDAO {
     
     public boolean remove(Palestra p)
     {
+        for(Instrutor i : p.getInstruts())
+        {
+            removeInstrutor(i, p.getCod());
+        }
+        
+        for(Matricula m : matd.search("pal_codigo", ""+p.getCod()))
+            matd.removeMatricula(m);
+        
         String sql = "delete from palestra where pal_codigo = #1";
         
         sql = sql.replace("#1", ""+p.getCod());

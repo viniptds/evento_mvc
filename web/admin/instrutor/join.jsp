@@ -35,7 +35,7 @@
     if(pal != null)
     {
 %>
-<a href="InstrutorController?path=listagem.jsp&list=true"> Voltar</a>
+<a href="InstrutorController?hd=1&path=listagem.jsp&list=true"> Voltar</a>
 
 <table border="3">
     <tr>
@@ -51,7 +51,7 @@
     <tr>
         <td><%out.print(i.getNome());%></td>
         <td><%out.print(i.getCurriculo());%></td>
-        <td><a href="InstrutorController?path=join.jsp&list=true&filter=true&join=true&codinst=<%out.print(i.getCodigo());%>">Adicionar</a></td>
+        <td><a href="InstrutorController?hd=3&path=join.jsp&list=true&filter=true&join=true&codinst=<%out.print(i.getCodigo());%>">Adicionar</a></td>
     </tr>
 <%
         }

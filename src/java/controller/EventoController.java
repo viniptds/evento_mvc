@@ -49,7 +49,7 @@ public class EventoController extends HttpServlet {
             Evento evt = null;
             
             String path, data[];    
-            String title [] = {"Menu Evento", "Listagem de Eventos", "Evento"};
+            String title [] = {"Menu Evento", "Listagem de Eventos", "Evento", "Relatório"};
             
             String search, nome = "";
             LocalDate inicio, fim;
@@ -58,7 +58,18 @@ public class EventoController extends HttpServlet {
             session.removeAttribute("listaEvento");
             session.removeAttribute("altered_pal");
             session.removeAttribute("altered_aluno");
-            session.removeAttribute("altered_inst");
+            session.removeAttribute("altered_inst");            
+            
+            int hd;
+            try
+            {
+                hd = Integer.parseInt(request.getParameter("hd"));
+                hd = (hd<title.length) ? hd: 0;
+            }
+            catch(NumberFormatException ex)
+            {
+                hd = 0;
+            }           
             
             if(session.getAttribute("user") == null)
             {
@@ -187,14 +198,14 @@ public class EventoController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/"+path, title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
                 }                
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/index.jsp", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/index.jsp", title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

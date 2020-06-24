@@ -24,7 +24,7 @@ evt = (Evento)session.getAttribute("altered_evento");
 if(evt == null)
 {
 %>
-    <a href="EventoController?path=perfil.jsp&list=true&codevt=<%out.print(evt.getCodigo());%>">Voltar</a>
+    <a href="EventoController?hd=2&path=perfil.jsp&list=true&codevt=<%out.print(evt.getCodigo());%>">Voltar</a>
     <br>
     Evento não encontrado!
     
@@ -33,7 +33,7 @@ if(evt == null)
 else
 {
 %>
-    <a href="EventoController?path=perfil.jsp&list=true&codevt=<%out.print(evt.getCodigo());%>">Voltar</a>
+    <a href="EventoController?hd=2&path=perfil.jsp&list=true&codevt=<%out.print(evt.getCodigo());%>">Voltar</a>
 
     <h1><%out.print(evt.getNome());%></h1>
 

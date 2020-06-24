@@ -38,7 +38,7 @@
     {
 %>      
 
-        <a href="<%out.print(application.getContextPath()+"/EventoController?path=perfil.jsp&codevt="+ev.getCodigo());%>">Voltar</a>                        
+        <a href="<%out.print(application.getContextPath()+"/EventoController?hd=2&path=perfil.jsp&codevt="+ev.getCodigo());%>">Voltar</a>                        
 
 <%
     }
@@ -51,7 +51,7 @@
             <input type="submit" name="bSearch" value="Buscar">
         </form>
             
-        <a href="<%out.print(application.getContextPath());%>/PalestraController?path=perfil.jsp">Nova Palestra</a>
+        <a href="<%out.print(application.getContextPath());%>/PalestraController?hd=2&path=perfil.jsp">Nova Palestra</a>
             
         
 <%
@@ -77,7 +77,7 @@
             <tr>
                 <td>
                     <a href="<%out.print(application.getContextPath());
-                       %>/PalestraController?path=perfil.jsp&codpal=<%
+                       %>/PalestraController?hd=2&path=perfil.jsp&codpal=<%
                         out.print(p.getCod()); %>"> 
                         <% out.print(p.getNome()); %>
                     </a>

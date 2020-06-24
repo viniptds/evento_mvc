@@ -52,7 +52,7 @@ public class AdmAlunoController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {            
             
             String path;      
-            String title [] = {"Controle de Alunos", "Perfil Aluno"};
+            String title [] = {"Controle de Alunos", "Listagem de Alunos", "Perfil Aluno", "Confirmação de Alunos"};
             
             HttpSession session = request.getSession();
             Erros meusErros = new Erros();
@@ -69,6 +69,17 @@ public class AdmAlunoController extends HttpServlet {
             int cod = 0, num, codpal = 0;
             String nome, email, senha, cpf, endereco, complemento = "", cep;
             LocalDate data;
+            
+            int hd;
+            try
+            {
+                hd = Integer.parseInt(request.getParameter("hd"));
+                hd = (hd<title.length) ? hd: 0;
+            }
+            catch(NumberFormatException ex)
+            {
+                hd = 0;
+            }           
             
             //verifica permissao
             if(session.getAttribute("user") == null)
@@ -239,7 +250,8 @@ public class AdmAlunoController extends HttpServlet {
                     {                        
                         als = (md.searchMatPal(pal.getCod(), 1));
                     }
-                    else
+                    
+                    if(request.getParameter("full") != null)
                     {     
                         als = dao.list();                        
                     }
@@ -267,14 +279,14 @@ public class AdmAlunoController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/"+path, title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/"+path);
                 }
                 else
                 {
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/aluno/index.jsp", title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/aluno/index.jsp");

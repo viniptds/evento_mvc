@@ -25,14 +25,14 @@
             
         <a href="<%out.print(application.getContextPath());%>/EventoController">Menu</a>                
         
-        <form method="post" action="<%out.print(application.getContextPath());%>/EventoController?path=listagem.jsp&list=true">
+        <form method="post" action="<%out.print(application.getContextPath());%>/EventoController?hd=1&path=listagem.jsp&list=true">
             
             <label>Buscar: </label>
             <input type="text" name="search" value="<%out.print(search.length() > 0 ? search : "");%>">
             
             <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/EventoController?path=perfil.jsp">Novo Evento</a>
+            <a href="<%out.print(application.getContextPath());%>/EventoController?hd=2&path=perfil.jsp">Novo Evento</a>
             
         
 <%
@@ -57,7 +57,7 @@
             <tr>
                 <td>
                     <a href="<%out.print(application.getContextPath());
-                       %>/EventoController?path=perfil.jsp&codevt=<%
+                       %>/EventoController?hd=2&path=perfil.jsp&codevt=<%
                         out.print(u.getCodigo()); %>"> 
                         <% out.print(u.getNome()); %>
                     </a>

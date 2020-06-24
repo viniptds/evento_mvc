@@ -39,7 +39,7 @@
     if(pal != null)
     {
 %>
-        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?hd=2&path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
 <%
     }
 %>                       
@@ -50,9 +50,9 @@
             
             <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/InstrutorController?path=perfil.jsp">Novo Instrutor</a>
+            <a href="<%out.print(application.getContextPath());%>/InstrutorController?hd=2&path=perfil.jsp">Novo Instrutor</a>
             <br>
-            <a href="<%out.print(application.getContextPath());%>/InstrutorController?path=join.jsp&list=true&filter=true">Vincular Instrutor</a>
+            <a href="<%out.print(application.getContextPath());%>/InstrutorController?hd=3&path=join.jsp&list=true&filter=true">Vincular Instrutor</a>
         
 <%
     if(lins != null)
@@ -75,7 +75,7 @@
             <tr>
                 <td>
                     <a href="<%out.print(application.getContextPath());
-                       %>/InstrutorController?path=perfil.jsp&codinst=<%
+                       %>/InstrutorController?hd=2&path=perfil.jsp&codinst=<%
                         out.print(u.getCodigo()); %>"> 
                         <% out.print(u.getNome()); %>
                     </a>

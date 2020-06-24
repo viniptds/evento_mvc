@@ -51,12 +51,23 @@ public class InstrutorController extends HttpServlet {
             Palestra pal = (Palestra)session.getAttribute("altered_pal");
             PalestraDAO pd = new PalestraDAO();
             String path;    
-            String title [] = {"Menu Instrutor", "Listagem de Instrutor(es)", "Perfil"};
+            String title [] = {"Menu Instrutor", "Listagem de Instrutores", "Instrutor", "Vínculo de Instrutor"};
             
             String search, nome = "", curr = "";
             int cod = 0;
                                     
             session.removeAttribute("listaInst");
+            
+            int hd;
+            try
+            {
+                hd = Integer.parseInt(request.getParameter("hd"));
+                hd = (hd<title.length) ? hd: 0;
+            }
+            catch(NumberFormatException ex)
+            {
+                hd = 0;
+            }           
             
             if(session.getAttribute("user") == null)
             {
@@ -189,7 +200,7 @@ public class InstrutorController extends HttpServlet {
                 {
                     path = request.getParameter("path");
                     
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/instrutor/"+path, title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/"+path);
@@ -197,7 +208,7 @@ public class InstrutorController extends HttpServlet {
                 else
                 {
                     session.removeAttribute("altered_inst");
-                    request.setAttribute("configuracao", new ConfigPagina("/admin", title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin", title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/admin/usuario/index.jsp");  

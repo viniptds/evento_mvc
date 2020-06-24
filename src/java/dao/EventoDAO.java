@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Evento;
+import model.Palestra;
 import persist.Conexao;
 import persist.DAOException;
 
@@ -49,6 +50,12 @@ public class EventoDAO
     
     public void remove(Evento evt)
     {
+        PalestraDAO pd = new PalestraDAO();
+        
+        Evento ev = busca(evt.getCodigo());
+        for(Palestra p : ev.getPals())
+            pd.remove(p);
+        
         String sql = "delete from evento where eve_codigo = #1";
         
         sql = sql.replace("#1", ""+evt.getCodigo());

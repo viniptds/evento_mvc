@@ -35,7 +35,7 @@
     if(pal != null)
     {
 %>
-        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?hd=1&path=perfil.jsp&codpal="+pal.getCod());%>">Voltar</a>      
 <%
     }
     else
@@ -45,15 +45,22 @@
 <%
     }
 %>
-        <form method="post" action="<%out.print(application.getContextPath());%>/AlunoController?path=listagem.jsp&list=true">
+        <form method="post" action="<%out.print(application.getContextPath());%>/AdmAlunoController?hd=2&path=listagem.jsp&list=true&full=true">
             
             <label>Buscar: </label>
             <input type="text" name="search" value="<%out.print(search.length() > 0 ? search : "");%>">
             
             <input type="submit" name="bSearch" value="Buscar">
         </form>
-            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController?path=perfil.jsp">Novo Aluno</a>
             
+<%
+    if(request.getParameter("conf") == null)
+    {
+%>
+            <a href="<%out.print(application.getContextPath());%>/AdmAlunoController?hd=2&path=perfil.jsp">Novo Aluno</a>
+<%
+    }
+%>
         
 <%
     if(alunos != null && alunos.size()>0)
@@ -83,7 +90,7 @@
             <tr>
                 <td>
                     <a href="<%out.print(application.getContextPath());
-                       %>/AlunoController?path=perfil.jsp&codaluno=<%
+                       %>/AdmAlunoController?hd=2&path=perfil.jsp&codaluno=<%
                         out.print(al.getCodigo()); %>"> 
                         <% out.print(al.getNome()); %>
                     </a>
@@ -95,7 +102,7 @@
             if(conf)
             {
 %>
-                <td><a href="AdmAlunoController?path=listagem.jsp&list=true&conf=true&aluc=<%out.print(al.getCodigo());%>">Confirmar</a></td>                
+                <td><a href="AdmAlunoController?hd=3&path=listagem.jsp&list=true&conf=true&aluc=<%out.print(al.getCodigo());%>">Confirmar</a></td>                
 <%
             }
 %>
@@ -118,7 +125,7 @@
 if(conf)
 {
 %> 
-<a href="AdmAlunoController?path=listagem.jsp&list=true">Cancelar</a>
+<a href="AdmAlunoController?hd=1&path=listagem.jsp&list=true">Cancelar</a>
 
 <%
 }

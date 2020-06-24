@@ -47,7 +47,7 @@ public class MatriculaController extends HttpServlet {
             HttpSession session = request.getSession();
             
             String path; 
-            String title [] = {"Página Inicial", "Perfil"};  
+            String title [] = {"Página Inicial", "Matrícula", "Minhas Matrículas"};  
             
             MatriculaDAO matd = new MatriculaDAO();                        
             EventoDAO evtd = new EventoDAO();
@@ -67,6 +67,16 @@ public class MatriculaController extends HttpServlet {
             session.removeAttribute("pals");
             session.removeAttribute("palestra");
             
+            int hd;
+            try
+            {
+                hd = Integer.parseInt(request.getParameter("hd"));
+                hd = (hd<title.length) ? hd: 0;
+            }
+            catch(NumberFormatException ex)
+            {
+                hd = 0;
+            }           
             
             if(al != null)
             {
@@ -204,14 +214,14 @@ public class MatriculaController extends HttpServlet {
                     path = request.getParameter("path");
                     
                     //response.sendRedirect(path);                    
-                    request.setAttribute("configuracao", new ConfigPagina("/aluno/"+path, title[0], ((Aluno)session.getAttribute("aluno")).getNome()));
+                    request.setAttribute("configuracao", new ConfigPagina("/aluno/"+path, title[hd], ((Aluno)session.getAttribute("aluno")).getNome()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                 }
                 else
                 {
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/aluno/index.jsp");            
-                    request.setAttribute("configuracao", new ConfigPagina("/aluno/index.jsp", title[0], ((Aluno)session.getAttribute("aluno")).getNome()));
+                    request.setAttribute("configuracao", new ConfigPagina("/aluno/index.jsp", title[hd], ((Aluno)session.getAttribute("aluno")).getNome()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                 }

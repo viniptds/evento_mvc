@@ -57,23 +57,28 @@
 
 %>
 
-    <a href="AlunoController">Menu</a>
-    <form action="MatriculaController?path=matricula.jsp" method="post">
+
+    
+    <form action="MatriculaController?hd=1&path=matricula.jsp" method="post">
 
 <%
     if(mat != null && palestra != null)
     {
 %>
-
+    <a href="MatriculaController?hd=2&path=listagem.jsp&list=true">Voltar</a>
     <h2>Matrícula <%out.print(mat.getCodigo());%> </h2>
     
     <p>Evento: <%out.print(mat.getEvento().getNome());%></p>
     <p>Palestra: <%out.print(palestra.getNome() + " <br> "+palestra.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));%>
 <%
     }
+    else
+    {
 %>
+        <a href="AlunoController">Menu</a>
 
 <%
+    }
     if(evts != null && evts.size() > 0)
     {
 %>
@@ -101,7 +106,7 @@
         if(pals != null) 
         {
 %>
-    <form action="MatriculaController?path=listagem.jsp?list=true" method="post">
+    <form action="MatriculaController?hd=2&path=listagem.jsp?list=true" method="post">
         <p>Selecione Palestra</p>
         <input type="text" name="evento" hidden="hidden" value="<%out.print(evt.getCodigo());%>">
         <select name="palestra" <% out.print((mat != null) ? " readonly='readonly'": "");%>>
@@ -129,7 +134,7 @@
 %>
         <br>
         <br>
-        <a href="MatriculaController?path=listagem.jsp&list=true&delete=true&codmat=<%out.print(mat.getCodigo());%>">Cancelar inscrição</a>
+        <a href="MatriculaController?hd=2&path=listagem.jsp&list=true&delete=true&codmat=<%out.print(mat.getCodigo());%>">Cancelar inscrição</a>
 
 <%
     }

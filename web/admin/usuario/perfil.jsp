@@ -33,7 +33,7 @@
         <a href="<%out.print(application.getContextPath());%>/UsuarioController">Menu</a>
         
         <form action="<%out.print(application.getContextPath());
-              %>/UsuarioController?path=listagem.jsp&list=true" method="post">            
+              %>/UsuarioController?hd=1&path=listagem.jsp&list=true" method="post">            
             <label>Nome: </label>
             <input type="text" name="nome" required="required" value="<% out.print(nome); %>">
             <br>
@@ -55,7 +55,7 @@
 %>
 
         <a href="<%out.print(application.getContextPath());
-           %>/UsuarioController?path=listagem.jsp&coduser=<%
+           %>/UsuarioController?hd=1&path=listagem.jsp&coduser=<%
                out.print(u.getCodigo());%>&delete=true&list=true">Deletar</a>
 
 <%

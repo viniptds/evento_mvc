@@ -1,3 +1,4 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="model.Aluno"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="model.Matricula"%>
@@ -49,7 +50,7 @@
     {
 %>      
 
-        <a href="<%out.print(application.getContextPath()+"/PalestraController?path=listagem.jsp&list=true&evt="+ev.getCodigo());%>">Voltar</a>                        
+        <a href="<%out.print(application.getContextPath()+"/PalestraController?hd=1&path=listagem.jsp&list=true&evt="+ev.getCodigo());%>">Voltar</a>                        
 
 <%
     }
@@ -64,17 +65,18 @@
 %>
         
         <form action="<%out.print(application.getContextPath());
-              %>/PalestraController?path=listagem.jsp&list=true<%out.print((ev !=  null) ? "?evt="+ev.getCodigo() : "");%>" method="post">
+              %>/PalestraController?hd=2&path=listagem.jsp&list=true<%out.print((ev !=  null) ? "&evt="+ev.getCodigo() : "");%>" method="post">
             <label>Nome: </label><input type="text" autofocus="true" name="nome" value="<% out.print(nome); %>">
             <br>
             
             <label>Descrição: </label><textarea type="textarea" name="desc" rows="3" maxlength="500"><% out.print(desc); %></textarea>
             <br>
             
-            <label>Capacidade: </label><input type="number" name="cap" value="<% out.print(""+cap); %>">            
+            <label>Capacidade: </label><input type="number" name="cap" value="<% out.print(cap); %>">            
             <br>
             
-            <label>Data: </label><input type="date" name="data" value="<% out.print(""+data); %>">            
+            <label>Data: </label><input type="date" name="data" placeholder="DD/MM/AAAA" 
+                                        value="<% out.print((data != null) ? data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : ""); %>">            
             <br>
             
             <input type="submit" name="bChange" value="Enviar">
@@ -88,37 +90,30 @@
 %>
 
         <a href="<%out.print(application.getContextPath());
-           %>/PalestraController?path=listagem.jsp&codpal=<%
+           %>/PalestraController?hd=1&path=listagem.jsp&codpal=<%
                out.print(pal.getCod());%>&delete=true&list=true">Deletar</a>
         
         <br>
         <br>
         Vagas Disponíveis: <% out.print(String.valueOf(pal.getCapacidade()-pal.getAlunos().size())); %>              
         <br>                
-        <a href="AdmAlunoController?path=listagem.jsp&list=true&conf=true">Confirmar matrículas</a>
+        <a href="AdmAlunoController?hd=3&path=listagem.jsp&list=true&conf=true">Confirmar matrículas</a>
         <br>
 <%
         if(pal.getAlunos() != null && pal.getAlunos().size()>0)
         {            
 %>
-        <a href="AdmAlunoController?path=listagem.jsp&list=true">Visualizar Participantes</a>
+        <a href="AdmAlunoController?hd=1&path=listagem.jsp&list=true">Visualizar Participantes</a>
         <br>
 
 <%         
         }
-        if(pal.getInstruts() != null && pal.getInstruts().size()>0)
-        {                     
+                          
 %>           
         
-        <a href="InstrutorController?path=listagem.jsp&list=true">Visualizar Instrutores</a>
+        <a href="InstrutorController?hd=1&path=listagem.jsp&list=true">Visualizar Instrutores</a>             
         
 <%
-        }
-        else
-        {
-%>        
         
-<%
-        }
     }
 %>        

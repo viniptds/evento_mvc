@@ -48,7 +48,7 @@ public class PalestraController extends HttpServlet {
             HttpSession session = request.getSession();
             
             String path; 
-            String title [] = {"Página Inicial", "Perfil"};  
+            String title [] = {"Página Inicial", "Listagem de Palestras", "Palestra", "Confirmação de Matrículas"};  
             PalestraDAO pald = new PalestraDAO();
             
             Evento evt = (Evento)session.getAttribute("altered_evento");            
@@ -64,6 +64,17 @@ public class PalestraController extends HttpServlet {
             session.removeAttribute("listaPal");
             session.removeAttribute("altered_aluno");
             session.removeAttribute("altered_inst");
+                        
+            int hd;
+            try
+            {
+                hd = Integer.parseInt(request.getParameter("hd"));
+                hd = (hd<title.length) ? hd: 0;
+            }
+            catch(NumberFormatException ex)
+            {
+                hd = 0;
+            }           
             
             if(session.getAttribute("user") == null)
             {
@@ -106,14 +117,13 @@ public class PalestraController extends HttpServlet {
                 {
                     if(request.getParameter("nome") != null)
                     {
-                        nome = request.getParameter("nome");
-
+                        nome = request.getParameter("nome");                        
                         if(request.getParameter("desc") != null)
                         {
                             desc = request.getParameter("desc");
 
                             if(request.getParameter("cap") != null)
-                            {
+                            {                                
                                 try
                                 {                                                                    
                                     cap = Integer.parseInt(request.getParameter("cap"));
@@ -127,19 +137,17 @@ public class PalestraController extends HttpServlet {
                                 {
                                     try
                                     {
-                                        data = LocalDate.parse(request.getParameter("data").toString());
+                                        data = LocalDate.parse(request.getParameter("data"));
                                     }
                                     catch(DateTimeParseException ex)
                                     {
-                                        err.addMensagem("Data inválida");
+                                        System.out.println("Data inválida");
                                     }
                                     
-                                    if(nome.length() > 0 && desc.length() > 0 && cap > 0 && data.isBefore(LocalDate.now()))
-                                    {    
-                                        System.out.println("-");
+                                    if(nome.length() > 0 && desc.length() > 0 && cap > 0 && data.isAfter(LocalDate.now()))
+                                    {                                            
                                         if(evt != null)
-                                        {
-                                            
+                                        {                                            
                                             if(session.getAttribute("altered_pal") != null)
                                             {
                                                 p = pald.get(cod);
@@ -225,14 +233,14 @@ public class PalestraController extends HttpServlet {
                     path = request.getParameter("path");
                     
                     //response.sendRedirect(path);                    
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/palestra/"+path, title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/palestra/"+path, title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                 }
                 else
                 {
                     //response.sendRedirect(this.getServletContext().getContextPath()+"/aluno/index.jsp");            
-                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/perfil.jsp?codevt="+evt.getCodigo(), title[0], ((Usuario)session.getAttribute("user")).getLogin()));
+                    request.setAttribute("configuracao", new ConfigPagina("/admin/evento/perfil.jsp?codevt="+evt.getCodigo(), title[hd], ((Usuario)session.getAttribute("user")).getLogin()));
                     RequestDispatcher rd = request.getRequestDispatcher("_template.jsp");
                     rd.forward(request, response);
                 }

@@ -104,56 +104,53 @@ public class MatriculaDAO {
         return false;
     }
 
-//    public ArrayList<Matricula> search(String ...params) 
-//    {
-//        ArrayList<Matricula> lm = new ArrayList();
-//        
-//        String sql = "select * from matricula";
-//        
-//        if(params.length % 2 == 0)
-//        {
-//            sql += " where ";
-//            for(int i = 0; i<params.length; i++)
-//            {
-//                if(params[i].equals("pal_codigo") || params[i].equals("eve_codigo"))
-//                {
-//                    sql+= params[i] +" = "+params[++i];
-//                }
-//                else
-//                {
-//                    sql+= params[i] +" = "+params[++i];
-//                }
-//                
-//                if(i+2 <= params.length)
-//                {
-//                    sql+=", ";
-//                }
-//            }
-//        }
-//        
-//        sql += " order by pal_nome";
-//        
-//        try (Connection conn = Conexao.connect()) 
-//        {
-//            try (Statement st = conn.createStatement()) 
-//            {
-//                try (ResultSet rs = st.executeQuery(sql)) 
-//                {
-//                    while (rs.next()) 
-//                    {
-//                        lus.add(gerar(rs));
-//                    }                    
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println("Erro no SQL. "+ex);
-//        } catch (NullPointerException ex) {            
-//            System.out.println("Falha abrindo banco de dados.");
-//        }
-//        
-//        return lm;    
-//    }
-//    
+    public ArrayList<Matricula> search(String ...params) 
+    {
+        ArrayList<Matricula> lm = new ArrayList();
+        
+        String sql = "select mat_codigo, alu_codigo, mat_confirmada, eve_codigo from matricula";
+        
+        if(params.length % 2 == 0)
+        {
+            if(params[0].equals("pal_codigo"))
+            {
+                sql+= " left join matricula_palestra on matricula_palestra.mat_codigo = matricula.mat_codigo";
+            }
+            sql += " where ";
+            for(int i = 0; i<params.length; i++)
+            {                
+                sql+= params[i] +" = "+params[++i];               
+                
+                if(i+2 <= params.length)
+                {
+                    sql+=", ";
+                }
+            }
+        }
+        
+        sql += " order by mat_codigo";
+        
+        try (Connection conn = Conexao.connect()) 
+        {
+            try (Statement st = conn.createStatement()) 
+            {
+                try (ResultSet rs = st.executeQuery(sql)) 
+                {
+                    while (rs.next()) 
+                    {
+                        lm.add(gerar(rs));
+                    }                    
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro no SQL. "+ex);
+        } catch (NullPointerException ex) {            
+            System.out.println("Falha abrindo banco de dados.");
+        }
+        
+        return lm;    
+    }
+    
     public ArrayList<Aluno> searchMatPal(int cod, int confirmed)
     {
         ArrayList<Aluno> lus = new ArrayList();
